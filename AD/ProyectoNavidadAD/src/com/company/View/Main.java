@@ -1,7 +1,6 @@
 package com.company.View;
 
 import com.company.Controller.DataBaseManager;
-import com.company.Controller.Options;
 
 import java.util.Scanner;
 
@@ -27,20 +26,20 @@ public class Main {
                     case 1: {
                         showMenu1();
                         option = scanner.nextInt();
-                        Options.option1(option, dbManager);
+                        ViewLogic.option1(option, dbManager);
                         break;
                     }
 
                     case 2: {
                         showMenu2();
                         option = scanner.nextInt();
-                        Options.options2(option, dbManager);
+                        ViewLogic.options2(option, dbManager);
                         break;
                     }
                     case 3:{
                         showMenu3();
                         option = scanner.nextInt();
-                        Options.options3(option, dbManager);
+                        ViewLogic.options3(option, dbManager);
                         break;
                     }
                     case 4:{

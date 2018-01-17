@@ -1,12 +1,14 @@
 package com.company.Controller;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import com.company.Model.Department;
+
+import java.sql.*;
+import java.util.logging.Logger;
 
 public class DataBaseManager {
 
     Connection conn = null;
+    PreparedStatement preparedStatement;
 
     private String user;
     private String password;
@@ -14,13 +16,13 @@ public class DataBaseManager {
 
     private String databaseName;
 
-    DataBaseManager(String user, String password, String urlConnection) {
+    public DataBaseManager(String user, String password, String urlConnection) {
         this.user = user;
         this.password = password;
         this.urlConnection = urlConnection;
     }
 
-    boolean connect() {
+    public boolean connect() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(urlConnection, user, password);
@@ -37,7 +39,7 @@ public class DataBaseManager {
         }
     }
 
-    boolean close() {
+    public boolean close() {
         if (conn != null) {
             try {
                 conn.close();
@@ -53,21 +55,94 @@ public class DataBaseManager {
         return false;
     }
 
-//    try {
-//        // The newInstance() call is a work around for some
-//        // broken Java implementations
-//        Class.forName("com.mysql.jdbc.Driver").newInstance();
-//    } catch (Exception ex) {
-//        // handle the error
-//    }
+//    private boolean execQuery(String sql) {
+//        boolean b;
 //        try {
-//        conn = DriverManager.getConnection("jdbc:mysql://localhost/employees" +
-//                "user=root&password=admin");
-//
-//        // Do something with the Connection
-//
-//    } catch (SQLException ex) {
-//        // handle any errors
-//
+//            Statement st = conn.createStatement();
+//            st.executeQuery(sql);
+//            b = true;
+//            st.close();
+//        } catch (SQLException ex) {
+//            ex.printStackTrace();
+//            System.out.println("SQLException: " + ex.getMessage());
+//            System.out.println("SQLState: " + ex.getSQLState());
+//            System.out.println("VendorError: " + ex.getErrorCode());
+//            b = false;
+//        }
+//        System.out.println(b);
+//        return b;
 //    }
+
+    public boolean createDepartment(Department department){
+        String sql = "insert into departments(dept_no, dept_name) values (?,?);";
+        boolean success;
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1,department.getNo());
+            preparedStatement.setString(2,department.getName());
+            preparedStatement.executeUpdate();
+            success = true;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+            success = false;
+        }
+        return success;
+    }
+
+    public boolean existDepartment(String dept_no){
+        String sql = "select count(1) from departments where dept_no = ?;";
+        boolean exist;
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1,dept_no);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            exist = resultSet.getInt(1) == 1;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+            exist = false;
+        }
+        return exist;
+    }
+
+    public Department getDepartment(String dept_no){
+        String sql = "select * from departments where dept_no = ?;";
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1,dept_no);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return new Department(resultSet.getString(1),resultSet.getString(2));
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+            return null;
+        }
+    }
+
+    public boolean modifyDepartment(Department department){
+        String sql = "select count(1) from departments where dept_no = ?;";
+        boolean exist;
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1,dept_no);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            exist = resultSet.getInt(1) == 1;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+            exist = false;
+        }
+        return exist;
+    }
+
+
 }

@@ -9,35 +9,35 @@ public class Employee {
     private String gender;
     private String hire_date;
 
-    public String getEmp_no() {
+    public String getEmpNo() {
         return emp_no;
     }
 
-    public void setEmp_no(String emp_no) {
+    public void setEmpNo(String emp_no) {
         this.emp_no = emp_no;
     }
 
-    public String getBirth_date() {
+    public String getBirthDate() {
         return birth_date;
     }
 
-    public void setBirth_date(String birth_date) {
+    public void setBirthDate(String birth_date) {
         this.birth_date = birth_date;
     }
 
-    public String getFirst_name() {
+    public String getFirstName() {
         return first_name;
     }
 
-    public void setFirst_name(String first_name) {
+    public void setFirstName(String first_name) {
         this.first_name = first_name;
     }
 
-    public void setLast_name(String last_name) {
+    public void setLastName(String last_name) {
         this.last_name = last_name;
     }
 
-    public String getLast_name() {
+    public String getLastName() {
         return last_name;
     }
 
@@ -49,11 +49,11 @@ public class Employee {
         this.gender = gender;
     }
 
-    public String getHire_date() {
+    public String getHireDate() {
         return hire_date;
     }
 
-    public void setHire_date(String hire_date) {
+    public void setHireDate(String hire_date) {
         this.hire_date = hire_date;
     }
 
