@@ -226,15 +226,17 @@ class ViewLogic {
                 if (dbManager.existDepartment(dept_no)) {
                     ArrayList<Employee> actualEmployees = dbManager.getActualEmployeesFromDepartment(dept_no);
                     ArrayList<Employee> historicEmployees = dbManager.getHistoricEmployeesFromDepartment(dept_no);
-                    System.out.println("Empleados actuales: ");
-                    for (Employee actualEmployee : actualEmployees) {
-                        System.out.println(actualEmployee.toString());
-                    }
-                    System.out.println("");
-                    System.out.println("Histórico de empleados: ");
-                    for (Employee employee : historicEmployees) {
-                        System.out.println(employee.toString());
-                    }
+                    if(actualEmployees != null || historicEmployees != null){
+                        System.out.println("Empleados actuales: ");
+                        for (Employee actualEmployee : actualEmployees) {
+                            System.out.println(actualEmployee.toString());
+                        }
+                        System.out.println("");
+                        System.out.println("Histórico de empleados: ");
+                        for (Employee employee : historicEmployees) {
+                            System.out.println(employee.toString());
+                        }
+                    }else LOG.log(Level.WARNING, "Arraylist departamento/empleado null");
                 } else System.out.println("No existe el departamento");
                 break;
             }

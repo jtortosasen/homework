@@ -16,8 +16,6 @@ public class DataBaseManager {
     private String password;
     private String urlConnection;
 
-    private String databaseName;
-
     public DataBaseManager(String user, String password, String urlConnection) {
         this.user = user;
         this.password = password;
@@ -28,6 +26,8 @@ public class DataBaseManager {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(urlConnection, user, password);
+            PreparedStatement preparedStatement = conn.prepareStatement("use employees;");
+            preparedStatement.executeUpdate();
             return true;
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -57,29 +57,12 @@ public class DataBaseManager {
         return false;
     }
 
-//    private boolean execQuery(String sql) {
-//        boolean b;
-//        try {
-//            Statement st = conn.createStatement();
-//            st.executeQuery(sql);
-//            b = true;
-//            st.close();
-//        } catch (SQLException ex) {
-//            ex.printStackTrace();
-//            System.out.println("SQLException: " + ex.getMessage());
-//            System.out.println("SQLState: " + ex.getSQLState());
-//            System.out.println("VendorError: " + ex.getErrorCode());
-//            b = false;
-//        }
-//        System.out.println(b);
-//        return b;
-//    }
-
     public boolean createDepartment(Department department) {
         String sql = "insert into departments(dept_no, dept_name) values (?,?);";
-        boolean success;
+        boolean success = false;
         try {
             preparedStatement = conn.prepareStatement(sql);
+            System.out.println(department.getNo() + department.getName());
             preparedStatement.setString(1, department.getNo());
             preparedStatement.setString(2, department.getName());
             preparedStatement.executeUpdate();
@@ -89,25 +72,25 @@ public class DataBaseManager {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
-            success = false;
         }
         return success;
     }
 
     public boolean existDepartment(String dept_no) {
         String sql = "select count(1) from departments where dept_no = ?;";
-        boolean exist;
+        boolean exist = false;
         try {
             preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setString(1, dept_no);
             ResultSet resultSet = preparedStatement.executeQuery();
-            exist = resultSet.getInt(1) == 1;
+            if(resultSet.next()){
+                exist = resultSet.getInt(1) == 1;
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
-            exist = false;
         }
         return exist;
     }
@@ -118,23 +101,25 @@ public class DataBaseManager {
             preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setString(1, dept_no);
             ResultSet resultSet = preparedStatement.executeQuery();
-            return new Department(resultSet.getString(1), resultSet.getString(2));
+            if(resultSet.next()){
+                return new Department(resultSet.getString(1), resultSet.getString(2));
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
-            return null;
         }
+        return null;
     }
 
     public boolean modifyDepartment(Department department) {
         String sql = "update departments set dept_name = ? where dept_no = ?;";
-        boolean success;
+        boolean success = false;
         try {
             preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setString(1, department.getName());
-            preparedStatement.setString(2, department.getName());
+            preparedStatement.setString(2, department.getNo());
             preparedStatement.executeUpdate();
             success = true;
 
@@ -143,14 +128,13 @@ public class DataBaseManager {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
-            success = false;
         }
         return success;
     }
 
     public boolean deleteDepartment(String dept_no) {
         String sql = "delete from departments where dept_no = ?;";
-        boolean success;
+        boolean success = false;
         try {
             preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setString(1, dept_no);
@@ -161,7 +145,6 @@ public class DataBaseManager {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
-            success = false;
         }
         return success;
     }
@@ -169,7 +152,7 @@ public class DataBaseManager {
     public boolean createEmployee(Employee employee) {
         String sql = "insert into employees(emp_no, birth_date, first_name, last_name, gender, hire_date) " +
                 "values(?, ?, ?, ?, ?, ?);";
-        boolean success;
+        boolean success = false;
         try {
             preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1, Integer.parseInt(employee.getEmpNo()));
@@ -185,25 +168,25 @@ public class DataBaseManager {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
-            success = false;
         }
         return success;
     }
 
     public boolean existEmployee(String emp_no) {
         String sql = "select count(1) from employees where emp_no = ?;";
-        boolean exist;
+        boolean exist = false;
         try {
             preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1, Integer.parseInt(emp_no));
             ResultSet resultSet = preparedStatement.executeQuery();
-            exist = resultSet.getInt(1) == 1;
+            if(resultSet.next()){
+                exist = resultSet.getInt(1) == 1;
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
-            exist = false;
         }
         return exist;
     }
@@ -214,23 +197,25 @@ public class DataBaseManager {
             preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1, Integer.parseInt(emp_no));
             ResultSet resultSet = preparedStatement.executeQuery();
-            return new Employee(
-                    String.valueOf(resultSet.getInt(1)), resultSet.getString(2),
-                    resultSet.getString(3), resultSet.getString(4),
-                    resultSet.getString(5), resultSet.getString(6));
+            if(resultSet.next()){
+                return new Employee(
+                        String.valueOf(resultSet.getInt(1)), resultSet.getString(2),
+                        resultSet.getString(3), resultSet.getString(4),
+                        resultSet.getString(5), resultSet.getString(6));
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
-            return null;
         }
+        return null;
     }
 
     public boolean modifyEmployee(Employee employee) {
         String sql = "update employees set birth_date = ?, first_name= ?, last_name = ?, " +
                 "gender = ?, hire_date = ? where emp_no = ?";
-        boolean success;
+        boolean success = false;
         try {
             preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setString(1, employee.getBirthDate());
@@ -247,14 +232,13 @@ public class DataBaseManager {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
-            success = false;
         }
         return success;
     }
 
     public boolean deleteEmployee(String emp_no) {
         String sql = "delete from employees where emp_no = ?;";
-        boolean success;
+        boolean success = false;
         try {
             preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1, Integer.parseInt(emp_no));
@@ -265,7 +249,6 @@ public class DataBaseManager {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
-            success = false;
         }
         return success;
     }
@@ -279,15 +262,17 @@ public class DataBaseManager {
             preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1, Integer.parseInt(emp_no));
             ResultSet resultSet = preparedStatement.executeQuery();
-            return new Department(resultSet.getString(1), resultSet.getString(2));
+            if(resultSet.next()){
+                return new Department(resultSet.getString(1), resultSet.getString(2));
+            }
 
         } catch (SQLException ex) {
             ex.printStackTrace();
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
-            return null;
         }
+        return null;
     }
 
     public ArrayList<Employee> getEmployeesFromDepartment(String dept_no) {
@@ -319,19 +304,20 @@ public class DataBaseManager {
 
     public boolean isEmployeeOnDateHistoryDepartment(String emp_no, String dept_no){
         String sql = "SELECT count(1) FROM dept_emp where emp_no = ? and dept_no = ?;";
-        boolean exist;
+        boolean exist = false;
         try {
             preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1, Integer.parseInt(emp_no));
             preparedStatement.setString(2, dept_no);
             ResultSet resultSet = preparedStatement.executeQuery();
-            exist = resultSet.getInt(1) == 1;
+            if(resultSet.next()){
+                exist = resultSet.getInt(1) == 1;
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
-            exist = false;
         }
         return exist;
     }
@@ -343,32 +329,35 @@ public class DataBaseManager {
             preparedStatement.setInt(1, Integer.parseInt(emp_no));
             preparedStatement.setString(2, dept_no);
             ResultSet resultSet = preparedStatement.executeQuery();
-            String date = resultSet.getString(1) + " " + resultSet.getString(2);
-            return date;
+            if(resultSet.next()){
+                String date = resultSet.getString(1) + " " + resultSet.getString(2);
+                return date;
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
-            return null;
         }
+        return null;
     }
 
     public boolean employeeOnDepartment (String emp_no, String dept_no){
         String sql = "SELECT count(1) from dept_emp where emp_no = ? and dept_no = ? and to_date = '9999-01-01';";
-        boolean exist;
+        boolean exist = false;
         try {
             preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1, Integer.parseInt(emp_no));
             preparedStatement.setString(2, dept_no);
             ResultSet resultSet = preparedStatement.executeQuery();
-            exist = resultSet.getInt(1) == 1;
+            if(resultSet.next()){
+                exist = resultSet.getInt(1) == 1;
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
-            exist = false;
         }
         return exist;
     }
@@ -376,7 +365,7 @@ public class DataBaseManager {
     public boolean moveEmployeeToDepartment(String emp_no, String dept_no){
         String sql = "update dept_emp set to_date='2016-01-01' where emp_no = ? and to_date = '9999-01-01';";
         String sql2 =  "insert into dept_emp (emp_no, dept_no, from_date, to_date) values (?, ?, '2016-01-01', '9999-01-01');";
-        boolean success;
+        boolean success = false;
         try {
             preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1, Integer.parseInt(emp_no));
@@ -392,11 +381,85 @@ public class DataBaseManager {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
-            success = false;
         }
         return success;
     }
 
+    public ArrayList<Employee> getActualEmployeesFromDepartment(String dept_no){
+        String sql =
+                "select employees.emp_no, employees.birth_date, employees.first_name, employees.last_name, employees.gender, " +
+                "employees.hire_date from employees join dept_emp on employees.emp_no = dept_emp.emp_no " +
+                "where dept_emp.dept_no = ? and dept_emp.to_date = '9999-01-01';";
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, dept_no);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            ArrayList<Employee> employees = new ArrayList<>();
+            while (resultSet.next()) {
+                employees.add(new Employee(
+                        String.valueOf(resultSet.getInt(1)), resultSet.getString(2),
+                        resultSet.getString(3), resultSet.getString(4),
+                        resultSet.getString(5), resultSet.getString(6)));
+            }
+            return employees;
 
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return null;
+    }
+
+    public ArrayList<Employee> getHistoricEmployeesFromDepartment(String dept_no){
+        String sql =
+                "select employees.emp_no, employees.birth_date, employees.first_name, employees.last_name, employees.gender, " +
+                        "employees.hire_date from employees join dept_emp on employees.emp_no = dept_emp.emp_no " +
+                        "where dept_emp.dept_no = ?;";
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, dept_no);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            ArrayList<Employee> employees = new ArrayList<>();
+            while (resultSet.next()) {
+                employees.add(new Employee(
+                        String.valueOf(resultSet.getInt(1)), resultSet.getString(2),
+                        resultSet.getString(3), resultSet.getString(4),
+                        resultSet.getString(5), resultSet.getString(6)));
+            }
+            return employees;
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return null;
+    }
+
+    public ArrayList<Department> getHistoricDepartmentsFromEmployee(String emp_no) {
+        String sql = "select departments.dept_no, departments.dept_name from departments\n" +
+                "join dept_emp on departments.dept_no = dept_emp.dept_no\n" +
+                "where dept_emp.emp_no = ?;";
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setInt(1, Integer.parseInt(emp_no));
+            ResultSet resultSet = preparedStatement.executeQuery();
+            ArrayList<Department> departments = new ArrayList<>();
+            while (resultSet.next()){
+                departments.add(new Department(resultSet.getString(1), resultSet.getString(2)));
+            }
+            return departments;
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return null;
+    }
 
 }
