@@ -462,4 +462,124 @@ public class DataBaseManager {
         return null;
     }
 
+    public int getCountDepartmentsFunction(){
+        String sql = "select DepartmentCounts();";
+        int count = 0;
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                count = resultSet.getInt(1);
+                return count;
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return  count;
+    }
+
+    public int getCountEmployeesFunction(){
+        String sql = "select EmployeesCount();";
+        int count = 0;
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                count = resultSet.getInt(1);
+                return count;
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return  count;
+    }
+
+    public int getCountEmployeesFromDepartment(String dept_no){
+        String sql = "select EmployeesDeptCount(?);";
+        int count = 0;
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1,dept_no);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                count = resultSet.getInt(1);
+                return count;
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return  count;
+    }
+
+    public Department getDepartmentWithProcedure(String dept_no){
+        String  sql = "CALL getDeptData(?);";
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1,dept_no);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                return new Department(resultSet.getString(1), resultSet.getString(2));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return null;
+    }
+
+    public Employee getEmployeeWithProcedure(String emp_no){
+        String  sql = "CALL getEmpData(?);";
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setInt(1,Integer.parseInt(emp_no));
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                return new Employee(
+                        String.valueOf(resultSet.getInt(1)), resultSet.getString(2),
+                        resultSet.getString(3), resultSet.getString(4),
+                        resultSet.getString(5), resultSet.getString(6));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return null;
+    }
+
+    public float getSalaryAverageWithProcedure(String dept_no){
+        String sql = "CALL getAvgDept(?);";
+        float average = 0;
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1,dept_no);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                average = resultSet.getFloat(1);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return average;
+    }
+
+
 }

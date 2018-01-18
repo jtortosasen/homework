@@ -43,6 +43,12 @@ public class Main {
                         break;
                     }
                     case 4:{
+                        showMenu4();
+                        option = scanner.nextInt();
+                        ViewLogic.options4(option, dbManager);
+                        break;
+                    }
+                    case 5:{
                         exitApplication();
                     }
                 }
@@ -58,7 +64,8 @@ public class Main {
         System.out.println("1. Departamentos");
         System.out.println("2. Empleados");
         System.out.println("3. Consultas");
-        System.out.println("4. Salir");
+        System.out.println("4. Funciones y procedimientos");
+        System.out.println("5. Salir");
     }
 
     static void showMenu1() {
@@ -87,6 +94,15 @@ public class Main {
                 "el histórico (empleados que trabajaron allí pero que ahora no lo hacen).");
         System.out.println("8. Dado el código de un empleado ver el departamento al que pertenece (actual)" +
                 " y el histórico a los que ha pertenecido");
+    }
+
+    static void showMenu4(){
+        System.out.println("1. Función que devuelve el número de departamentos");
+        System.out.println("2. Función que devuelve el número de empleados");
+        System.out.println("3. Función que devuelve el número de empleados de un departamento");
+        System.out.println("4. Procedimiento que devuelve los datos de un departamento");
+        System.out.println("5. Procedimiento que devuelve los datos de un empleado");
+        System.out.println("6. Procedimiento que nos devuelve la media de los salarios de un departamento");
     }
 
     private static void exitApplication(){

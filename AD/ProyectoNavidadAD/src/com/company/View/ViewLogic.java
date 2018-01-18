@@ -240,7 +240,7 @@ class ViewLogic {
                 } else System.out.println("No existe el departamento");
                 break;
             }
-            case 8:
+            case 8:{
                 System.out.println("emp_no: ");
                 String emp_no = scanner.nextLine();
                 if (dbManager.existEmployee(emp_no)) {
@@ -253,8 +253,59 @@ class ViewLogic {
                     for (Department department : historicDepartments)
                         System.out.println(department.toString());
                 } else System.out.println("No existe el empleado");
-
+                break;
+            }
         }
+    }
 
+    static void options4(int option, DataBaseManager dbManager) {
+        Scanner scanner = new Scanner(System.in);
+        switch (option) {
+            case 1: {
+                System.out.println(dbManager.getCountDepartmentsFunction());
+                break;
+            }
+            case 2: {
+                System.out.println(dbManager.getCountEmployeesFunction());
+                break;
+            }
+            case 3: {
+                System.out.println("dept_no: ");
+                String dept_no  = scanner.nextLine();
+                if(dbManager.existDepartment(dept_no))
+                    System.out.println(dbManager.getCountEmployeesFromDepartment(dept_no));
+                else System.out.println("Departamento no existe");
+                break;
+            }
+            case 4: {
+                System.out.println("dept_no: ");
+                String dept_no  = scanner.nextLine();
+                if(dbManager.existDepartment(dept_no)){
+                    Department department = dbManager.getDepartmentWithProcedure(dept_no);
+                    if(department != null)
+                        System.out.println(department.toString());
+                }
+                else System.out.println("Departamento no existe");
+                break;
+            }
+            case 5: {
+                System.out.println("emp_no: ");
+                String emp_no = scanner.nextLine();
+                if(dbManager.existEmployee(emp_no)){
+                    Employee employee = dbManager.getEmployeeWithProcedure(emp_no);
+                    if(employee != null){
+                        System.out.println(employee.toString());
+                    }
+                }
+            }
+            case 6:{
+                System.out.println("dept_no: ");
+                String dept_no = scanner.nextLine();
+                if(dbManager.existDepartment(dept_no)){
+                    System.out.printf("%.4f", dbManager.getSalaryAverageWithProcedure(dept_no));
+                    System.out.println("");
+                }
+            }
+        }
     }
 }
