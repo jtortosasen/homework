@@ -9,8 +9,8 @@ import java.util.logging.Logger;
 
 public class DataBaseManager {
 
-    Connection conn = null;
-    PreparedStatement preparedStatement;
+    private Connection conn = null;
+    private PreparedStatement preparedStatement;
 
     private String user;
     private String password;
