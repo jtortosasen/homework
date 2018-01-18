@@ -167,9 +167,11 @@ class ViewLogic {
                 String dept_no = scanner.nextLine();
                 if (dbManager.existDepartment(dept_no)) {
                     ArrayList<Employee> employees = dbManager.getEmployeesFromDepartment(dept_no);
-                    for (Employee employee : employees) {
-                        System.out.println(employee.toString());
-                    }
+                    if(employees != null){
+                        for (Employee employee : employees) {
+                            System.out.println(employee.toString());
+                        }
+                    }else LOG.log(Level.WARNING, "Arraylist empleados null");
                 } else System.out.println("No existe");
                 break;
             }
@@ -178,7 +180,10 @@ class ViewLogic {
                 String emp_no = scanner.nextLine();
                 if (dbManager.existEmployee(emp_no)) {
                     Department department = dbManager.getDepartmentFromEmployee(emp_no);
-                    System.out.println(department.toString());
+                    if(department != null)
+                        System.out.println(department.toString());
+                    else
+                        LOG.log(Level.WARNING, "Department null");
                 } else System.out.println("No existe");
                 break;
             }
@@ -188,10 +193,11 @@ class ViewLogic {
                 System.out.println("dept_no: ");
                 String dept_no = scanner.nextLine();
                 if (dbManager.existEmployee(emp_no) && dbManager.existDepartment(dept_no)) {
-                    if (dbManager.employeeOnDepartment(emp_no, dept_no)) {
+                    if (dbManager.isEmployeeOnDateHistoryDepartment(emp_no, dept_no)) {
                         System.out.println("Afirmativo.");
-                        String data = dbManager.getDataEmployeeDepartment(emp_no, dept_no);
-                        System.out.println(data);
+                        String date = dbManager.getDatesEmployeeOnDepartment(emp_no, dept_no);
+                        if(date != null)
+                            System.out.println(date);
                     }
                 } else System.out.println("Employee or department doesnt exist");
                 break;
@@ -206,8 +212,9 @@ class ViewLogic {
                         System.out.println("El empleado ya está en el departamento");
                         break;
                     } else {
-                        dbManager.moveEmployeeToDepartment(emp_no, dept_no);
-                        System.out.println("Exito.");
+                        if(dbManager.moveEmployeeToDepartment(emp_no, dept_no))
+                            System.out.println("Exito.");
+                        else System.out.println("No se ha podido mover el empleado");
                     }
                 } else System.out.println("Employee or department doesnt exist");
                 break;
