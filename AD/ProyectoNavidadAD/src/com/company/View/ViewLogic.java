@@ -308,4 +308,51 @@ class ViewLogic {
             }
         }
     }
+
+    static void options5(int option, DataBaseManager dbManager){
+        Scanner scanner = new Scanner(System.in);
+        switch (option) {
+            case 1:{
+                System.out.println("emp_no: ");
+                String emp_no = scanner.nextLine();
+                if(dbManager.existEmployee(emp_no)){
+                    ArrayList<Department> departments = dbManager.getHistoricDepartmentsFromEmployee(emp_no);
+                    if(departments != null){
+                        for (Department department : departments) {
+                            System.out.println(department.toString());
+                        }
+                    }
+                }
+                break;
+            }
+            case 2:{
+                System.out.println("emp_no");
+                String emp_no = scanner.nextLine();
+                if(dbManager.existEmployee(emp_no)){
+                    System.out.println(dbManager.getTitleFromEmployee(emp_no));
+                } else System.out.println("Empleado no existe");
+                break;
+            }
+            case 3:{
+                System.out.println("emp_no");
+                String emp_no = scanner.nextLine();
+                if(dbManager.existEmployee(emp_no)){
+                    System.out.println("Inserte titulo nuevo: ");
+                    String title = scanner.nextLine();
+                    if(dbManager.modifyTitleFromEmployee(emp_no, title))
+                        System.out.println("Éxito");
+                    else System.out.println("Error al modificar título");
+                }else System.out.println("Empleado no existe");
+                break;
+            }
+            case 4:{
+                System.out.println("dept_no: ");
+                String dept_no = scanner.nextLine();
+                if(dbManager.existDepartment(dept_no)) {
+                    System.out.println(dbManager.getDiferenceSalaryByGender(dept_no));
+                }else System.out.println("departamento no existe");
+                break;
+            }
+        }
+    }
 }

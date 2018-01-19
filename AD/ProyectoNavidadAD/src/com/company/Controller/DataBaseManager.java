@@ -581,5 +581,62 @@ public class DataBaseManager {
         return average;
     }
 
+    public String getTitleFromEmployee(String emp_no){
+        String sql = "SELECT titles.title from titles where emp_no = ?;";
+        String title = "";
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setInt(1,Integer.parseInt(emp_no));
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                title = resultSet.getString(1);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return title;
+    }
+
+    public boolean modifyTitleFromEmployee(String emp_no, String title){
+        String sql = "update titles set title = ? where titles.emp_no = ?;";
+        boolean success = false;
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, title);
+            preparedStatement.setInt(2, Integer.parseInt(emp_no));
+            preparedStatement.executeUpdate();
+            success = true;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return success;
+    }
+
+    public double getDiferenceSalaryByGender(String dept_emp){
+        String sql = "select salary_diff(?);";
+        double diference = 0;
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, dept_emp);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if(resultSet.next()){
+                diference = resultSet.getDouble(1);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return diference;
+    }
+
 
 }
