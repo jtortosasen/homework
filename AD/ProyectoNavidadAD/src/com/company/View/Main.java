@@ -49,6 +49,12 @@ public class Main {
                         break;
                     }
                     case 5:{
+                        showMenu5();
+                        option = scanner.nextInt();
+                        ViewLogic.options5(option, dbManager);
+                        break;
+                    }
+                    case 6:{
                         exitApplication();
                     }
                 }
@@ -65,7 +71,8 @@ public class Main {
         System.out.println("2. Empleados");
         System.out.println("3. Consultas");
         System.out.println("4. Funciones y procedimientos");
-        System.out.println("5. Salir");
+        System.out.println("5. Examen");
+        System.out.println("6. Salir");
     }
 
     static void showMenu1() {
@@ -103,6 +110,13 @@ public class Main {
         System.out.println("4. Procedimiento que devuelve los datos de un departamento");
         System.out.println("5. Procedimiento que devuelve los datos de un empleado");
         System.out.println("6. Procedimiento que nos devuelve la media de los salarios de un departamento");
+    }
+
+    static void showMenu5(){
+        System.out.println("1. Devolver departamentos en los que ha trabajado el empleado");
+        System.out.println("2. Devolver el cargo de un empleado en la empresa");
+        System.out.println("3. Modificar cargo empleado");
+        System.out.println("4. Devolver la diferencia de salario entre géneros de un departamento");
     }
 
     private static void exitApplication(){

@@ -24,6 +24,7 @@ begin
     return myCount;
 end
 
+DROP PROCEDURE IF EXISTS getEmpData;
 DELIMITER $$
 CREATE PROCEDURE getDeptData(Dept varchar(4))
 begin
