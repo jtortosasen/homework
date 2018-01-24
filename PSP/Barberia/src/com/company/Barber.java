@@ -34,13 +34,12 @@ public class Barber extends Thread {
                 }
                 try {
                     sleep(client.getWorkTime());
-                    System.out.println("voy a dormir");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
 
-        }while (run && client != null);
+        }while (run || client != null);
     }
 
     public void finish() {

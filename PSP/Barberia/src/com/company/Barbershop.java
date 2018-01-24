@@ -9,7 +9,9 @@ public class Barbershop {
         Barber barber2 = new Barber(bench);
         Door door = new Door(bench);
 
-        System.out.println("Iniciando barbería...");
+        int workTime = 15000;
+
+        System.out.println("####### Iniciando barbería...");
 
         barber1.start();
         barber2.start();
@@ -17,11 +19,11 @@ public class Barbershop {
 
 
         try {
-            Thread.sleep(15000);
+            Thread.sleep(workTime);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("Finalizando barbería");
+        System.out.println("####### Finalizando barbería...");
 
         barber1.finish();
         barber2.finish();
