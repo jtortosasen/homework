@@ -8,25 +8,50 @@ public class Bench {
 
     private Queue<Client> bench;
     private boolean run;
-    private int count;
 
     public Bench(){
-        bench = new LinkedList<Client>();
-        count = 0;
+        bench = new LinkedList<>();
+        run = true;
     }
 
     public synchronized Client getClient(){
+        Client client = null;
+        do{
+            if(bench.isEmpty()){
+                System.out.println("El barbero se sienta.");
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }else{
+                client = bench.remove();
+                notifyAll();
+            }
+        }while (client == null|| !run);
+        return client;
+    }
 
-        count--;
-        return bench.remove();
+    public synchronized  void addClient(Client client){
+        boolean exitFlag = false;
+        do{
+            if(!isFull()){
+                bench.add(client);
+                exitFlag = true;
+                notifyAll();
+            }else {
+                try {
+                    System.out.println("El cliente se queda fuera");
+                    wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }while (exitFlag || !run);
 
     }
 
-    public synchronized  void  setClient(Client client){
-        if(count < 6){
-            bench.add(client);
-            count ++;
-            notifyAll();
-        }
+    private boolean isFull(){
+        return bench.size() >= 6;
     }
 }

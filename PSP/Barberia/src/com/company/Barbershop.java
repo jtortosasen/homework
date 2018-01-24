@@ -9,11 +9,6 @@ public class Barbershop {
         Barber barber2 = new Barber(bench);
         Door door = new Door(bench);
 
-        try {
-            Thread.sleep(15000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         System.out.println("Iniciando barbería...");
 
         barber1.start();

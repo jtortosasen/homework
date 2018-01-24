@@ -36,6 +36,15 @@ proguard/
 # Log Files
 *.log
 
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+nbactions.xml
+
 # Android Studio
 /*/build/
 /*/local.properties

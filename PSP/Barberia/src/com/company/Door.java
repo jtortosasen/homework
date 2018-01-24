@@ -14,14 +14,14 @@ public class Door extends Thread{
 
     public void run(){
         do{
-            Service service = Service.getService();
-            int time = Service.getTimeService(service);
-            bench.setClient(new Client(service,time));
             try {
-                sleep((long)(Math.random() * 500));
+                sleep((long)(Math.random() * 2000));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            Service service = Service.randomService();
+            int time = Service.getTimeService(service);
+            bench.addClient(new Client(service,time));
         }while (run);
     }
 
