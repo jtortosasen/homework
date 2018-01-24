@@ -17,7 +17,6 @@ public class Barbershop {
         barber2.start();
         door.start();
 
-
         try {
             Thread.sleep(workTime);
         } catch (InterruptedException e) {

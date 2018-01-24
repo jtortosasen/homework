@@ -15,7 +15,7 @@ public class Door extends Thread {
     public void run() {
         while (run) {
             try {
-                sleep((long) (Math.random() * 700));
+                sleep((long) (Math.random() * 200));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

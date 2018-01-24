@@ -14,7 +14,6 @@ public class Bench {
 
     public synchronized Client getClient() {
         Client client = null;
-        do {
             if (bench.isEmpty()) {
                 System.out.println("El barbero " + Thread.currentThread().getName() + " se sienta.");
                 try {
@@ -27,7 +26,6 @@ public class Bench {
                 client = bench.remove();
                 notifyAll();
             }
-        } while (client == null);
         return client;
     }
 
