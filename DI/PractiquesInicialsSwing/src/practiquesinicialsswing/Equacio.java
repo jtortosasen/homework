@@ -8,8 +8,64 @@ class MiPanel3 extends JPanel {
 
     public void paintComponent(Graphics g) {
 
+
         int windowSizeY = getBounds().height;
         int windowSizeX = getBounds().width;
+
+        int centerAxisX = windowSizeX/2;
+        int centerAxisY = windowSizeY/2;
+
+        g.setColor(new Color(0,0,0));
+        g.drawLine(centerAxisX,centerAxisY,centerAxisX,0);
+        g.drawLine(centerAxisX,centerAxisY,0,centerAxisY);
+        g.drawLine(centerAxisX,centerAxisY,centerAxisX,centerAxisY*2);
+        g.drawLine(centerAxisX,centerAxisY,centerAxisX*2,centerAxisY);
+
+
+
+        //parabola 1 y=x^2
+        for(int i = 0; i<20; i++){
+            int x1,y1;
+            int x2,y2;
+            x1 = i+centerAxisX;
+            y1 = (int)Math.pow(i,2)+centerAxisY;
+            x2 = (i+1)+centerAxisX;
+            y2 = (int)Math.pow(i+1,2)+centerAxisY;
+            g.drawLine(x1,y1,x2,y2);
+        }
+
+        for(int i = 0; i>-50; i--){
+            int x1,y1;
+            int x2,y2;
+            x1 = i+centerAxisX;
+            y1 = (int)Math.pow(i,2)+centerAxisY;
+            x2 = (i+1)+centerAxisX;
+            y2 = (int)Math.pow(i+1,2)+centerAxisY;
+            g.drawLine(x1,y1,x2,y2);
+        }
+
+        //parabola2 y=x^2 + 2*x
+        for(int i = 0; i<20; i++){
+            int x1,y1;
+            int x2,y2;
+            x1 = i+centerAxisX;
+            y1 = ((int)Math.pow(i,2) + centerAxisY) + (2 * i);
+            x2 = (i+1)+centerAxisX;
+            y2 = ((int)Math.pow(i+1,2)+centerAxisY) + (2 * i+1);
+            g.drawLine(x1,y1,x2,y2);
+        }
+
+        for(int i = 0; i>-50; i--){
+            int x1,y1;
+            int x2,y2;
+            x1 = i+centerAxisX;
+            y1 = ((int)Math.pow(i,2)+centerAxisY) + (2 * i);
+            x2 = (i+1)+centerAxisX;
+            y2 = ((int)Math.pow(i+1,2)+centerAxisY) + (2 * i+1);
+            g.drawLine(x1,y1,x2,y2);
+        }
+
+
 
     }
 }
@@ -17,7 +73,7 @@ class MiPanel3 extends JPanel {
 public class Equacio extends JFrame {
     public Equacio() {
         super("Equacio");
-        add(new MiPanel2());
+        add(new MiPanel3());
         setSize(500, 500);
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
