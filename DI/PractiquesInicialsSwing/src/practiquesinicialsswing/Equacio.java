@@ -23,48 +23,71 @@ class MiPanel3 extends JPanel {
 
 
 
-        //parabola 1 y=x^2
+//        parabola 1 y=x^2
+        g.setColor(Color.BLUE);
         for(int i = 0; i<20; i++){
             int x1,y1;
             int x2,y2;
-            x1 = i+centerAxisX;
-            y1 = (int)Math.pow(i,2)+centerAxisY;
-            x2 = (i+1)+centerAxisX;
-            y2 = (int)Math.pow(i+1,2)+centerAxisY;
+            x1 = centerAxisX + i;
+            y1 = centerAxisY - (int)Math.pow(i,2);
+            x2 = centerAxisX + (i+1);
+            y2 = centerAxisY - (int)Math.pow(i+1,2);
             g.drawLine(x1,y1,x2,y2);
         }
 
         for(int i = 0; i>-50; i--){
             int x1,y1;
             int x2,y2;
-            x1 = i+centerAxisX;
-            y1 = (int)Math.pow(i,2)+centerAxisY;
-            x2 = (i+1)+centerAxisX;
-            y2 = (int)Math.pow(i+1,2)+centerAxisY;
+            x1 = centerAxisX + i;
+            y1 = centerAxisY - (int)Math.pow(i,2);
+            x2 = centerAxisX + (i+1);
+            y2 = centerAxisY - (int)Math.pow(i+1,2);
             g.drawLine(x1,y1,x2,y2);
         }
 
-        //parabola2 y=x^2 + 2*x
+//        parabola2 y=x^2 + 2*x
+        g.setColor(Color.GREEN);
         for(int i = 0; i<20; i++){
             int x1,y1;
             int x2,y2;
-            x1 = i+centerAxisX;
-            y1 = ((int)Math.pow(i,2) + centerAxisY) + (2 * i);
-            x2 = (i+1)+centerAxisX;
-            y2 = ((int)Math.pow(i+1,2)+centerAxisY) + (2 * i+1);
+            x1 = centerAxisX + i;
+            y1 = centerAxisY - ((int) Math.pow(i,2) + (4*i));
+            x2 = centerAxisX + (i+1);
+            y2 = centerAxisY - ((int)Math.pow(i+1,2) + (4 * i+1));
             g.drawLine(x1,y1,x2,y2);
         }
 
         for(int i = 0; i>-50; i--){
             int x1,y1;
             int x2,y2;
-            x1 = i+centerAxisX;
-            y1 = ((int)Math.pow(i,2)+centerAxisY) + (2 * i);
-            x2 = (i+1)+centerAxisX;
-            y2 = ((int)Math.pow(i+1,2)+centerAxisY) + (2 * i+1);
+            x1 = centerAxisX + i;
+            y1 = centerAxisY - ((int) Math.pow(i,2) + (4*i));
+            x2 = centerAxisX + (i+1);
+            y2 = centerAxisY - ((int)Math.pow(i+1,2) + (4 * i+1));
             g.drawLine(x1,y1,x2,y2);
         }
 
+//        parabola2 y = 4 - x^2
+        g.setColor(Color.RED);
+        for(int i = 0; i<20; i++){
+            int x1,y1;
+            int x2,y2;
+            x1 = centerAxisX + i;
+            y1 = centerAxisY - (4 - (int) Math.pow(i,2));
+            x2 = centerAxisX + (i+1);
+            y2 = centerAxisY - (4 - (int)Math.pow(i+1,2));
+            g.drawLine(x1,y1,x2,y2);
+        }
+
+        for(int i = 0; i>-50; i--){
+            int x1,y1;
+            int x2,y2;
+            x1 = centerAxisX + i;
+            y1 = centerAxisY - (4 - (int) Math.pow(i,2));
+            x2 = centerAxisX + (i+1);
+            y2 = centerAxisY - (4 - (int)Math.pow(i+1,2));
+            g.drawLine(x1,y1,x2,y2);
+        }
 
 
     }
