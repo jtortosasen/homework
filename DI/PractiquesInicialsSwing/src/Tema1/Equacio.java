@@ -1,4 +1,4 @@
-package practiquesinicialsswing;
+package Tema1;
 
 import javax.swing.*;
 import java.awt.*;
@@ -88,8 +88,6 @@ class MiPanel3 extends JPanel {
             y2 = centerAxisY - (4 - (int)Math.pow(i+1,2));
             g.drawLine(x1,y1,x2,y2);
         }
-
-
     }
 }
 

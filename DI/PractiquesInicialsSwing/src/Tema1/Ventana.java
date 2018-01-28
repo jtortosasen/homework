@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package practiquesinicialsswing;
+package Tema1;
 
 import java.awt.*;
 import javax.swing.*;
@@ -31,7 +31,7 @@ public class Ventana extends JFrame {
         
         JButton boton1 = new JButton ("Boton 1");
         constraints.gridx = 2;
-        constraints.gridwidth = 0;
+        constraints.gridwidth = 1;
         constraints.gridheight = 1;
         constraints.weighty = 1.0;
         constraints.anchor = GridBagConstraints.NORTH;
