@@ -6,8 +6,7 @@ public interface ViewControllerSoup {
 
     void setViewController(AlphabetController controller);
     void setArraySolvedWords(String[] arraySolvedWords);
-    void setArrayLettersSoup(String[] arrayLettersSoup);
-
+    void setArrayLettersSoup(char[] arrayLettersSoup);
     void setFoundWord(String word);
 
 }

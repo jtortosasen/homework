@@ -1,7 +1,7 @@
 package Main;
 
 import Controller.AlphabetController;
-import Model.AlphabetSoupModel;
+import Model.LOGIC.AlphabetSoupLogic;
 import View.AlphabetSoupView;
 
 import javax.swing.*;
@@ -13,9 +13,9 @@ public class Main {
     public static final String FILE_WORDS_NAME = "words.txt";
 
     public static void main(String[] args) {
-        AlphabetSoupModel alphabetSoupModel = new AlphabetSoupModel(FILE_LETTERS_NAME,FILE_WORDS_NAME);
+        AlphabetSoupLogic alphabetSoupLogic = new AlphabetSoupLogic(FILE_LETTERS_NAME,FILE_WORDS_NAME);
         AlphabetSoupView alphabetSoupView = new AlphabetSoupView();
-        AlphabetController alphabetController = new AlphabetController(alphabetSoupView, alphabetSoupModel);
+        new AlphabetController(alphabetSoupView, alphabetSoupLogic);
 
         JFrame jFrame = new JFrame(WINDOW_TITLE);
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

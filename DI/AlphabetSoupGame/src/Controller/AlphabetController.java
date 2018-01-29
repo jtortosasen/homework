@@ -1,31 +1,30 @@
 package Controller;
 
-import Model.AlphabetSoupModel;
+import Model.LOGIC.AlphabetSoupLogic;
 import View.AlphabetSoupView;
 
 public class AlphabetController implements ControllerSoup{
 
     AlphabetSoupView alphabetSoupView;
-    AlphabetSoupModel alphabetSoupModel;
+    AlphabetSoupLogic alphabetSoupLogic;
 
-    public AlphabetController(AlphabetSoupView alphabetSoupView, AlphabetSoupModel alphabetSoupModel){
+    public AlphabetController(AlphabetSoupView alphabetSoupView, AlphabetSoupLogic alphabetSoupLogic){
         this.alphabetSoupView = alphabetSoupView;
-        this.alphabetSoupModel = alphabetSoupModel;
-        alphabetSoupView.setViewController(this);
-    }
-
-
-
-
-
-    @Override
-    public String[] getSoupLetters() {
-        return new String[0];
+        this.alphabetSoupLogic = alphabetSoupLogic;
+        this.alphabetSoupView.setViewController(this);
+        this.alphabetSoupView.setArrayLettersSoup(this.alphabetSoupLogic.getLettersSoup());
+        this.alphabetSoupView.setArraySolvedWords(this.alphabetSoupLogic.getSolvedWords());
     }
 
     @Override
-    public void resolveList(String[] letterWords) {
-
+    public void resolveSoup(char[] letterWords) {
+        alphabetSoupLogic.solveArraySoup(letterWords);
     }
+
+    @Override
+    public void getFoundedWord(String word){
+        alphabetSoupView.setFoundWord(word);
+    }
+
 
 }

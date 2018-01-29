@@ -16,8 +16,7 @@ public class AlphabetSoupView extends JPanel implements ViewControllerSoup{
 
     private DefaultListModel<String> modelSolvedWords = new DefaultListModel<>();
     private DefaultListModel<String> modelFoundWords = new DefaultListModel<>();
-    private String[] arrayLetterSoup;
-    private String[] arraySolvedWords;
+    private char[] arrayLetters;
 
     public AlphabetSoupView(){
         super();
@@ -68,7 +67,7 @@ public class AlphabetSoupView extends JPanel implements ViewControllerSoup{
 
     class ListenButon implements ActionListener{
         public void actionPerformed(ActionEvent ae){
-            controller.resolveList(arrayLetterSoup);
+            controller.resolveSoup(arrayLetters);
         }
     }
 
@@ -79,14 +78,12 @@ public class AlphabetSoupView extends JPanel implements ViewControllerSoup{
 
     @Override
     public void setArraySolvedWords(String[] arraySolvedWords) {
-        this.arraySolvedWords = arraySolvedWords;
-        inflateSolvedList();
+        inflateSolvedList(arraySolvedWords);
     }
 
     @Override
-    public void setArrayLettersSoup(String[] arrayLettersSoup) {
-        this.arrayLetterSoup = arrayLettersSoup;
-        inflateLettersList();
+    public void setArrayLettersSoup(char[] arrayLetterSoup) {
+        inflateLettersList(arrayLetterSoup);
     }
 
     @Override
@@ -94,13 +91,15 @@ public class AlphabetSoupView extends JPanel implements ViewControllerSoup{
         addToFoundWords(word);
     }
 
-    private void inflateLettersList(){
-        for (String array : arrayLetterSoup) {
-            panelLetters.add(new JLabel(array));
+    private void inflateLettersList(char[] arrayLetterSoup){
+        for (char array : arrayLetterSoup) {
+            panelLetters.add(new JLabel(String.valueOf(array)));
         }
+        // so that the actionListener can access the array to send to controller
+        arrayLetters = arrayLetterSoup;
     }
 
-    private void inflateSolvedList() {
+    private void inflateSolvedList(String[] arraySolvedWords) {
         for(String array : arraySolvedWords)
             modelSolvedWords.addElement(array);
     }
