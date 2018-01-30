@@ -24,7 +24,7 @@ public class AlphabetSoupView extends JPanel implements ViewControllerSoup{
         GridBagConstraints constraints = new GridBagConstraints();
 
         panelLetters = new JPanel();
-        panelLetters.setLayout(new GridLayout());
+        panelLetters.setLayout(new GridBagLayout());
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.gridheight = 1;
@@ -83,7 +83,7 @@ public class AlphabetSoupView extends JPanel implements ViewControllerSoup{
 
     @Override
     public void setArrayLettersSoup(char[] arrayLetterSoup) {
-        inflateLettersList(arrayLetterSoup);
+        inflateLetterSoup(arrayLetterSoup);
     }
 
     @Override
@@ -91,10 +91,24 @@ public class AlphabetSoupView extends JPanel implements ViewControllerSoup{
         addToFoundWords(word);
     }
 
-    private void inflateLettersList(char[] arrayLetterSoup){
-        for (char array : arrayLetterSoup) {
-            panelLetters.add(new JLabel(String.valueOf(array)));
+    private void inflateLetterSoup(char[] arrayLetterSoup){
+        int rows = controller.getRowsSoup();
+        int cols = controller.getColsSoup();
+
+        for(int i = 0; i<rows; i++){
+            for(int k = 0; k<cols; k++){
+                GridBagConstraints constraints = new GridBagConstraints();
+                constraints.gridx = k;
+                constraints.gridy = i;
+                constraints.gridheight = 1;
+                constraints.gridwidth = 1;
+                constraints.fill = GridBagConstraints.BOTH;
+                constraints.weightx = 1.0;
+                constraints.weighty = 1.0;
+                panelLetters.add(new JLabel(String.valueOf((i*cols)+k)), constraints);
+            }
         }
+
         // so that the actionListener can access the array to send to controller
         arrayLetters = arrayLetterSoup;
     }

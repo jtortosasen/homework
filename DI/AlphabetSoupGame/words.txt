@@ -1,6 +1,6 @@
 perro
 bot
+gato
+mesa
+ladrillo
 botella
-nariz
-verbo
-cuadrado
