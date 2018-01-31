@@ -13,7 +13,7 @@ public class Main {
     private static final String FILE_WORDS_NAME = "words.txt";
 
     public static void main(String[] args) {
-        AlphabetSoupLogic alphabetSoupLogic = new AlphabetSoupLogic(FILE_LETTERS_NAME,FILE_WORDS_NAME);
+        AlphabetSoupLogic alphabetSoupLogic = new AlphabetSoupLogic(FILE_WORDS_NAME,FILE_LETTERS_NAME);
         AlphabetSoupView alphabetSoupView = new AlphabetSoupView();
         new AlphabetController(alphabetSoupView, alphabetSoupLogic);
 
@@ -22,6 +22,7 @@ public class Main {
         jFrame.add(alphabetSoupView);
         jFrame.pack();
         jFrame.setLocationRelativeTo(null);
+        jFrame.setSize(450,280);
         jFrame.setVisible(true);
     }
 }

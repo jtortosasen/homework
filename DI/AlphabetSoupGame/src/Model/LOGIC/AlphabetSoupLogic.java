@@ -55,8 +55,10 @@ public class AlphabetSoupLogic implements ModelSoup {
         }
     }
 
+
     @Override
     public void solveArraySoup(char[] array) {
+
         int rows = dataAccess.getRowsLettersFile();
         int cols = dataAccess.getColsLettersFile();
         String[] solvedWords = getSolvedWords();
@@ -67,29 +69,7 @@ public class AlphabetSoupLogic implements ModelSoup {
             for (int k = 0; i < cols; i++) {
                 line.append(array[(i * cols) + k]);
             }
-            for (int j = 0; j < solvedWords.length; j++) {
-                String[] search = line.toString().split("\\b+");
-                if (Arrays.asList(search).contains(solvedWords[j])) {
-                    LOG.log(Level.INFO, "Found word on row: " + i);
-                    controller.getFoundedWord(solvedWords[j]);
-                }
-            }
-        }
-
-        //horizontal reverse
-        for (int i = 0; i < rows; i++) {
-            StringBuilder line = new StringBuilder();
-            for (int k = 0; i < cols; i++) {
-                line.append(array[(i * cols) + k]);
-            }
-            for (int j = 0; j < solvedWords.length; j++) {
-                String[] search = line.toString().split("\\b+");
-                Collections.reverse(Arrays.asList(search));
-                if (Arrays.asList(search).contains(solvedWords[j])) {
-                    LOG.log(Level.INFO, "Found word on row: " + i);
-                    controller.getFoundedWord(solvedWords[j]);
-                }
-            }
+            checkLine(solvedWords, line, i);
         }
 
         //vertical
@@ -98,41 +78,29 @@ public class AlphabetSoupLogic implements ModelSoup {
             line.append(array[(i * cols)]);
 
             for (int j = 0; j < solvedWords.length; j++) {
-                String[] search = line.toString().split("\\b+");
-                Collections.reverse(Arrays.asList(search));
-                if (Arrays.asList(search).contains(solvedWords[j])) {
-                    LOG.log(Level.INFO, "Found word on row: " + i);
-                    controller.getFoundedWord(solvedWords[j]);
-                }
-            }
-        }
-
-
-        //vertical reverse
-        for (int i = 0; i < rows; i++) {
-            StringBuilder line = new StringBuilder();
-            line.append(array[(i * cols)]);
-
-            for (int j = 0; j < solvedWords.length; j++) {
-                String[] search = line.toString().split("\\b+");
-                Collections.reverse(Arrays.asList(search));
-                if (Arrays.asList(search).contains(solvedWords[j])) {
-                    LOG.log(Level.INFO, "Found word on row: " + i);
-                    controller.getFoundedWord(solvedWords[j]);
-                }
+                checkLine(solvedWords, line, i);
             }
         }
 
         //diagonal
-//        for(int i = 0; i < rows; i++){
-//            for(int k = 0; i<rows; i)
-//        }
+        //transform array to adapt algorithm
+        char[][] array1 = new char[rows][cols];
+        //array2 for reverse
+        char[][] array2 = new char[rows][cols];
 
-        //diagonal reverse
-
-
-
-
+        for (int i = 0; i < rows; i++) {
+            for (int k = 0; k < cols; k++) {
+                array1[i][k] = array[(i * cols) + k];
+            }
+        }
+        //reverse rows
+        for (int i = 0; i < rows; i++) {
+            for (int k = 1; k < cols; k++) {
+                array2[i][k] = array1[i][cols-k];
+            }
+        }
+        moveDiagonals(array1,cols, solvedWords);
+        moveDiagonals(array2,cols, solvedWords);
     }
 
     @Override
@@ -150,5 +118,58 @@ public class AlphabetSoupLogic implements ModelSoup {
             LOG.log(Level.WARNING, "error cols 0");
         return cols;
     }
+
+    private void checkLine(String[] solvedWords, StringBuilder line, int i) {
+        for (int j = 0; j < solvedWords.length; j++) {
+            String[] search = line.toString().split("\\b+");
+            String tuputamadre = line.toString();
+            String[] searchReverse = new String[search.length];
+            System.arraycopy(search, 0, searchReverse, 0, search.length);
+            Collections.reverse(Arrays.asList(search));
+
+//            if (Arrays.asList(search).contains(solvedWords[j]) /*|| Arrays.asList(search).contains(solvedWords[j])*/) {
+//                LOG.log(Level.INFO, "Found word on row: " + i);
+//                controller.getFoundedWord(solvedWords[j]);
+            if(solvedWords[j].contains(tuputamadre)){
+                LOG.log(Level.INFO, "Found word on row: " + i);
+                controller.getFoundedWord(solvedWords[j]);
+        }
+
+        }
+    }
+
+    private void moveDiagonals(char[][] array, int cols, String[] solvedWords) {
+        int c = 0;
+        int count = array.length + array[0].length - 1;
+        int i = 0, j = 0;
+        //There can be at most m + n -1 diagonals to be printed
+        while (c < count) {
+            //Start getting diagonals from i and j
+            getDiagonal(i, j, cols, array, solvedWords);
+            if (i < array.length - 1) {
+                //We increment row index until we reach the max number of rows
+                i++;
+            } else if (j < array[0].length - 1) {
+                //We are at maximum index of row; so its time to increment col index
+                //We increment column index until we reach the max number of columns
+                j++;
+            }
+            c++;
+        }
+    }
+
+    private void getDiagonal(int i, int j, int cols, char[][] array, String[] solvedWords) {
+        while (i >= 0 && j < array[0].length) {
+            StringBuilder line = new StringBuilder();
+            line.append(array[i][j]);
+            checkLine(solvedWords,line,i);
+            i--;
+            j++;
+        }
+        System.out.println("");
+    }
+
+
+
 
 }

@@ -34,31 +34,32 @@ public class AlphabetSoupView extends JPanel implements ViewControllerSoup{
         constraints.weighty = 1.0;
         add(panelLetters, constraints);
 
-        buttonSolve = new JButton();
-        constraints.gridx = 1;
-        constraints.gridy = 0;
+        buttonSolve = new JButton("Solucionar");
+        constraints.gridx = 0;
+        constraints.gridy = 1;
         constraints.gridheight = 1;
         constraints.gridwidth = 1;
-        constraints.anchor = GridBagConstraints.NORTH;
+        constraints.anchor = GridBagConstraints.CENTER;
         constraints.fill = GridBagConstraints.NONE;
-        constraints.weightx = 1.0;
+        constraints.weighty = 1.0;
         add(buttonSolve, constraints);
 
         JList listSolvedWords = new JList(modelSolvedWords);
-        constraints.gridx = 0;
-        constraints.gridy = 1;
+        constraints.gridx = 1;
+        constraints.gridy = 0;
         constraints.gridheight = 2;
         constraints.gridwidth = 1;
-        constraints.fill = GridBagConstraints.BOTH;
+        constraints.anchor = GridBagConstraints.FIRST_LINE_START;
+        constraints.fill = GridBagConstraints.NONE;
         constraints.weighty = 1.0;
         add(listSolvedWords, constraints);
 
         JList listFoundWords = new JList(modelFoundWords);
-        constraints.gridx = 0;
-        constraints.gridy = 2;
+        constraints.gridx = 1;
+        constraints.gridy = 0;
         constraints.gridheight = 2;
         constraints.gridwidth = 1;
-        constraints.fill = GridBagConstraints.BOTH;
+        constraints.fill = GridBagConstraints.NONE;
         constraints.weighty = 1.0;
         add(listFoundWords, constraints);
 
@@ -105,12 +106,13 @@ public class AlphabetSoupView extends JPanel implements ViewControllerSoup{
                 constraints.fill = GridBagConstraints.BOTH;
                 constraints.weightx = 1.0;
                 constraints.weighty = 1.0;
-                panelLetters.add(new JLabel(String.valueOf((i*cols)+k)), constraints);
+                panelLetters.add(new JLabel(String.valueOf(arrayLetterSoup[i*cols+k])), constraints);
             }
         }
 
         // so that the actionListener can access the array to send to controller
         arrayLetters = arrayLetterSoup;
+
     }
 
     private void inflateSolvedList(String[] arraySolvedWords) {

@@ -23,7 +23,8 @@ public class DataAccess {
         ArrayList<Character> arrayList = new ArrayList<>();
         int c;
         while((c = br.read()) != -1){
-            arrayList.add((char)c);
+            if(c != '\n')
+                arrayList.add((char)c);
         }
         br.close();
         return arrayList;
@@ -66,7 +67,7 @@ public class DataAccess {
         int rows = 0;
         try {
             BufferedReader br = new BufferedReader(new FileReader(file_letters));
-            while(br.readLine()!=  null)
+            while(br.readLine() !=  null)
                 rows++;
             br.close();
         } catch (IOException e) {
