@@ -3,6 +3,8 @@ package View;
 import Controller.AlphabetController;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,6 +22,7 @@ public class AlphabetSoupView extends JPanel implements ViewControllerSoup{
 
     public AlphabetSoupView(){
         super();
+        setBorder(new EmptyBorder(10,10,10,10));
         setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
 
@@ -67,6 +70,7 @@ public class AlphabetSoupView extends JPanel implements ViewControllerSoup{
 
     class ListenButon implements ActionListener{
         public void actionPerformed(ActionEvent ae){
+            buttonSolve.setEnabled(false);
             controller.resolveSoup(arrayLetters);
         }
     }
@@ -111,7 +115,6 @@ public class AlphabetSoupView extends JPanel implements ViewControllerSoup{
 
         // so that the actionListener can access the array to send to controller
         arrayLetters = arrayLetterSoup;
-
     }
 
     private void inflateSolvedList(String[] arraySolvedWords) {
