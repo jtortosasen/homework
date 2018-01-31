@@ -1,7 +1,9 @@
 perro
+hola
 bot
+animal
+zorro
 gato
-mesa
 ladrillo
 botella
-hola
+banana

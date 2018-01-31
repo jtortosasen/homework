@@ -66,20 +66,19 @@ public class AlphabetSoupLogic implements ModelSoup {
         //horizontal
         for (int i = 0; i < rows; i++) {
             StringBuilder line = new StringBuilder();
-            for (int k = 0; i < cols; i++) {
+            for (int k = 0; k < cols; k++) {
                 line.append(array[(i * cols) + k]);
             }
-            checkLine(solvedWords, line, i);
+            checkLine(solvedWords, line);
         }
 
         //vertical
-        for (int i = 0; i < rows; i++) {
+        for (int k = 0; k < cols; k++) {
             StringBuilder line = new StringBuilder();
-            line.append(array[(i * cols)]);
-
-            for (int j = 0; j < solvedWords.length; j++) {
-                checkLine(solvedWords, line, i);
+            for (int i = 0; i < rows; i++) {
+                line.append(array[(i * cols) + k]);
             }
+            checkLine(solvedWords, line);
         }
 
         //diagonal
@@ -96,11 +95,11 @@ public class AlphabetSoupLogic implements ModelSoup {
         //reverse rows
         for (int i = 0; i < rows; i++) {
             for (int k = 1; k < cols; k++) {
-                array2[i][k] = array1[i][cols-k];
+                array2[i][k] = array1[i][cols - k];
             }
         }
-        moveDiagonals(array1,cols, solvedWords);
-        moveDiagonals(array2,cols, solvedWords);
+        moveDiagonals(array1, cols, solvedWords);
+        moveDiagonals(array2, cols, solvedWords);
     }
 
     @Override
@@ -119,22 +118,14 @@ public class AlphabetSoupLogic implements ModelSoup {
         return cols;
     }
 
-    private void checkLine(String[] solvedWords, StringBuilder line, int i) {
+    private void checkLine(String[] solvedWords, StringBuilder line) {
         for (int j = 0; j < solvedWords.length; j++) {
-            String[] search = line.toString().split("\\b+");
-            String tuputamadre = line.toString();
-            String[] searchReverse = new String[search.length];
-            System.arraycopy(search, 0, searchReverse, 0, search.length);
-            Collections.reverse(Arrays.asList(search));
-
-//            if (Arrays.asList(search).contains(solvedWords[j]) /*|| Arrays.asList(search).contains(solvedWords[j])*/) {
-//                LOG.log(Level.INFO, "Found word on row: " + i);
-//                controller.getFoundedWord(solvedWords[j]);
-            if(solvedWords[j].contains(tuputamadre)){
-                LOG.log(Level.INFO, "Found word on row: " + i);
+            String searchVerse = line.toString();
+            String searchReverse = new StringBuilder(searchVerse).reverse().toString();
+            if (searchVerse.contains(solvedWords[j]) || searchReverse.contains(solvedWords[j])) {
+                LOG.log(Level.INFO, "Found word: " + solvedWords[j]);
                 controller.getFoundedWord(solvedWords[j]);
-        }
-
+            }
         }
     }
 
@@ -145,7 +136,7 @@ public class AlphabetSoupLogic implements ModelSoup {
         //There can be at most m + n -1 diagonals to be printed
         while (c < count) {
             //Start getting diagonals from i and j
-            getDiagonal(i, j, cols, array, solvedWords);
+            getDiagonal(i, j, array, solvedWords);
             if (i < array.length - 1) {
                 //We increment row index until we reach the max number of rows
                 i++;
@@ -158,18 +149,15 @@ public class AlphabetSoupLogic implements ModelSoup {
         }
     }
 
-    private void getDiagonal(int i, int j, int cols, char[][] array, String[] solvedWords) {
+    private void getDiagonal(int i, int j, char[][] array, String[] solvedWords) {
         while (i >= 0 && j < array[0].length) {
             StringBuilder line = new StringBuilder();
             line.append(array[i][j]);
-            checkLine(solvedWords,line,i);
+            checkLine(solvedWords, line);
             i--;
             j++;
         }
-        System.out.println("");
     }
-
-
 
 
 }

@@ -28,7 +28,6 @@ public class AlphabetController implements ControllerSoup{
     //called from model
     @Override
     public void getFoundedWord(String word){
-        System.out.println(word);
         alphabetSoupView.setFoundWord(word);
     }
 

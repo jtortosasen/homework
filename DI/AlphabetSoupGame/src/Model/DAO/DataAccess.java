@@ -23,7 +23,7 @@ public class DataAccess {
         ArrayList<Character> arrayList = new ArrayList<>();
         int c;
         while((c = br.read()) != -1){
-            if(c != '\n')
+            if(c != '\r' && c != '\n')
                 arrayList.add((char)c);
         }
         br.close();

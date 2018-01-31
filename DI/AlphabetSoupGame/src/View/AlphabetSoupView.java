@@ -47,19 +47,18 @@ public class AlphabetSoupView extends JPanel implements ViewControllerSoup{
         JList listSolvedWords = new JList(modelSolvedWords);
         constraints.gridx = 1;
         constraints.gridy = 0;
-        constraints.gridheight = 2;
+        constraints.gridheight = 1;
         constraints.gridwidth = 1;
         constraints.anchor = GridBagConstraints.FIRST_LINE_START;
-        constraints.fill = GridBagConstraints.NONE;
+        constraints.fill = GridBagConstraints.BOTH;
         constraints.weighty = 1.0;
         add(listSolvedWords, constraints);
 
         JList listFoundWords = new JList(modelFoundWords);
-        constraints.gridx = 1;
+        constraints.gridx = 2;
         constraints.gridy = 0;
-        constraints.gridheight = 2;
+        constraints.gridheight = 1;
         constraints.gridwidth = 1;
-        constraints.fill = GridBagConstraints.NONE;
         constraints.weighty = 1.0;
         add(listFoundWords, constraints);
 
