@@ -29,7 +29,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package layout;
+package View;
 
 /*
  * GridBagLayoutDemo.java requires no other files.
@@ -59,7 +59,7 @@ public class GridBagLayoutDemo {
 
         button = new JButton("Button 1");
         if (shouldWeightX) {
-            c.weightx = 0.5;
+            c.weightx = 0;
         }
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
@@ -68,14 +68,14 @@ public class GridBagLayoutDemo {
 
         button = new JButton("Button 2");
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 0.5;
+        c.weightx = 0;
         c.gridx = 1;
         c.gridy = 0;
         pane.add(button, c);
 
         button = new JButton("Button 3");
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 0.5;
+        c.weightx = 0;
         c.gridx = 2;
         c.gridy = 0;
         pane.add(button, c);
@@ -90,7 +90,7 @@ public class GridBagLayoutDemo {
         pane.add(button, c);
 
         button = new JButton("5");
-        c.fill = GridBagConstraints.HORIZONTAL;
+        c.fill = GridBagConstraints.BOTH;
         c.ipady = 0;       //reset to default
         c.weighty = 1;   //request any extra vertical space
         c.weightx = 0;
