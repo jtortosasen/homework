@@ -1,6 +1,6 @@
 package Main;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
 import View.PanelInfo;
 
@@ -16,8 +16,25 @@ public class Main {
 //        AlphabetSoupLogic alphabetSoupLogic = new AlphabetSoupLogic(FILE_WORDS_NAME,FILE_LETTERS_NAME);
 //        AlphabetSoupView alphabetSoupView = new AlphabetSoupView();
 //        new AlphabetController(alphabetSoupView, alphabetSoupLogic);
-        PanelInfo panelInfo = new PanelInfo();
 
+        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            if ("com.sun.java.swing.plaf.gtk.GTKLookAndFeel".equals(info.getClassName())) {
+                try {
+                    UIManager.setLookAndFeel(info.getClassName());
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (UnsupportedLookAndFeelException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+        }
+
+        PanelInfo panelInfo = new PanelInfo();
         JFrame jFrame = new JFrame(WINDOW_TITLE);
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

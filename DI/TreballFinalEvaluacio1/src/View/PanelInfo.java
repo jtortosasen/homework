@@ -1,6 +1,7 @@
 package View;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
 import java.awt.*;
@@ -35,12 +36,15 @@ public class PanelInfo extends JPanel {
 
     public PanelInfo() {
         super();
+
         setLayout(new GridBagLayout());
+        setBorder(new EmptyBorder(20,20,5,200));
         GridBagConstraints c = new GridBagConstraints();
 
         JPanel jPanelInfoParrots = new JPanel();
         JPanel jPanelInfoOwners = new JPanel();
         JPanel jPanelDrawer = new JPanel();
+        JPanel jPanelCoordinates = new JPanel();
 
         // place the JPanels on the main Layout
         //parrots
@@ -49,7 +53,7 @@ public class PanelInfo extends JPanel {
         c.gridheight = 1;
         c.gridwidth = 1;
         c.fill = GridBagConstraints.BOTH;
-        c.weightx = 0.5;
+        c.weightx = 1;
         this.add(jPanelInfoParrots, c);
 
         //owners
@@ -57,23 +61,36 @@ public class PanelInfo extends JPanel {
         c.gridy = 0;
         c.gridheight = 1;
         c.gridwidth = 1;
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 0.5;
+        c.fill = GridBagConstraints.VERTICAL;
+        c.weightx = 0;
+        c.anchor = GridBagConstraints.WEST;
         this.add(jPanelInfoOwners, c);
+
+        //coordinates
+        c.gridx = 1;
+        c.gridy = 2;
+        c.gridheight = 1;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 0;
+        c.anchor = GridBagConstraints.WEST;
+        this.add(jPanelCoordinates, c);
 
         //drawer
         c.gridx = 0;
-        c.gridy = 1;
+        c.gridy = 3;
         c.gridheight = 1;
-        c.gridwidth = 2;
-        c.fill = GridBagConstraints.VERTICAL;
+        c.gridwidth = 3;
+        c.fill = GridBagConstraints.BOTH;
         // to add lateral space when resize
-//        c.weightx = 1;
+        c.weightx = 1;
         c.weighty = 1;
+        c.insets = new Insets(20, 0, 0, 0);
         this.add(jPanelDrawer, c);
 
         drawInfoParrots(jPanelInfoParrots);
         drawInfoOwners(jPanelInfoOwners);
+        drawCoordinates(jPanelCoordinates);
         drawDrawer(jPanelDrawer);
     }
 
@@ -100,14 +117,14 @@ public class PanelInfo extends JPanel {
         c.gridheight = 1;
         c.gridwidth = 1;
         c.fill = GridBagConstraints.BOTH;
-        c.weightx = 0.5;
+        c.weightx = 1;
         jPanelInfoParrots.add(jPanelButtons, c);
         drawButtonsParrots(jPanelButtons);
     }
 
     private void drawInfoOwners(JPanel jPanelInfoOwners) {
         JPanel jPanelForm = new JPanel();
-        JPanel jPanelButtonsCoordenates = new JPanel();
+        JPanel jPanelButtonsCoordinates = new JPanel();
         GridBagConstraints c = new GridBagConstraints();
 
         jPanelInfoOwners.setLayout(new GridBagLayout());
@@ -122,15 +139,15 @@ public class PanelInfo extends JPanel {
         jPanelInfoOwners.add(jPanelForm, c);
         drawFormOwners(jPanelForm);
 
-        //coordenates
+        //coordinates
         c.gridx = 0;
         c.gridy = 1;
         c.gridheight = 1;
         c.gridwidth = 1;
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 0.5;
-        jPanelInfoOwners.add(jPanelButtonsCoordenates, c);
-        drawButtonsCoordenates(jPanelButtonsCoordenates);
+        jPanelInfoOwners.add(jPanelButtonsCoordinates, c);
+        drawButtonsDrawer(jPanelButtonsCoordinates);
     }
 
     private void drawFormParrots(JPanel jPanelForm) {
@@ -233,7 +250,9 @@ public class PanelInfo extends JPanel {
         c.gridy = 0;
         c.gridheight = 1;
         c.gridwidth = 1;
-        c.fill = GridBagConstraints.BOTH;
+        c.fill = GridBagConstraints.VERTICAL;
+        c.anchor = GridBagConstraints.EAST;
+        c.weightx = 1;
         firstButton = new JButton("<<");
         firstButton.addActionListener(
                 new ActionListener() {
@@ -247,6 +266,7 @@ public class PanelInfo extends JPanel {
         c.gridy = 0;
         c.gridheight = 1;
         c.gridwidth = 1;
+        c.weightx = 0;
         c.fill = GridBagConstraints.BOTH;
         previousButton = new JButton("<");
         previousButton.addActionListener(
@@ -261,8 +281,9 @@ public class PanelInfo extends JPanel {
         c.gridy = 0;
         c.gridheight = 1;
         c.gridwidth = 1;
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 0.5;
+//        c.weightx = 1;
+        c.fill = GridBagConstraints.VERTICAL;
+//        c.weightx = 0.5;
         nextButton = new JButton(">");
         nextButton.addActionListener(
                 new ActionListener() {
@@ -272,12 +293,13 @@ public class PanelInfo extends JPanel {
                 }
         );
         jPanelButtons.add(nextButton, c);
-        c.gridx = 0;
+        c.gridx = 3;
         c.gridy = 0;
         c.gridheight = 1;
         c.gridwidth = 1;
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 0.5;
+        c.weightx = 1;
+        c.fill = GridBagConstraints.VERTICAL;
+        c.anchor = GridBagConstraints.WEST;
         lastButton = new JButton(">>");
         lastButton.addActionListener(
                 new ActionListener() {
@@ -303,7 +325,8 @@ public class PanelInfo extends JPanel {
         c.gridy = 0;
         c.gridheight = 1;
         c.gridwidth = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
+        c.fill = GridBagConstraints.NONE;
+        c.anchor = GridBagConstraints.EAST;
         c.weightx = 0.5;
         jPanelForm.add(new JLabel("id"), c);
         c.gridx = 1;
@@ -319,7 +342,8 @@ public class PanelInfo extends JPanel {
         c.gridy = 1;
         c.gridheight = 1;
         c.gridwidth = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
+        c.fill = GridBagConstraints.NONE;
+        c.anchor = GridBagConstraints.EAST;
         c.weightx = 0.5;
         jPanelForm.add(new JLabel("Nom"), c);
         c.gridx = 1;
@@ -335,13 +359,14 @@ public class PanelInfo extends JPanel {
         c.gridy = 2;
         c.gridheight = 1;
         c.gridwidth = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
+        c.fill = GridBagConstraints.NONE;
+        c.anchor = GridBagConstraints.EAST;
         c.weightx = 0.5;
         jPanelForm.add(new JLabel("Cognoms"), c);
         c.gridx = 1;
         c.gridy = 2;
         c.gridheight = 1;
-        c.gridwidth = 2;
+        c.gridwidth = 3;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 0.5;
         ownerLastName = new JTextField();
@@ -351,7 +376,8 @@ public class PanelInfo extends JPanel {
         c.gridy = 0;
         c.gridheight = 1;
         c.gridwidth = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
+        c.fill = GridBagConstraints.NONE;
+        c.anchor = GridBagConstraints.EAST;
         c.weightx = 0.5;
         jPanelForm.add(new JLabel("Telefon"), c);
         c.gridx = 3;
@@ -364,10 +390,9 @@ public class PanelInfo extends JPanel {
         jPanelForm.add(ownerPhone, c);
     }
 
-    private void drawButtonsCoordenates(JPanel jPanelButtonsCoordenates){
-        jPanelButtonsCoordenates.setLayout(new GridBagLayout());
+    private void drawButtonsDrawer(JPanel jPanelButtonsDrawer){
+        jPanelButtonsDrawer.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-
 
         c.gridx = 0;
         c.gridy = 0;
@@ -383,7 +408,7 @@ public class PanelInfo extends JPanel {
                     }
                 }
         );
-        jPanelButtonsCoordenates.add(drawLineButton, c);
+        jPanelButtonsDrawer.add(drawLineButton, c);
         c.gridx = 5;
         c.gridy = 0;
         c.gridheight = 1;
@@ -398,75 +423,86 @@ public class PanelInfo extends JPanel {
                     }
                 }
         );
-        jPanelButtonsCoordenates.add(drawCircleButton, c);
+        jPanelButtonsDrawer.add(drawCircleButton, c);
 
-//        c.gridx = 0;
-//        c.gridy = 1;
-//        c.gridheight = 1;
-//        c.gridwidth = 1;
-//        c.fill = GridBagConstraints.HORIZONTAL;
-//        c.weightx = 0.5;
-//        jPanelButtonsCoordenates.add(new JLabel("a: "), c);
-//        c.gridx = 1;
-//        c.gridy = 1;
-//        c.gridheight = 1;
-//        c.gridwidth = 1;
-//        c.fill = GridBagConstraints.HORIZONTAL;
-//        c.weightx = 0.5;
-//        aDrawer = new JTextField();
-//        jPanelButtonsCoordenates.add(aDrawer, c);
-//
-//        c.gridx = 2;
-//        c.gridy = 1;
-//        c.gridheight = 1;
-//        c.gridwidth = 1;
-//        c.fill = GridBagConstraints.HORIZONTAL;
-//        c.weightx = 0.5;
-//        jPanelButtonsCoordenates.add(new JLabel("b: "), c);
-//        c.gridx = 3;
-//        c.gridy = 1;
-//        c.gridheight = 1;
-//        c.gridwidth = 1;
-//        c.fill = GridBagConstraints.HORIZONTAL;
-//        c.weightx = 0.5;
-//        bDrawer = new JTextField();
-//        jPanelButtonsCoordenates.add(bDrawer, c);
-//
-//        c.gridx = 4;
-//        c.gridy = 1;
-//        c.gridheight = 1;
-//        c.gridwidth = 1;
-//        c.fill = GridBagConstraints.HORIZONTAL;
-//        c.weightx = 0.5;
-//        jPanelButtonsCoordenates.add(new JLabel("c: "), c);
-//        c.gridx = 5;
-//        c.gridy = 1;
-//        c.gridheight = 1;
-//        c.gridwidth = 1;
-//        c.fill = GridBagConstraints.HORIZONTAL;
-//        c.weightx = 0.5;
-//        cDrawer = new JTextField();
-//        jPanelButtonsCoordenates.add(cDrawer, c);
-//
-//        c.gridx = 6;
-//        c.gridy = 1;
-//        c.gridheight = 1;
-//        c.gridwidth = 1;
-//        c.fill = GridBagConstraints.HORIZONTAL;
-//        c.weightx = 0.5;
-//        jPanelButtonsCoordenates.add(new JLabel("d: "), c);
-//        c.gridx = 7;
-//        c.gridy = 1;
-//        c.gridheight = 1;
-//        c.gridwidth = 1;
-//        c.fill = GridBagConstraints.HORIZONTAL;
-//        c.weightx = 0.5;
-//        dDrawer = new JTextField();
-//        jPanelButtonsCoordenates.add(dDrawer, c);
+    }
+
+    private void drawCoordinates(JPanel jPanelCoordinates){
+        jPanelCoordinates.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridheight = 1;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.NONE;
+        c.anchor = GridBagConstraints.CENTER;
+        c.weightx = 0.5;
+        jPanelCoordinates.add(new JLabel("a"), c);
+        c.gridx = 1;
+        c.gridy = 0;
+        c.gridheight = 1;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 0.5;
+        aDrawer = new JTextField();
+        jPanelCoordinates.add(aDrawer, c);
+
+        c.gridx = 2;
+        c.gridy = 0;
+        c.gridheight = 1;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.NONE;
+        c.anchor = GridBagConstraints.CENTER;
+        c.weightx = 0.5;
+        jPanelCoordinates.add(new JLabel("b"), c);
+        c.gridx = 3;
+        c.gridy = 0;
+        c.gridheight = 1;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 0.5;
+        bDrawer = new JTextField();
+        jPanelCoordinates.add(bDrawer, c);
+
+        c.gridx = 4;
+        c.gridy = 0;
+        c.gridheight = 1;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.NONE;
+        c.anchor = GridBagConstraints.CENTER;
+        c.weightx = 0.5;
+        jPanelCoordinates.add(new JLabel("c"), c);
+        c.gridx = 5;
+        c.gridy = 0;
+        c.gridheight = 1;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 0.5;
+        cDrawer = new JTextField();
+        jPanelCoordinates.add(cDrawer, c);
+
+        c.gridx = 6;
+        c.gridy = 0;
+        c.gridheight = 1;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.NONE;
+        c.anchor = GridBagConstraints.CENTER;
+        c.weightx = 0.5;
+        jPanelCoordinates.add(new JLabel("d"), c);
+        c.gridx = 7;
+        c.gridy = 0;
+        c.gridheight = 1;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 0.5;
+        dDrawer = new JTextField();
+        jPanelCoordinates.add(dDrawer, c);
+
     }
 
     private void drawDrawer(JPanel jPanelDrawer){
-
+        jPanelDrawer.setBackground(Color.ORANGE);
     }
 
 }
