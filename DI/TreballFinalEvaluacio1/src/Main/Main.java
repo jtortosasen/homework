@@ -2,7 +2,9 @@ package Main;
 
 import javax.swing.*;
 
+import Controller.Controller;
 import View.PanelInfo;
+import Model.ModelParrots;
 
 public class Main {
 
@@ -11,11 +13,7 @@ public class Main {
     private static final int HEIGHT_WINDOW = 500;
 
 
-
     public static void main(String[] args) {
-//        AlphabetSoupLogic alphabetSoupLogic = new AlphabetSoupLogic(FILE_WORDS_NAME,FILE_LETTERS_NAME);
-//        AlphabetSoupView alphabetSoupView = new AlphabetSoupView();
-//        new AlphabetController(alphabetSoupView, alphabetSoupLogic);
 
         for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
             if ("com.sun.java.swing.plaf.gtk.GTKLookAndFeel".equals(info.getClassName())) {
@@ -35,13 +33,15 @@ public class Main {
         }
 
         PanelInfo panelInfo = new PanelInfo();
+        ModelParrots modelParrots = new ModelParrots();
+        new Controller(modelParrots,panelInfo);
+
         JFrame jFrame = new JFrame(WINDOW_TITLE);
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         jFrame.setContentPane(panelInfo);
         jFrame.pack();
         jFrame.setLocationRelativeTo(null);
-        jFrame.setSize(WIDTH_WINDOW,HEIGHT_WINDOW);
+        jFrame.setSize(WIDTH_WINDOW, HEIGHT_WINDOW);
         jFrame.setVisible(true);
     }
 }

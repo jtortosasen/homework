@@ -1,5 +1,9 @@
 package View;
 
+import Controller.Controller;
+import Model.Entity.Owner;
+import Model.Entity.Parrot;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
@@ -8,7 +12,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class PanelInfo extends JPanel {
+public class PanelInfo extends JPanel implements ViewInterface{
+
+    private Controller controller;
+    private int sizeEntities;
+    private int actualEntity;
+
+    PanelDrawer jPanelDrawer;
 
     private JTextField parrotId;
     private JTextField parrotName;
@@ -43,7 +53,7 @@ public class PanelInfo extends JPanel {
 
         JPanel jPanelInfoParrots = new JPanel();
         JPanel jPanelInfoOwners = new JPanel();
-        JPanel jPanelDrawer = new JPanel();
+        jPanelDrawer = new PanelDrawer();
         JPanel jPanelCoordinates = new JPanel();
 
         // place the JPanels on the main Layout
@@ -257,7 +267,7 @@ public class PanelInfo extends JPanel {
         firstButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-//                        fistButtonEvent();
+                        firstButtonEvent();
                     }
                 }
         );
@@ -272,7 +282,7 @@ public class PanelInfo extends JPanel {
         previousButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-//                        previousButtonEvent();
+                        previousButtonEvent();
                     }
                 }
         );
@@ -288,7 +298,7 @@ public class PanelInfo extends JPanel {
         nextButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-//                        nextButtonEvent();
+                        nextButtonEvent();
                     }
                 }
         );
@@ -304,7 +314,7 @@ public class PanelInfo extends JPanel {
         lastButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-//                        fistButtonEvent();
+                        lastButtonEvent();
                     }
                 }
         );
@@ -404,7 +414,7 @@ public class PanelInfo extends JPanel {
         drawLineButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-//                        drawLineEvent();
+                        drawLineEvent();
                     }
                 }
         );
@@ -419,7 +429,7 @@ public class PanelInfo extends JPanel {
         drawCircleButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-//                        drawCercleEvent();
+                        drawCircleEvent();
                     }
                 }
         );
@@ -501,8 +511,72 @@ public class PanelInfo extends JPanel {
 
     }
 
-    private void drawDrawer(JPanel jPanelDrawer){
+    private void drawDrawer(PanelDrawer jPanelDrawer){
         jPanelDrawer.setBackground(Color.ORANGE);
     }
 
+    private void firstButtonEvent(){
+        actualEntity = 0;
+        setInformationParrot(controller.getParrot(actualEntity));
+        setInformationOwner(controller.getOwner(actualEntity));
+    }
+
+    private void previousButtonEvent(){
+        if(actualEntity>0){
+            actualEntity = actualEntity - 1;
+            setInformationParrot(controller.getParrot(actualEntity));
+            setInformationOwner(controller.getOwner(actualEntity));
+        }
+    }
+
+    private void nextButtonEvent(){
+        if(actualEntity<sizeEntities-1){
+            actualEntity = actualEntity + 1;
+            setInformationParrot(controller.getParrot(actualEntity));
+            setInformationOwner(controller.getOwner(actualEntity));
+        }
+    }
+
+    private void lastButtonEvent(){
+        actualEntity = sizeEntities - 1;
+        setInformationParrot(controller.getParrot(actualEntity));
+        setInformationOwner(controller.getOwner(actualEntity));
+    }
+
+
+    private void setInformationParrot(Parrot parrot) {
+        parrotId.setText(parrot.getId());
+        parrotName.setText(parrot.getName());
+        parrotColor.setText(parrot.getColor());
+        parrotOwner.setText(parrot.getOwner());
+        parrotRace.setText(parrot.getRace());
+    }
+
+
+    private void setInformationOwner(Owner owner) {
+        ownerId.setText(owner.getId());
+        ownerName.setText(owner.getName());
+        ownerLastName.setText(owner.getLastName());
+        ownerPhone.setText(owner.getPhone());
+    }
+
+    private void drawLineEvent(){
+        jPanelDrawer.drawLine(Integer.parseInt(aDrawer.getText()),Integer.parseInt(bDrawer.getText()),Integer.parseInt(cDrawer.getText()),Integer.parseInt(dDrawer.getText()));
+    }
+    private void drawCircleEvent(){
+        jPanelDrawer.drawCircle(Integer.parseInt(aDrawer.getText()),Integer.parseInt(bDrawer.getText()),Integer.parseInt(cDrawer.getText()),Integer.parseInt(dDrawer.getText()));
+    }
+
+    @Override
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
+
+    @Override
+    public void setStartup(Parrot parrot, Owner owner) {
+        sizeEntities = controller.getSizeEntities();
+        actualEntity = 0;
+        setInformationParrot(parrot);
+        setInformationOwner(owner);
+    }
 }
