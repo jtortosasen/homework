@@ -48,7 +48,7 @@ public class PanelInfo extends JPanel implements ViewInterface{
         super();
 
         setLayout(new GridBagLayout());
-        setBorder(new EmptyBorder(20,20,5,200));
+        setBorder(new EmptyBorder(20,20,5,100));
         GridBagConstraints c = new GridBagConstraints();
 
         JPanel jPanelInfoParrots = new JPanel();
@@ -84,6 +84,7 @@ public class PanelInfo extends JPanel implements ViewInterface{
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 0;
         c.anchor = GridBagConstraints.WEST;
+        c.insets = new Insets(10, 0, 0, 0);
         this.add(jPanelCoordinates, c);
 
         //drawer
@@ -265,11 +266,7 @@ public class PanelInfo extends JPanel implements ViewInterface{
         c.weightx = 1;
         firstButton = new JButton("<<");
         firstButton.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        firstButtonEvent();
-                    }
-                }
+                e -> firstButtonEvent()
         );
         jPanelButtons.add(firstButton, c);
         c.gridx = 1;
@@ -280,11 +277,7 @@ public class PanelInfo extends JPanel implements ViewInterface{
         c.fill = GridBagConstraints.BOTH;
         previousButton = new JButton("<");
         previousButton.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        previousButtonEvent();
-                    }
-                }
+                e -> previousButtonEvent()
         );
         jPanelButtons.add(previousButton, c);
         c.gridx = 2;
@@ -296,11 +289,7 @@ public class PanelInfo extends JPanel implements ViewInterface{
 //        c.weightx = 0.5;
         nextButton = new JButton(">");
         nextButton.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        nextButtonEvent();
-                    }
-                }
+                e -> nextButtonEvent()
         );
         jPanelButtons.add(nextButton, c);
         c.gridx = 3;
@@ -312,11 +301,7 @@ public class PanelInfo extends JPanel implements ViewInterface{
         c.anchor = GridBagConstraints.WEST;
         lastButton = new JButton(">>");
         lastButton.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        lastButtonEvent();
-                    }
-                }
+                e -> lastButtonEvent()
         );
         jPanelButtons.add(lastButton, c);
     }
@@ -412,11 +397,7 @@ public class PanelInfo extends JPanel implements ViewInterface{
         c.weightx = 0.5;
         drawLineButton = new JButton("Dibuixar recta");
         drawLineButton.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        drawLineEvent();
-                    }
-                }
+                e -> drawLineEvent()
         );
         jPanelButtonsDrawer.add(drawLineButton, c);
         c.gridx = 5;
@@ -427,11 +408,7 @@ public class PanelInfo extends JPanel implements ViewInterface{
         c.weightx = 0.5;
         drawCircleButton = new JButton("Dibuixar cercle");
         drawCircleButton.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        drawCircleEvent();
-                    }
-                }
+                e -> drawCircleEvent()
         );
         jPanelButtonsDrawer.add(drawCircleButton, c);
 
@@ -562,9 +539,11 @@ public class PanelInfo extends JPanel implements ViewInterface{
 
     private void drawLineEvent(){
         jPanelDrawer.drawLine(Integer.parseInt(aDrawer.getText()),Integer.parseInt(bDrawer.getText()),Integer.parseInt(cDrawer.getText()),Integer.parseInt(dDrawer.getText()));
+        jPanelDrawer.repaint();
     }
     private void drawCircleEvent(){
         jPanelDrawer.drawCircle(Integer.parseInt(aDrawer.getText()),Integer.parseInt(bDrawer.getText()),Integer.parseInt(cDrawer.getText()),Integer.parseInt(dDrawer.getText()));
+        jPanelDrawer.repaint();
     }
 
     @Override
