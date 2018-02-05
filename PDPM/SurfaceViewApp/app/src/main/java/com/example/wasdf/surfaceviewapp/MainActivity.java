@@ -5,12 +5,10 @@ import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
 
-    MySurfaceView mySurfaceView = new MySurfaceView(this);
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(mySurfaceView);
+        setContentView(new MySurfaceView(this));
 
     }
 

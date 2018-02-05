@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "678044909968",
+    "firebase_url": "https://appfarmacias-191519.firebaseio.com",
+    "project_id": "appfarmacias-191519",
+    "storage_bucket": "appfarmacias-191519.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:678044909968:android:2f0afca68fdcda77",
+        "android_client_info": {
+          "package_name": "com.example.wasdf.appfarmacias"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "678044909968-q3j0qdcep2ducnhg7v7rlajvro1ljp7p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.wasdf.appfarmacias",
+            "certificate_hash": "911ae345e51d41a69396f70de861da03834ac254"
+          }
+        },
+        {
+          "client_id": "678044909968-0vbqjr9ake09clsgni0hfk0fkicqvlja.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZuTskmhyYCBgeO5ixGMYmAljtVEoQvjs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "678044909968-0vbqjr9ake09clsgni0hfk0fkicqvlja.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

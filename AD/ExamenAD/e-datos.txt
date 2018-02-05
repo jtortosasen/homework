@@ -1,0 +1,14 @@
+id+,nombre+,apellidos+,email,telefono,aprobadas+,suspendidas+
+473,Roberto,Blanes Martinez,null,666555041,3,7
+474,Victor,Bofi Pajares,null,null
+475,Lucas,Cervantes Leonez,LUCCERLEO.DAM@ieseljust.com,666555043,8,2
+476,Sergio,Girona Martinez,SERGIRMAR.DAM@ieseljust.com,666555044,5,5
+477,Hector,Juan Soria,HECJUASOR.DAM@ieseljust.com,666555045,5,5
+478,Antonio,null,ANTMARMIR.DAM@ieseljust.com,666555046,6,4
+479,Esteve,Mestre Company,null,null,8,2
+480,null,Molina Garcia,JULMOLGAR.DAM@ieseljust.com,666555048,1,9
+481,Javier,Peiro Ferragud,JAVPEIFER.DAM@ieseljust.com,666555049,8,2
+482,Joan,Riera Serra,JOARIESER.DAM@ieseljust.com,null,7,3
+483,Rafael,Sales Carrasquer,null,666555051,8,2
+484,Lucia,Serer Ivars,LUCSERIVA.DAM@ieseljust.com,666555052,7,3
+485,Paul,Suciu Sorin,PAUSUCSOR.DAM@ieseljust.com,null,4,6
