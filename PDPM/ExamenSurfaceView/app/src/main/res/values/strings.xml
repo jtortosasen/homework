@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ExamenSurfaceView</string>
+    <string name="home">Inici</string>
+    <string name="option1">Opcion 1</string>
+    <string name="option2">Opcion 2</string>
+    <string name="option3">Opcion 3</string>
+</resources>
