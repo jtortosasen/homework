@@ -17,5 +17,6 @@ public class Option1Activity extends MainActivity {
     @Override
     protected void onPause(){
         super.onPause();
+        surfaceView1.stopAnimation();
     }
 }
