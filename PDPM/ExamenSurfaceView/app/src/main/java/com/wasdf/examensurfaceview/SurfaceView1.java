@@ -21,12 +21,12 @@ public class SurfaceView1 extends SurfaceView implements SurfaceHolder.Callback 
 
     private float paddleWidth=20;
     private float paddleHeight=70;
-    private float paddleXPos = 0;
-    private float paddleYPos = 0;
-    private float bulletXPos = paddleXPos;
-    private float bulletYPos = paddleYPos;
-    private float bulletRadius = 15;
-    private float bulletVelocity = 20;
+    private float xPositionPaddle = 0;
+    private float yPositionPaddle = 0;
+    private float xPositionBullet = xPositionPaddle;
+    private float yPositionBullet = yPositionPaddle;
+    private float radiusBullet = 15;
+    private float velocityBullet = 20;
 
     public SurfaceView1(Context context) {
         super(context);
@@ -69,28 +69,28 @@ public class SurfaceView1 extends SurfaceView implements SurfaceHolder.Callback 
 
     void drawBullet(Canvas canvas){
         if(startBullet){
-            bulletXPos = paddleXPos;
-            bulletYPos = paddleYPos;
+            xPositionBullet = xPositionPaddle;
+            yPositionBullet = yPositionPaddle;
             startBullet = false;
         }else{
-            bulletYPos = bulletYPos - bulletVelocity;
+            yPositionBullet = yPositionBullet - velocityBullet;
         }
-        if(bulletYPos < 1){
+        if(yPositionBullet < 1){
             shot = false;
             startBullet = true;
         }
         Paint paint = new Paint();
         paint.setColor(Color.BLUE);
         paint.setStyle(Paint.Style.FILL);
-        canvas.drawCircle(bulletXPos,bulletYPos,bulletRadius,paint);
+        canvas.drawCircle(xPositionBullet, yPositionBullet, radiusBullet,paint);
     }
 
 
     private void drawPaddle(Canvas canvas){
         Paint paint = new Paint();
         paint.setColor(Color.RED);
-        paddleYPos = canvas.getHeight() - paddleHeight;
-        canvas.drawRect(paddleXPos,paddleYPos,paddleWidth + paddleXPos,paddleYPos + paddleHeight,paint);
+        yPositionPaddle = canvas.getHeight() - paddleHeight;
+        canvas.drawRect(xPositionPaddle, yPositionPaddle,paddleWidth + xPositionPaddle, yPositionPaddle + paddleHeight,paint);
     }
 
     public boolean onTouchEvent(MotionEvent event){
@@ -100,7 +100,7 @@ public class SurfaceView1 extends SurfaceView implements SurfaceHolder.Callback 
                 break;
             }
             case MotionEvent.ACTION_MOVE:{
-                paddleXPos = (int) event.getX();
+                xPositionPaddle = (int) event.getX();
                 break;
             }
         }

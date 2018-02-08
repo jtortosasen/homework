@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.Toast;
 
 /**
  * Created by wasdf on 5/02/18.
@@ -24,12 +23,12 @@ public class SurfaceView3 extends SurfaceView implements SurfaceHolder.Callback 
 
     private float paddleWidth = 20;
     private float paddleHeight = 70;
-    private float paddleXPos = 0;
-    private float paddleYPos = 0;
-    private float bulletXPos = paddleXPos;
-    private float bulletYPos = paddleYPos;
-    private float bulletRadius = 20;
-    private float bulletVelocity = 30;
+    private float xPositionPaddle = 0;
+    private float yPositionPaddle = 0;
+    private float xPosittionBullet = xPositionPaddle;
+    private float yPositionBullet = yPositionPaddle;
+    private float radiusBullet = 20;
+    private float velocityBullet = 30;
 
     private float heighAsteroid = 30;
     private float widthAsteroid = 100;
@@ -76,12 +75,12 @@ public class SurfaceView3 extends SurfaceView implements SurfaceHolder.Callback 
     }
 
     private void checkPoints(Canvas canvas) {
-        if (bulletXPos  > xPositionAsteroid && bulletXPos  < xPositionAsteroid + widthAsteroid
-                && bulletYPos  > yPositionAsteroid && bulletYPos  < yPositionAsteroid + heighAsteroid) {
+        if (xPosittionBullet > xPositionAsteroid && xPosittionBullet < xPositionAsteroid + widthAsteroid
+                && yPositionBullet > yPositionAsteroid && yPositionBullet < yPositionAsteroid + heighAsteroid) {
             points = points + 20;
         }
 
-        if (yPositionAsteroid > paddleYPos) {
+        if (yPositionAsteroid > yPositionPaddle) {
             Paint paint = new Paint();
             paint.setColor(Color.GREEN);
             paint.setStyle(Paint.Style.FILL);
@@ -97,28 +96,28 @@ public class SurfaceView3 extends SurfaceView implements SurfaceHolder.Callback 
 
     void drawBullet(Canvas canvas) {
         if (startBullet) {
-            bulletXPos = paddleXPos;
-            bulletYPos = paddleYPos;
+            xPosittionBullet = xPositionPaddle;
+            yPositionBullet = yPositionPaddle;
             startBullet = false;
         } else {
-            bulletYPos = bulletYPos - bulletVelocity;
+            yPositionBullet = yPositionBullet - velocityBullet;
         }
-        if (bulletYPos < 1) {
+        if (yPositionBullet < 1) {
             shot = false;
             startBullet = true;
         }
         Paint paint = new Paint();
         paint.setColor(Color.BLUE);
         paint.setStyle(Paint.Style.FILL);
-        canvas.drawCircle(bulletXPos, bulletYPos, bulletRadius, paint);
+        canvas.drawCircle(xPosittionBullet, yPositionBullet, radiusBullet, paint);
     }
 
 
     private void drawPaddle(Canvas canvas) {
         Paint paint = new Paint();
         paint.setColor(Color.RED);
-        paddleYPos = canvas.getHeight() - paddleHeight;
-        canvas.drawRect(paddleXPos, paddleYPos, paddleWidth + paddleXPos, paddleYPos + paddleHeight, paint);
+        yPositionPaddle = canvas.getHeight() - paddleHeight;
+        canvas.drawRect(xPositionPaddle, yPositionPaddle, paddleWidth + xPositionPaddle, yPositionPaddle + paddleHeight, paint);
     }
 
     private void drawAsteroid(Canvas canvas) {
@@ -139,7 +138,7 @@ public class SurfaceView3 extends SurfaceView implements SurfaceHolder.Callback 
                 break;
             }
             case MotionEvent.ACTION_MOVE: {
-                paddleXPos = (int) event.getX();
+                xPositionPaddle = (int) event.getX();
                 break;
             }
         }
