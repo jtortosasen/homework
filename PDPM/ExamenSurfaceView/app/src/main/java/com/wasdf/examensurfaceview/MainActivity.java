@@ -31,16 +31,20 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.option1:
-                Intent intent2 = new Intent(this, Option1Activity.class);
-                startActivity(intent2);
+                Intent intent1 = new Intent(this, Option1Activity.class);
+                startActivity(intent1);
                 return true;
 
             case R.id.option2:
-                Intent intent3 = new Intent(this, Option2Activity.class);
-                startActivity(intent3);
+                Intent intent2 = new Intent(this, Option2Activity.class);
+                startActivity(intent2);
                 return true;
             case R.id.option3:
-                Intent intent4 = new Intent(this, Option3Activity.class);
+                Intent intent3 = new Intent(this, Option3Activity.class);
+                startActivity(intent3);
+                return true;
+            case R.id.option4:
+                Intent intent4 = new Intent(this, Option4Activity.class);
                 startActivity(intent4);
                 return true;
             default:

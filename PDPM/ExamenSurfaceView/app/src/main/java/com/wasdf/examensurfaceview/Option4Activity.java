@@ -3,20 +3,20 @@ package com.wasdf.examensurfaceview;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class Option2Activity extends MainActivity {
+public class Option4Activity extends MainActivity {
 
-    SurfaceView2 surfaceView2;
+    SurfaceView4 surfaceView4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        surfaceView2 = new SurfaceView2(this);
-        setContentView(surfaceView2);
+        surfaceView4 = new SurfaceView4(this);
+        setContentView(surfaceView4);
     }
 
     @Override
     protected void onPause(){
         super.onPause();
-        surfaceView2.stopAnimation();
+        surfaceView4.stopAnimation();
     }
 }
