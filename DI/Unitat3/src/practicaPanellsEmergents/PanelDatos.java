@@ -10,16 +10,16 @@ import javax.swing.JTextField;
 
 public class PanelDatos extends JPanel {
 
-    public JTextField getCampoNP() {
-        return campoNP;
+    public String getCampoNP() {
+        return campoNP.getText();
     }
 
-    public JTextField getCampoApellidos() {
-        return campoApellidos;
+    public String getCampoApellidos() {
+        return campoApellidos.getText();
     }
 
-    public JTextField getCampoNombre() {
-        return campoNombre;
+    public String getCampoNombre() {
+        return campoNombre.getText();
     }
 
     public ButtonGroup getGrupoBotones() {
