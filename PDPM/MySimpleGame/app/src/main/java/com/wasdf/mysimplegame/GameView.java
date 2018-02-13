@@ -10,6 +10,9 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -19,16 +22,18 @@ import java.util.concurrent.TimeUnit;
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     boolean run = true;
+    boolean died = false;
     AnimationThread animationThread = null;
 
     Ship principalShip;
     ArrayList<Ship> enemyShip = new ArrayList<>();
-    Bullet bullet;
-    boolean shot = false;
-    boolean startShooted = true;
+    int maxEnemies = 15;
+    ArrayList<Bullet> bullets = new ArrayList<>();
 
     long myTime;
     boolean resetTime = true;
+
+    int points = 0;
 
     public GameView(Context context) {
         super(context);
@@ -39,8 +44,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
 
-        principalShip = new Ship(30,50,0,0, 0,true);
-        bullet = new Bullet(0,2,10,30);
+        principalShip = new Ship(30, 50, 0, 0, 0, true);
 
         if (animationThread == null) {
             animationThread = new AnimationThread(holder);
@@ -62,63 +66,88 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         Paint paint = new Paint();
         paint.setColor(Color.WHITE);
         drawBackground(canvas, paint);
-        createAsteroids(canvas);
-        drawAsteroids(canvas);
+        drawPoints(canvas);
+        createEnemies(canvas);
+        drawEnemies(canvas);
         drawPrincipalShip(canvas);
-        if (shot)
-            drawBullet(canvas);
+        drawBullet(canvas);
         collision(canvas);
+        if(died)
+            died(canvas);
+    }
 
+    private void drawPoints(Canvas canvas) {
+        Paint paint = new Paint();
+        paint.setColor(Color.MAGENTA);
+        paint.setStyle(Paint.Style.FILL);
+        paint.setTextSize(50);
+        canvas.drawText(String.valueOf(points), 0, 40, paint);
+    }
+
+    private void died(Canvas canvas){
+        Paint paint = new Paint();
+        paint.setColor(Color.RED);
+        paint.setStyle(Paint.Style.FILL);
+        paint.setTextSize(200);
+        canvas.drawText("YOU DIED", 0, canvas.getHeight() / 2, paint);
     }
 
     private void collision(Canvas canvas) {
-        int i = 0;
-        for(Ship enemy : enemyShip){
-            if (bullet.xPosittionBullet > enemy.xPosition && bullet.xPosittionBullet < enemy.yPosition + enemy.width
-                    && bullet.yPositionBullet > enemy.yPosition && bullet.yPositionBullet < enemy.yPosition + enemy.height) {
-                enemyShip.remove(i);
-                shot = false;
-                startShooted = true;
-                Log.d("collision", "destruido");
+        try {
+            ArrayList<Bullet> removeBullets = new ArrayList<>();
+            ArrayList<Ship> removeShips = new ArrayList<>();
+            for (Bullet bullet : bullets) {
+                for (Ship enemy : enemyShip) {
+                    if (bullet.xPosittionBullet + bullet.radiusBullet > enemy.xPosition && bullet.xPosittionBullet + bullet.radiusBullet < enemy.xPosition + enemy.width
+                            && bullet.yPositionBullet + bullet.radiusBullet > enemy.yPosition && bullet.yPositionBullet < enemy.yPosition + enemy.height) {
+                        points += 1;
+                        removeBullets.add(bullet);
+                        removeShips.add(enemy);
+                        break;
+                    } else if (enemy.yPosition > principalShip.yPosition) {
+                        died = true;
+                    }
+                }
+                if (bullet.yPositionBullet < 1) {
+                    Log.d("collision", "chocado con techo");
+                    removeBullets.add(bullet);
+                }
             }
-            if (enemy.yPosition > principalShip.yPosition) {
-                Paint paint = new Paint();
-                paint.setColor(Color.RED);
-                paint.setStyle(Paint.Style.FILL);
-                paint.setTextSize(200);
-                canvas.drawText("YOU LOSE", canvas.getWidth()/2, canvas.getHeight()/2, paint);
+            if(!removeBullets.isEmpty())
+                bullets.removeAll(removeBullets);
+            if(!removeShips.isEmpty())
+                enemyShip.removeAll(removeShips);
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }catch (ConcurrentModificationException e){
+            e.printStackTrace();
+        }
 
-            }
-            i++;
-        }
-        if(bullet.yPositionBullet < 1){
-            shot = false;
-            startShooted = true;
-            Log.d("collision", "chocado con techo");
-            bullet.yPositionBullet = principalShip.yPosition;
-        }
     }
 
     private void drawBackground(Canvas canvas, Paint paint) {
         canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), paint);
     }
 
-    private void createAsteroids(Canvas canvas){
-        if(resetTime){
-            myTime = System.currentTimeMillis();
-            myTime = TimeUnit.MILLISECONDS.toSeconds(myTime);
-            resetTime = false;
-        }
-        long estimatedTime = System.currentTimeMillis();
-        estimatedTime = TimeUnit.MILLISECONDS.toSeconds(estimatedTime);
-        if(estimatedTime - myTime > 1){
-            enemyShip.add(new Ship(50,200,(float) (Math.random() * canvas.getWidth() + 1), 0, 5, false));
-            resetTime = true;
+    private void createEnemies(Canvas canvas) {
+        if (enemyShip.size() < maxEnemies) {
+            if (resetTime) {
+                myTime = System.currentTimeMillis();
+                myTime = TimeUnit.MILLISECONDS.toMillis(myTime);
+                resetTime = false;
+            }
+            long estimatedTime = System.currentTimeMillis();
+            estimatedTime = TimeUnit.MILLISECONDS.toMillis(estimatedTime);
+            if (estimatedTime - myTime > 100) {
+                Random random = new Random();
+                enemyShip.add(new Ship(50, 200, random.nextInt(canvas.getWidth()) + 1, 0, random.nextInt(10) + 1, false));
+                resetTime = true;
+            }
         }
     }
 
-    private void drawAsteroids(Canvas canvas){
-        for(Ship enemy : enemyShip){
+    private void drawEnemies(Canvas canvas) {
+        for (Ship enemy : enemyShip) {
             Paint paint = new Paint();
             paint.setColor(Color.RED);
             canvas.drawRect(enemy.xPosition, enemy.yPosition, enemy.xPosition + enemy.width, enemy.yPosition + enemy.height, paint);
@@ -127,17 +156,23 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     void drawBullet(Canvas canvas) {
-       bullet.xPosittionBullet  = principalShip.xPosition;
-       if(startShooted){
-           bullet.yPositionBullet = principalShip.yPosition;
-           startShooted = false;
-       }else{
-           bullet.yPositionBullet -= bullet.velocityBullet;
-       }
-        Paint paint = new Paint();
-        paint.setColor(Color.BLUE);
-        paint.setStyle(Paint.Style.FILL);
-        canvas.drawCircle(bullet.xPosittionBullet, bullet.yPositionBullet, bullet.radiusBullet, paint);
+        if (!bullets.isEmpty()) {
+            Paint paint = new Paint();
+            paint.setColor(Color.BLUE);
+            paint.setStyle(Paint.Style.FILL);
+            try {
+                for (Bullet bullet : bullets) {
+                    bullet.yPositionBullet -= bullet.velocityBullet;
+                    canvas.drawCircle(bullet.xPosittionBullet, bullet.yPositionBullet, bullet.radiusBullet, paint);
+                }
+            }catch (ConcurrentModificationException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    void addBullet(float posX) {
+        bullets.add(new Bullet(posX, principalShip.yPosition, 10, 20));
     }
 
 
@@ -152,11 +187,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_UP: {
-                shot = true;
                 break;
             }
-            case MotionEvent.ACTION_MOVE: {
-                principalShip.xPosition = (int) event.getX();
+            case MotionEvent.ACTION_DOWN: {
+                if(!died){
+                    principalShip.xPosition = (int) event.getX();
+                    addBullet(event.getX());
+                    break;
+                }
                 break;
             }
         }
