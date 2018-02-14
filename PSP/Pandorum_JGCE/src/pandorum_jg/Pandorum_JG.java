@@ -22,8 +22,7 @@ public class Pandorum_JG {
     public static void main(String[] args) throws InterruptedException {
         int avatars=10;
         int humans=20;
-        PandorumVista pv=new PandorumVista(avatars,humans);
-        //System.out.println();
+        new PandorumVista(avatars,humans);
     }
     
 }

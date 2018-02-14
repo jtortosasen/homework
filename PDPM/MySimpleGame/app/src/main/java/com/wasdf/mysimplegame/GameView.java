@@ -67,7 +67,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         drawEnemies(canvas);
         drawPrincipalShip(canvas);
         drawBullet(canvas);
-        collision(canvas);
         if(died)
             died(canvas);
     }
@@ -88,7 +87,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawText("YOU DIED", 0, canvas.getHeight() / 2, paint);
     }
 
-    private void collision(Canvas canvas) {
+    private void collision() {
         try {
             ArrayList<Bullet> removeBullets = new ArrayList<>();
             ArrayList<Ship> removeShips = new ArrayList<>();
@@ -219,6 +218,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                     if (canvas != null)
                         holder.unlockCanvasAndPost(canvas);
                 }
+                collision();
             }
         }
     }
