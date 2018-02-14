@@ -132,5 +132,12 @@ public class Planeta {
     public synchronized void moure(Habitant h, Posicio posOritge, Posicio posDesti) {
         
         // COMPLETAR
+        System.out.println(posOritge.getX()%10 + " " + posOritge.getY()%10);
+        System.out.println(posDesti.getX()%10 + " " + posDesti.getY()%10);
+
+        elTauler[Math.floorMod(posOritge.getX(),10)][Math.floorMod(posOritge.getY(),10)] = null;
+        elTauler[Math.floorMod(posDesti.getX(),10)][Math.floorMod(posDesti.getY(),10)] = h;
+        posOritge.setX(posDesti.getX());
+        posOritge.setY(posDesti.getY());
     }
 }

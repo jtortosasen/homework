@@ -18,6 +18,9 @@ public class Posicio {
         this.x = x;
         this.y = y;
     }
+    public Posicio(){
+
+    }
 
     public int getX() {
         return x;
