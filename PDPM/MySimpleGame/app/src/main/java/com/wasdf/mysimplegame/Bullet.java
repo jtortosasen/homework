@@ -2,9 +2,6 @@ package com.wasdf.mysimplegame;
 
 import android.graphics.Canvas;
 
-/**
- * Created by wasdf on 8/02/18.
- */
 
 public class Bullet {
 

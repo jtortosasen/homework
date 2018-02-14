@@ -11,13 +11,9 @@ import android.view.SurfaceView;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
-import java.util.Iterator;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by wasdf on 5/02/18.
- */
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -122,7 +118,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }catch (ConcurrentModificationException e){
             e.printStackTrace();
         }
-
     }
 
     private void drawBackground(Canvas canvas, Paint paint) {
@@ -140,7 +135,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             estimatedTime = TimeUnit.MILLISECONDS.toMillis(estimatedTime);
             if (estimatedTime - myTime > 100) {
                 Random random = new Random();
-                enemyShip.add(new Ship(50, 200, random.nextInt(canvas.getWidth()) + 1, 0, random.nextInt(10) + 1, false));
+                enemyShip.add(new Ship(50, 200, random.nextInt(canvas.getWidth()-200) + 1, 0, random.nextInt(10) + 1, false));
                 resetTime = true;
             }
         }
