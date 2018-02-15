@@ -80,8 +80,33 @@ extends Thread{
      * Bàsicament és sortejar la posició on aniré
      * i canviar la meua posició per la nova
      */
-    public abstract void moure();
-    
+    public void moure(){
+        int moviment = r.nextInt(4);
+        switch (moviment){
+            case 0:{
+                moureSud();
+                break;
+            }
+            case 1:{
+                moureNord();
+                break;
+            }
+            case 2:{
+                moureEst();
+                break;
+            }
+            case 3:{
+                moureOest();
+                break;
+            }
+        }
+    }
+
+    public abstract void moureSud();
+    public abstract void moureNord();
+    public abstract void moureEst();
+    public abstract void moureOest();
+
     public String toString(){
         
         String res="";
