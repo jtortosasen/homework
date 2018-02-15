@@ -130,14 +130,54 @@ public class Planeta {
      * @param posDesti 
      */
     public synchronized void moure(Habitant h, Posicio posOritge, Posicio posDesti) {
-        
-        // COMPLETAR
-        System.out.println(posOritge.getX()%10 + " " + posOritge.getY()%10);
-        System.out.println(posDesti.getX()%10 + " " + posDesti.getY()%10);
 
-        elTauler[Math.floorMod(posOritge.getX(),10)][Math.floorMod(posOritge.getY(),10)] = null;
-        elTauler[Math.floorMod(posDesti.getX(),10)][Math.floorMod(posDesti.getY(),10)] = h;
-        posOritge.setX(posDesti.getX());
-        posOritge.setY(posDesti.getY());
+        Habitant habitantDesti = elTauler[Math.floorMod(posDesti.getX(), TAM)][Math.floorMod(posDesti.getY(), TAM)];
+        if(habitantDesti != null){
+            if(habitantDesti instanceof Huma){
+                if(h instanceof Huma){
+                    if(h.getSexe() == habitantDesti.getSexe()){
+                        elTauler[Math.floorMod(posDesti.getX(),TAM)][Math.floorMod(posDesti.getY(),TAM)] = null;
+                        elTauler[Math.floorMod(posOritge.getX(),TAM)][Math.floorMod(posOritge.getY(),TAM)] = null;
+                        h.aturar();
+                        habitantDesti.aturar();
+                    }else{
+                        elTauler[Math.floorMod(posDesti.getX(),TAM)][Math.floorMod(posDesti.getY(),TAM)] = null;
+                        elTauler[Math.floorMod(posOritge.getX(),TAM)][Math.floorMod(posOritge.getY(),TAM)] = null;
+                        h.aturar();
+                        habitantDesti.aturar();
+                        elTauler[Math.floorMod(posDesti.getX(),TAM)][Math.floorMod(posDesti.getY(),TAM)] = new Huma(r.nextInt(2) == 0 ? 'H' : 'F', true,this,posDesti);
+                        elTauler[Math.floorMod(posDesti.getX(),TAM)][Math.floorMod(posDesti.getY(),TAM)].start();
+                    }
+                }
+                else if(h instanceof Avatar){
+                    elTauler[Math.floorMod(posDesti.getX(),TAM)][Math.floorMod(posDesti.getY(),TAM)] = h;
+                    habitantDesti.aturar();
+                }
+            }
+            else if(habitantDesti instanceof Avatar){
+                if(h instanceof Huma){
+                    elTauler[Math.floorMod(posOritge.getX(),TAM)][Math.floorMod(posOritge.getY(),TAM)] = null;
+                    h.aturar();
+                }
+                else{
+                    if(h.getSexe() == habitantDesti.getSexe()){
+                        elTauler[Math.floorMod(posDesti.getX(),TAM)][Math.floorMod(posDesti.getY(),TAM)] = null;
+                        elTauler[Math.floorMod(posOritge.getX(),TAM)][Math.floorMod(posOritge.getY(),TAM)] = null;
+                        h.aturar();
+                        habitantDesti.aturar();
+                    }else{
+                        elTauler[Math.floorMod(posDesti.getX(),TAM)][Math.floorMod(posDesti.getY(),TAM)] = null;
+                        elTauler[Math.floorMod(posOritge.getX(),TAM)][Math.floorMod(posOritge.getY(),TAM)] = null;
+                        h.aturar();
+                        habitantDesti.aturar();
+                        elTauler[Math.floorMod(posDesti.getX(),TAM)][Math.floorMod(posDesti.getY(),TAM)] = new Avatar(r.nextInt(2) == 0 ? 'H' : 'F', true,this,posDesti);
+                        elTauler[Math.floorMod(posDesti.getX(),TAM)][Math.floorMod(posDesti.getY(),TAM)].start();
+                    }
+                }
+            }
+        }else{
+            elTauler[Math.floorMod(posDesti.getX(),TAM)][Math.floorMod(posDesti.getY(),TAM)] = h;
+            elTauler[Math.floorMod(posOritge.getX(),TAM)][Math.floorMod(posOritge.getY(),TAM)] = null;
+        }
     }
 }
