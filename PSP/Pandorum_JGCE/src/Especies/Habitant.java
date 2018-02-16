@@ -80,9 +80,13 @@ extends Thread{
      * Bàsicament és sortejar la posició on aniré
      * i canviar la meua posició per la nova
      */
+<<<<<<< HEAD
 
     public void moure(){
         // COMPLETAR
+=======
+    public void moure(){
+>>>>>>> d2d6cff6d87d270f879a5580d95cd53327ed9fcd
         int moviment = r.nextInt(4);
         switch (moviment){
             case 0:{

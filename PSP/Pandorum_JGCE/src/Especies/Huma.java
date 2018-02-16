@@ -20,7 +20,10 @@ public class Huma extends Habitant{
     }
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> d2d6cff6d87d270f879a5580d95cd53327ed9fcd
     public void moureSud(){
         Posicio novaPosicio = new Posicio();
         novaPosicio.setX(laPosicio.getX()-1);
