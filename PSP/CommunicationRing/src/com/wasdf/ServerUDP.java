@@ -13,27 +13,29 @@ public class ServerUDP {
     private String tokenName;
     private int portListener;
     private int ringPosition;
-
-    private ListenerToken listenerToken;
-
     private int ringLength;
 
     public void setToken(String tokenName){
         this.tokenName = tokenName + "_" + ringPosition;
         System.out.println(tokenName);
+        if(ringPosition == ringLength){
+            sendToken(portListener - ringPosition + 1);
+            System.out.println("enviar token a : " + (portListener - ringPosition + 1));
+        }
     }
 
     public ServerUDP(String ringLength, String ringPosition) {
         portListener = 10000;
-        tokenName = "TOKEN";
         this.ringLength = Integer.parseInt(ringLength);
         this.ringPosition = Integer.parseInt(ringPosition);
         checkStatus(Integer.parseInt(ringPosition));
     }
 
     private void checkStatus(int ringPosition) {
+        ListenerToken listenerToken;
         if (ringPosition == 1) {
             portListener += ringPosition;
+            tokenName = "TOKEN_1";
             listenerToken = new ListenerToken(ringPosition,ringLength, portListener, this);
             listenerToken.start();
         } else {
@@ -52,9 +54,6 @@ public class ServerUDP {
             InetAddress machineAddress = InetAddress.getByName("localhost");
             byte[] string = messagePost.getBytes();
             int portToSend = portListener -1;
-            if(ringPosition == ringLength){
-                portToSend = (portListener - ringLength) + 1 ;
-            }
             DatagramPacket datagramPacket = new DatagramPacket(string, messagePost.length(), machineAddress, portToSend);
             System.out.println("enviando mensaje a " + portToSend);
             sSocket.send(datagramPacket);
