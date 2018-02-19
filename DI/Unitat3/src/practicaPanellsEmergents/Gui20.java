@@ -2,9 +2,7 @@ package practicaPanellsEmergents;
 
 import java.awt.FlowLayout;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 public class Gui20 extends JFrame{
     JTextField textField;
@@ -21,11 +19,12 @@ public class Gui20 extends JFrame{
             String result = pd.getCampoNP() + ", " + pd.getCampoNombre() + " " + pd.getCampoApellidos() + " " + tumadre;
             textField.setText(result);
         }
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(200,200);
         setVisible(true);
     }
 
     public static void main(String[] args) {
-        Gui20 f = new Gui20();
+        new Gui20();
     }
 }
