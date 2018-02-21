@@ -15,7 +15,6 @@ public class PrimerMenu extends JFrame {
     private JMenuBar menuBar;
     private JMenu fileMenu, editMenu, helpMenu;
     private JMenuItem option1MenuItem, exitMenuItem, showGridMenuItem, a4MenuItem, a3MenuItem, aboutMenuItem;
-    private JCheckBoxMenuItem option1MenuItem1;
 
     public PrimerMenu() {
 
