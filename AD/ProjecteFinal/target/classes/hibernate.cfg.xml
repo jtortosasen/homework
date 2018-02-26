@@ -9,12 +9,12 @@
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/employees?zeroDateTimeBehavior=convertToNull</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">admin</property>
-        <mapping class="model.Departments"/>
-        <mapping class="model.DeptEmp"/>
-        <mapping class="model.DeptManager"/>
-        <mapping class="model.Employees"/>
-        <mapping class="model.Salaries"/>
-        <mapping class="model.Titles"/>
+        <mapping class="com.wasdf.model.Departments"/>
+        <mapping class="com.wasdf.model.DeptEmp"/>
+        <mapping class="com.wasdf.model.DeptManager"/>
+        <mapping class="com.wasdf.model.Employees"/>
+        <mapping class="com.wasdf.model.Salaries"/>
+        <mapping class="com.wasdf.model.Titles"/>
         <!-- DB schema will be updated if needed -->
         <!-- <property name="hbm2ddl.auto">update</property> -->
     </session-factory>

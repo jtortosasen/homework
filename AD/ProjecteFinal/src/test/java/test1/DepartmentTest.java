@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package test;
+package test1;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import model.Departments;
-import model.DeptManager;
+import com.wasdf.model.Departments;
+import com.wasdf.model.DeptManager;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Query;

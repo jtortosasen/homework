@@ -1,6 +1,8 @@
-package model;
+package com.wasdf.model;
 // Generated Feb 23, 2018 5:49:30 PM by Hibernate Tools 4.3.1
 
+
+import com.wasdf.Util.Util;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -158,6 +160,11 @@ public class Employees  implements java.io.Serializable {
         this.deptManagers = deptManagers;
     }
 
+
+    @Override
+    public String toString(){
+        return String.valueOf(empNo) + " " + firstName + " " + lastName + " " + gender + " " + Util.dateToString(birthDate) + " " +Util.dateToString(hireDate);
+    }
 
 
 

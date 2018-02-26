@@ -6,8 +6,7 @@ import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.borders.Border;
-
+import com.itextpdf.layout.border.Border;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
@@ -18,10 +17,12 @@ import com.itextpdf.layout.property.VerticalAlignment;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
-import static com.itextpdf.kernel.pdf.PdfName.Table;
 
 public class demo {
-    public static final String DEST = "hola_mon.pdf";
+    public static final String DEST = "hola_mon2.pdf";
+    public static final String FOX = "src/main/resources/fox.bmp";
+    public static final String DOG = "src/main/resources/dog.bmp";
+
 
     public static void main(String[] args) throws IOException {
         new demo().crearPdf(DEST);
@@ -31,16 +32,30 @@ public class demo {
         PdfWriter writer = new PdfWriter(dest);
         PdfDocument pdf = new PdfDocument(writer);
 
+        // Initializar el document, ara si definim el tamany de pàgina per si la taula es molt gran
+        // que s’adapte al tamany que volem de resultat, a més li definim els marges.
+
         Document document = new Document(pdf, PageSize.A4.rotate());
         document.setMargins(20, 20, 20, 20);
         PdfFont font = PdfFontFactory.createFont(FontConstants.HELVETICA);
         PdfFont bold = PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD);
+
+        //Crear la taula definint les columnes amb les proporcions de tamany de columna
+
         Table table = new Table(new float[]{2, 2});
         table.setWidthPercent(100);
+        //Es crea la capçalera de la factura per això creem dues parts, la de l'esquerra serà altra taula
+        //que contindrà les dades del client
+
         Table tableClient = new Table(new float[]{2, 2}).setBorder(Border.NO_BORDER);
         tableClient.setWidthPercent(100);
+
+        //Primer mostrem el text FACTURA amb un RowSpan de 2
         Cell cela = new Cell(1, 2).add("FACTURA:").setBorder(Border.NO_BORDER).setFont(bold);
         tableClient.addCell(cela);
+        //Dins de taula per mantindre alineat els components fiquem etiqueta i valor
+        // Estes dades vindrien de la base de dades, segons el client que tenim seleccionat
+
         tableClient.addCell(new Cell().add(new Paragraph("Nom: ").setFont(bold)));
         tableClient.addCell(new Cell().add(new Paragraph("Sergi").setFont(font)));
         tableClient.addCell(new Cell().add(new Paragraph("Cognoms: ").setFont(bold)));
@@ -50,9 +65,15 @@ public class demo {
         tableClient.addCell(new Cell().add(new Paragraph("Data: ").setFont(bold)));
         tableClient.addCell(new Cell().add(new Paragraph("01/02/2017 ").setFont(font)));
         table.addCell(tableClient).setVerticalAlignment(VerticalAlignment.BOTTOM);
+        //Ara generem una taula amb les dades de l'empresa i el logo
         Table tableEmpresa = new Table(new float[]{2, 2});
         tableEmpresa.setWidthPercent(100);
-        Image fox = new Image(ImageDataFactory.create(FOX));
+        Image fox = new Image(ImageDataFactory.create(DOG));
+
+        //En aquest cas apliquem un colspan 2 per que ocupe tot el ample
+        // el primer parametre indica les files q ocupa i el segon les columnes
+        // incloguem el logo i centrat a la taula
+
         tableEmpresa.addCell(new Cell(1, 2).add(new Paragraph().add(fox)).setTextAlignment(TextAlignment.CENTER));
         tableEmpresa.addCell(new Cell().add(new Paragraph("Empresa: ").setFont(bold)));
         tableEmpresa.addCell(new Cell().add(new Paragraph("2 DAM Enterprise").setFont(font)));
@@ -61,27 +82,42 @@ public class demo {
         tableEmpresa.addCell(new Cell().add(new Paragraph("Raó Social: ").setFont(bold)));
         tableEmpresa.addCell(new Cell().add(new Paragraph("Camí la Dula nº 31").setFont(font)));
         table.addCell(tableEmpresa);
+
+        // Afegir la taula que conté la capçalera a la taula i un paragraf buit per separar
         document.add(table);
         document.add(new Paragraph(""));
-        Table table2 = new Table(new float[]{4, 1, 3});
+        //Ara es crea la Taula que genera el cos de la factura amb els articles
+        Table table2 = new Table(new float[]{4, 1, 3, 3});
         table2.setWidthPercent(100);
+        //Capçalera de la taula de les linies de factura
         process(table2, "Article", bold, true);
         process(table2, "Preu", bold, true);
         process(table2, "Quantitat", bold, true);
-        for (int i = 0; i < 3; i++) {
+        process(table2, "IVA", bold, true);
+
+        //Les linies de factura ens vindran de la base de dades,
+        // Aci les generem automàticament
+        for (int i = 0; i < 5; i++) {
             process(table2, "Article" + i, font, false);
             process(table2, Integer.toString(i * 2), font, false);
             process(table2, Integer.toString(i), font, false);
+            process(table2, "21%", font, false);
         }
+        // Afegir la taula del cos de la factura
         document.add(table2);
+        //Afegim un paragraf en blanc per separar
         document.add(new Paragraph(""));
+        //Mostrar el total o fins i tot el desglose de IVA i dades adicionals
         Table tableTotal = new Table(new float[]{2, 2});
         tableTotal.setWidthPercent(100);
         tableTotal.addCell(new Cell().add(new Paragraph("TOTAL: ").setFont(bold)));
-        tableTotal.addCell(new Cell().add(new Paragraph("16 €: ").setFont(bold)).setTextAlignment(TextAlignment.RIGHT));
+        tableTotal.addCell(new Cell().add(new Paragraph("60 €: ").setFont(bold)).setTextAlignment(TextAlignment.RIGHT));
         document.add(tableTotal);
         document.add(new Paragraph(""));
         document.add(new Paragraph("Inscrito en el registro mercantil bla bla bla bla"));
+
+        Paragraph footer = new Paragraph("this is a footer");
+
         document.close();
     }
 

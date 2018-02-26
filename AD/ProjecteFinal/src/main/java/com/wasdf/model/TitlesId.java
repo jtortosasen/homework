@@ -1,4 +1,4 @@
-package model;
+package com.wasdf.model;
 // Generated Feb 23, 2018 5:49:30 PM by Hibernate Tools 4.3.1
 
 
