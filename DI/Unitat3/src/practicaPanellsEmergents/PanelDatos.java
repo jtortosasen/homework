@@ -35,6 +35,7 @@ public class PanelDatos extends JPanel {
 
 
     public PanelDatos(){
+        super();
         setLayout(new GridLayout(4,2));
         JLabel etiquetaNP = new JLabel("Numero Personal: ", JLabel.RIGHT);
         campoNP = new JTextField();
@@ -58,4 +59,6 @@ public class PanelDatos extends JPanel {
         add(tarde);
         add(manana);
     }
+
+
 }

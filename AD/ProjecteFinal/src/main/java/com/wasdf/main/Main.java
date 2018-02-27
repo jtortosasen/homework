@@ -46,27 +46,6 @@ public class Main {
 
         final DatabaseManager databaseManager = new DatabaseManager(getSession());
 
-//        Session session = getSession();
-//        try {
-//            Departments departments = session.get(Departments.class, ("d001"));
-//            Set<DeptEmp> deptEmp = departments.getDeptEmps();
-//            ArrayList<Employees> employees = new ArrayList<>();
-//            for(DeptEmp emp : deptEmp){
-//                employees.add(emp.getEmployees());
-//            }
-//            System.out.println(employees.size());
-
-//            CriteriaQuery<Employees> crit = session.createQuery(Employees.class);
-//            Root<Employees> candidateRoot = crit.from(Employees.class);
-//            Join<Employees, DeptEmp> addrJoin = candidateRoot.join(Employees_.empNo, JoinType.INNER);
-//            addrJoin.on({some predicate})
-
-//            SELECT c FROM Person p LEFT JOIN p.addresses a ON a.city = p.city LEFT JOIN a.country c ON c.region = 'Europe'
-
-//        } catch (Exception e) {
-//            System.out.println(e.toString());
-//        }
-//
             javax.swing.SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     try {

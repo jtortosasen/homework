@@ -1,10 +1,6 @@
 package com.wasdf.view;
 
-
-
-import com.wasdf.Util.Util;
-import com.wasdf.model.Employees;
-
+import com.wasdf.model.Departments;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -12,22 +8,24 @@ import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class DepartmentEmployeeTablePanel extends JPanel {
+public class DepartmentTablePanel extends JPanel {
 
     private MainView mainView;
     JTable table;
-    ArrayList<Employees> listEmployees;
+    ArrayList<Departments> listDepartments;
     JTextField searchTextField;
 
-    public DepartmentEmployeeTablePanel(ArrayList<Employees> employees, MainView mainView) {
+    public DepartmentTablePanel(ArrayList<Departments> departments, MainView mainView) {
         setLayout(new GridBagLayout());
-        listEmployees = employees;
-        Employees[] array = employees.toArray(new Employees[employees.size()]);
+        listDepartments = departments;
+        Departments[] array = departments.toArray(new Departments[departments.size()]);
         this.mainView = mainView;
         table = new JTable(new MyTableModel(array));
-        table.setPreferredScrollableViewportSize(new Dimension(500, 200));
+        table.setPreferredScrollableViewportSize(new Dimension(500, 70));
         table.setFillsViewportHeight(true);
 
+        table.setPreferredScrollableViewportSize(new Dimension(500, 70));
+        table.setFillsViewportHeight(true);
         JScrollPane scrollPane = new JScrollPane(table);
         GridBagConstraints c = new GridBagConstraints();
 
@@ -49,17 +47,17 @@ public class DepartmentEmployeeTablePanel extends JPanel {
                     refreshEvent();
                 }
                 else {
-                    ArrayList<Employees> finded = new ArrayList<>();
-                    System.out.println(listEmployees.get(0).toString());
+                    ArrayList<Departments> finded = new ArrayList<>();
+                    System.out.println(listDepartments.get(0).toString());
 
-                    for(Employees employee : listEmployees){
-                        if (employee.toString().contains(searchTextField.getText()))
+                    for(Departments department : listDepartments){
+                        if (department.toString().contains(searchTextField.getText()))
                         {
-                            finded.add(employee);
+                            finded.add(department);
                         }
                     }
                     if(!finded.isEmpty()){
-                        Employees[] array = finded.toArray(new Employees[finded.size()]);
+                        Departments[] array = finded.toArray(new Departments[finded.size()]);
                         MyTableModel tableModel = new MyTableModel(array);
                         table.setModel(tableModel);
                     }
@@ -98,50 +96,100 @@ public class DepartmentEmployeeTablePanel extends JPanel {
         c.weighty = 1;
         add(scrollPane, c);
 
+        JButton deleteButton = new JButton("Eliminar");
         JButton refreshButton = new JButton("Refrescar");
+        JButton saveButton = new JButton("Guardar cambio");
+
+        deleteButton.addActionListener(e -> deleteEvent());
         refreshButton.addActionListener(e -> refreshEvent());
+        saveButton.addActionListener(e -> saveEvent());
+
+        c.gridx = 1;
+        c.gridy = 2;
+        c.gridwidth = 1;
+        c.gridheight = 1;
+        c.fill = GridBagConstraints.NONE;
+        c.anchor = GridBagConstraints.EAST;
+        c.weightx = 1;
+        c.weighty = 0;
+        c.insets = new Insets(0, 0, 5, 5);
+        add(deleteButton, c);
+
+        c.gridx = 2;
+        c.gridy = 2;
+        c.gridwidth = 1;
+        c.gridheight = 1;
+        c.fill = GridBagConstraints.NONE;
+        c.anchor = GridBagConstraints.EAST;
+        c.weightx = 0;
+        add(refreshButton, c);
 
         c.gridx = 3;
         c.gridy = 2;
         c.gridwidth = 1;
         c.gridheight = 1;
         c.fill = GridBagConstraints.NONE;
-        c.anchor = GridBagConstraints.LAST_LINE_END;
-        c.weightx = 1;
-        c.weighty = 0;
-        c.insets = new Insets(0, 0, 5, 5);
-        add(refreshButton, c);
+        c.anchor = GridBagConstraints.EAST;
+        c.weightx = 0;
+        add(saveButton, c);
+
+
+    }
+
+    private void saveEvent() {
+        if(!table.getSelectionModel().isSelectionEmpty()){
+            if (JOptionPane.showConfirmDialog(null, "Are you sure?", "WARNING",
+                    JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                int index = table.getSelectedRow();
+                Departments department = new Departments(String.valueOf(table.getModel().getValueAt(index,0)),String.valueOf(table.getModel().getValueAt(index,1)));
+                mainView.updateDepartment(department);
+            } else {
+
+            }
+        }
     }
 
     private void refreshEvent() {
-        listEmployees = mainView.getEmployees();
-        Employees[] array = listEmployees.toArray(new Employees[listEmployees.size()]);
+        listDepartments = mainView.getDepartments();
+        Departments[] array = listDepartments.toArray(new Departments[listDepartments.size()]);
         MyTableModel tableModel = new MyTableModel(array);
         table.setModel(tableModel);
     }
 
+    private void deleteEvent() {
+
+        if(!table.getSelectionModel().isSelectionEmpty()){
+            int index = table.getSelectedRow();
+            Departments department = listDepartments.get(index);
+
+            if (JOptionPane.showConfirmDialog(null, "Estás seguro?", "WARNING",
+                    JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                if (mainView.removeDepartment(department)) {
+                    listDepartments.remove(index);
+                    Departments[] array = listDepartments.toArray(new Departments[listDepartments.size()]);
+                    MyTableModel tableModel = new MyTableModel(array);
+                    table.setModel(tableModel);
+                } else {
+                    JOptionPane.showMessageDialog(new JFrame(), "Error al borrar departamento", "Dialog",
+                            JOptionPane.ERROR_MESSAGE);            }
+            }
+        }
+    }
+
     class MyTableModel extends AbstractTableModel {
-        private boolean DEBUG = false;
+        private boolean DEBUG = true;
 
         private String[] columnNames = {
                 "Emp_no",
-                "Fecha Nacimiento",
-                "Nombre",
-                "Apellido",
-                "Genero",
-                "F. Despido"
+                "Nombre departamento",
         };
         private Object[][] data;
 
-        public MyTableModel(Employees[] array) {
+        public MyTableModel(Departments[] array) {
             data = new String[array.length][columnNames.length];
             for (int i = 0; i < array.length; i++) {
-                data[i][0] = String.valueOf(array[i].getEmpNo());
-                data[i][1] = Util.dateToString(array[i].getBirthDate());
-                data[i][2] = array[i].getFirstName();
-                data[i][3] = array[i].getLastName();
-                data[i][4] = array[i].getGender();
-                data[i][5] = Util.dateToString(array[i].getHireDate());
+                data[i][0] = array[i].getDeptNo();
+                data[i][1] = array[i].getDeptName();
             }
         }
 
@@ -176,8 +224,7 @@ public class DepartmentEmployeeTablePanel extends JPanel {
          * editable.
          */
         public boolean isCellEditable(int row, int col) {
-
-            return false;
+            return true;
         }
 
         /*
