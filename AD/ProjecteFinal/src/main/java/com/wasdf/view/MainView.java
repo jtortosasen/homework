@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 public class MainView extends JFrame {
 
+    public static String OS = System.getProperty("os.name").toLowerCase();
+
     private EmployeePanel employeePanel;
 
     private JDesktopPane desktopPane;
@@ -28,7 +30,33 @@ public class MainView extends JFrame {
     public MainView(String title, DatabaseManager databaseManager) {
         super(title);
         this.databaseManager = databaseManager;
-        desktopPane = new JDesktopPane();
+
+        if(OS.equals("win")){
+            desktopPane = new JDesktopPane() {
+                ImageIcon icon = new ImageIcon("src\\main\\resources\\background-azul-8.jpg");
+                Image image = icon.getImage();
+                Image newimage = image.getScaledInstance(1500, 1000, Image.SCALE_SMOOTH);
+                @Override
+                protected void paintComponent(Graphics g)
+                {
+                    super.paintComponent(g);
+                    g.drawImage(newimage, 0, 0, this);
+                }
+            };
+        }else{
+            desktopPane = new JDesktopPane() {
+                ImageIcon icon = new ImageIcon("src/main/resources/background-azul-8.jpg");
+                Image image = icon.getImage();
+                Image newimage = image.getScaledInstance(1500, 1000, Image.SCALE_SMOOTH);
+                @Override
+                protected void paintComponent(Graphics g)
+                {
+                    super.paintComponent(g);
+                    g.drawImage(newimage, 0, 0, this);
+                }
+            };
+        }
+
         menuBar = new JMenuBar();
         printMenu = new JMenu("Imprimir");
         employeeMenu = new JMenu("Empleados");
@@ -52,21 +80,23 @@ public class MainView extends JFrame {
 
         setJMenuBar(menuBar);
         getContentPane().add(desktopPane);
-
         this.setFocusable(true);
 
         loginPanel = new LoginPanel(this);
         internalFrameLogin = new JInternalFrame("Login");
         internalFrameLogin.add(loginPanel);
+        internalFrameLogin.setLocation(400,200);
         desktopPane.add(internalFrameLogin);
-        internalFrameLogin.setMinimumSize(new Dimension(600, 600));
         internalFrameLogin.setMaximizable(false); // maximize
         internalFrameLogin.setIconifiable(false); // set minimize
         internalFrameLogin.setClosable(false); // set closed
         internalFrameLogin.setResizable(false); // set resizable
         internalFrameLogin.pack();
         internalFrameLogin.setVisible(true);
+
+        setExtendedState(getExtendedState()|JFrame.MAXIMIZED_BOTH );
     }
+
 
     private void showPrintPanel() {
         PrintPanel printPanel = new PrintPanel();
@@ -101,10 +131,10 @@ public class MainView extends JFrame {
         });
         internalFrame.add(panel);
         desktopPane.add(internalFrame);
-        internalFrame.setMaximizable(true); // maximize
-        internalFrame.setIconifiable(true); // set minimize
-        internalFrame.setClosable(true); // set closed
-        internalFrame.setResizable(true); // set resizable
+        internalFrame.setMaximizable(true);
+        internalFrame.setIconifiable(true);
+        internalFrame.setClosable(true);
+        internalFrame.setResizable(true);
         internalFrame.pack();
         internalFrame.setVisible(true);
     }
@@ -119,10 +149,12 @@ public class MainView extends JFrame {
                 "Selecciona departamento", JOptionPane.QUESTION_MESSAGE, null,
                 choices,
                 choices[0]);
-        for (int i = 0; i < listDepartments.size(); i++) {
-            if (input.contains(String.valueOf(listDepartments.get(i).getDeptNo()))){
-                actualDepartment = String.valueOf(listDepartments.get(i).getDeptNo());
-                drawDepartmentTable(databaseManager.getEmployeesFromDepartment(actualDepartment));
+        if(input != null){
+            for (int i = 0; i < listDepartments.size(); i++) {
+                if (input.contains(String.valueOf(listDepartments.get(i).getDeptNo()))){
+                    actualDepartment = String.valueOf(listDepartments.get(i).getDeptNo());
+                    drawDepartmentTable(databaseManager.getEmployeesFromDepartment(actualDepartment));
+                }
             }
         }
     }

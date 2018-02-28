@@ -36,7 +36,7 @@ public class PrintPanel extends JPanel {
         add(jButton2);
 
         jButton.addActionListener(e -> event1());
-        jButton2.addActionListener(e -> event2());
+//        jButton2.addActionListener(e -> event2());
     }
 
     private void event1(){
@@ -68,7 +68,7 @@ public class PrintPanel extends JPanel {
         tableTitle.setWidthPercent(100);
         tableTitle.addCell(new Cell(1,2).add("Departamento"));
         document.add(tableTitle);
-        Table tableInfo =
+//        Table tableInfo =
 
     }
 
@@ -113,13 +113,13 @@ public class PrintPanel extends JPanel {
         //Ara generem una taula amb les dades de l'empresa i el logo
         Table tableEmpresa = new Table(new float[]{2, 2});
         tableEmpresa.setWidthPercent(100);
-        Image fox = new Image(ImageDataFactory.create(DOG));
+//        Image fox = new Image(ImageDataFactory.create(DOG));
 
         //En aquest cas apliquem un colspan 2 per que ocupe tot el ample
         // el primer parametre indica les files q ocupa i el segon les columnes
         // incloguem el logo i centrat a la taula
 
-        tableEmpresa.addCell(new Cell(1, 2).add(new Paragraph().add(fox)).setTextAlignment(TextAlignment.CENTER));
+//        tableEmpresa.addCell(new Cell(1, 2).add(new Paragraph().add(fox)).setTextAlignment(TextAlignment.CENTER));
         tableEmpresa.addCell(new Cell().add(new Paragraph("Empresa: ").setFont(bold)));
         tableEmpresa.addCell(new Cell().add(new Paragraph("2 DAM Enterprise").setFont(font)));
         tableEmpresa.addCell(new Cell().add(new Paragraph("CIF: ").setFont(bold)));

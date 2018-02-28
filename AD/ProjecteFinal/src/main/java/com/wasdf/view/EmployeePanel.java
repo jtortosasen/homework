@@ -225,9 +225,11 @@ public class EmployeePanel extends JPanel {
                 "Selecciona departamento", JOptionPane.QUESTION_MESSAGE, null,
                 choices,
                 choices[0]);
-        for (int i = 0; i < listDepartments.size(); i++) {
-            if (input.contains(String.valueOf(listDepartments.get(i).getDeptNo()))){
-                textDepartment.setText(listDepartments.get(i).getDeptNo());
+        if(input != null){
+            for (int i = 0; i < listDepartments.size(); i++) {
+                if (input.contains(String.valueOf(listDepartments.get(i).getDeptNo()))){
+                    textDepartment.setText(listDepartments.get(i).getDeptNo());
+                }
             }
         }
     }
