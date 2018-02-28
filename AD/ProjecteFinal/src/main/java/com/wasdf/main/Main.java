@@ -29,20 +29,17 @@ public class Main {
     }
 
 
-    @SuppressWarnings("Duplicates")
-    public static void main(final String[] args) throws Exception {
+    public static void main(String[] args) {
 
         final DatabaseManager databaseManager = new DatabaseManager(getSession());
 
-            javax.swing.SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    try {
-                        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-                        ex.printStackTrace();
-                    }
-                    createAndShowGUI(databaseManager);
+            javax.swing.SwingUtilities.invokeLater(() -> {
+                try {
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                    ex.printStackTrace();
                 }
+                createAndShowGUI(databaseManager);
             });
     }
 

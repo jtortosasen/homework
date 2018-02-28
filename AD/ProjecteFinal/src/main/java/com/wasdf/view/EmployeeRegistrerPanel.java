@@ -1,26 +1,30 @@
 package com.wasdf.view;
 
 import com.wasdf.Util.Util;
-import com.wasdf.main.Main;
 import com.wasdf.model.Departments;
 import com.wasdf.model.Employees;
 import javax.swing.*;
+import javax.swing.text.MaskFormatter;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-public class EmployeePanel extends JPanel {
+public class EmployeeRegistrerPanel extends JPanel {
 
     MainView mainView;
 
-    JTextField textEmpNo;
-    JTextField textFirstName;
-    JTextField textLastName;
-    JTextField textBirthDate;
-    JTextField textGender ;
-    JTextField textHireDate;
-    JTextField textDepartment;
+    private JTextField textEmpNo;
+    private JTextField textFirstName;
+    private JTextField textLastName;
+    private JFormattedTextField textBirthDate;
+    private JFormattedTextField textHireDate;
+    private JTextField textDepartment;
+    private ButtonGroup buttonGroupGender;
+    private JRadioButton radioButtonMale;
+    private JRadioButton radioButtonFemale;
+
 
     public String getEmpNo(){
         return textEmpNo.getText();
@@ -35,7 +39,7 @@ public class EmployeePanel extends JPanel {
         return textBirthDate.getText();
     }
     public String getGender(){
-        return textGender.getText();
+        return buttonGroupGender.getSelection().getActionCommand();
     }
     public String getHireDate(){
         return textHireDate.getText();
@@ -44,23 +48,24 @@ public class EmployeePanel extends JPanel {
         return textDepartment.getText();
     }
 
-    public EmployeePanel(Employees employee){
+    public EmployeeRegistrerPanel(Employees employee){
         this();
         textEmpNo.setText(String.valueOf(employee.getEmpNo()));
         textFirstName.setText(employee.getFirstName());
         textBirthDate.setText(Util.dateToString(employee.getBirthDate()));
         textLastName.setText(employee.getLastName());
-        textGender.setText(employee.getGender());
+        radioButtonFemale.setSelected(employee.getGender().equals("F"));
+        radioButtonMale.setSelected(employee.getGender().equals("M"));
         textHireDate.setText(Util.dateToString(employee.getHireDate()));
         textDepartment.setText(mainView.getDepartmentFromEmployee(employee.getEmpNo()).getDeptNo());
     }
 
-    public EmployeePanel(MainView mainView){
+    public EmployeeRegistrerPanel(MainView mainView){
         this();
         this.mainView = mainView;
     }
 
-    public EmployeePanel(){
+    public EmployeeRegistrerPanel(){
 
         super();
         setLayout(new GridBagLayout());
@@ -71,7 +76,6 @@ public class EmployeePanel extends JPanel {
         JLabel firstName = new JLabel("Nombre");
         JLabel lastName = new JLabel("Apellidos");
         JLabel birthDate = new JLabel("Fecha nac.");
-        JLabel gender = new JLabel("Género");
         JLabel hireDate = new JLabel("Fecha despido");
         JLabel department = new JLabel("Departamento");
 
@@ -81,10 +85,27 @@ public class EmployeePanel extends JPanel {
         textEmpNo = new JTextField();
         textFirstName = new JTextField();
         textLastName = new JTextField();
-        textBirthDate = new JTextField();
-        textGender = new JTextField();
-        textHireDate = new JTextField();
-        textDepartment = new JTextField();
+        MaskFormatter dateMask = null;
+        try {
+            dateMask = new MaskFormatter("####-##-##");
+            dateMask.setPlaceholderCharacter('-');
+            dateMask.setValidCharacters("0123456789");
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        textBirthDate = new JFormattedTextField(dateMask);
+        textBirthDate.setHorizontalAlignment(JTextField.RIGHT);
+        textHireDate = new JFormattedTextField(dateMask);
+        textHireDate.setHorizontalAlignment(JTextField.RIGHT);
+        buttonGroupGender = new ButtonGroup();
+        textDepartment = new JTextField(4);
+        radioButtonFemale = new JRadioButton("Mujer");
+        radioButtonFemale.setActionCommand("F");
+        radioButtonMale = new JRadioButton("Hombre");
+        radioButtonMale.setActionCommand("M");
+        buttonGroupGender.add(radioButtonFemale);
+        buttonGroupGender.add(radioButtonMale);
 
         c.gridx = 0;
         c.gridy = 0;
@@ -93,6 +114,7 @@ public class EmployeePanel extends JPanel {
         c.anchor = GridBagConstraints.WEST;
         c.fill = GridBagConstraints.NONE;
         c.weightx = 0;
+        c.insets = new Insets(0,0,0,5);
         add(empNo,c);
 
         c.gridx = 1;
@@ -161,15 +183,15 @@ public class EmployeePanel extends JPanel {
         c.weightx = 0;
         c.anchor = GridBagConstraints.WEST;
         c.fill = GridBagConstraints.NONE;
-        add(gender,c);
+        add(radioButtonFemale,c);
 
         c.gridx = 1;
         c.gridy = 4;
         c.gridwidth = 2;
         c.gridheight = 1;
-        c.weightx = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        add(textGender,c);
+        c.weightx = 0;
+        c.fill = GridBagConstraints.WEST;
+        add(radioButtonMale,c);
 
         c.gridx = 0;
         c.gridy = 5;

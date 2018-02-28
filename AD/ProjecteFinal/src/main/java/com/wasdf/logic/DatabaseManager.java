@@ -153,7 +153,6 @@ public class DatabaseManager {
         try {
             DeptEmpId deptEmpId = new DeptEmpId(empNo, deptNo);
             DeptEmp deptEmp = new DeptEmp(deptEmpId, getDepartment(deptNo), getEmployee(empNo), Util.stringToDate("1212-12-12"), Util.stringToDate("9999-01-01"));
-//            session.save(deptEmp);
             session.getTransaction().begin();
             session.persist(deptEmp);
             session.getTransaction().commit();

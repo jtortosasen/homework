@@ -4,20 +4,25 @@ import com.wasdf.Util.Util;
 import com.wasdf.logic.DatabaseManager;
 import com.wasdf.model.Departments;
 import com.wasdf.model.Employees;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyVetoException;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainView extends JFrame {
 
     public static String OS = System.getProperty("os.name").toLowerCase();
 
-    private EmployeePanel employeePanel;
+    private EmployeeRegistrerPanel employeeRegistrerPanel;
 
-    private JDesktopPane desktopPane;
+    private CustomDesktopPane desktopPane;
     private JMenuBar menuBar;
     private JMenu employeeMenu, departmentMenu, printMenu;
     private JMenuItem addEmployeeMenuItem, showDepartmentsMenuItem, showManageDepartmentsMenuItem, printMenuItem;
@@ -31,31 +36,8 @@ public class MainView extends JFrame {
         super(title);
         this.databaseManager = databaseManager;
 
-        if(OS.equals("win")){
-            desktopPane = new JDesktopPane() {
-                ImageIcon icon = new ImageIcon("src\\main\\resources\\background-azul-8.jpg");
-                Image image = icon.getImage();
-                Image newimage = image.getScaledInstance(1500, 1000, Image.SCALE_SMOOTH);
-                @Override
-                protected void paintComponent(Graphics g)
-                {
-                    super.paintComponent(g);
-                    g.drawImage(newimage, 0, 0, this);
-                }
-            };
-        }else{
-            desktopPane = new JDesktopPane() {
-                ImageIcon icon = new ImageIcon("src/main/resources/background-azul-8.jpg");
-                Image image = icon.getImage();
-                Image newimage = image.getScaledInstance(1500, 1000, Image.SCALE_SMOOTH);
-                @Override
-                protected void paintComponent(Graphics g)
-                {
-                    super.paintComponent(g);
-                    g.drawImage(newimage, 0, 0, this);
-                }
-            };
-        }
+
+        desktopPane = new CustomDesktopPane();
 
         menuBar = new JMenuBar();
         printMenu = new JMenu("Imprimir");
@@ -80,21 +62,60 @@ public class MainView extends JFrame {
 
         setJMenuBar(menuBar);
         getContentPane().add(desktopPane);
-        this.setFocusable(true);
-
+//        setExtendedState(getExtendedState()|JFrame.MAXIMIZED_BOTH );
+        setFocusable(true);
         loginPanel = new LoginPanel(this);
         internalFrameLogin = new JInternalFrame("Login");
         internalFrameLogin.add(loginPanel);
-        internalFrameLogin.setLocation(400,200);
-        desktopPane.add(internalFrameLogin);
         internalFrameLogin.setMaximizable(false); // maximize
         internalFrameLogin.setIconifiable(false); // set minimize
         internalFrameLogin.setClosable(false); // set closed
         internalFrameLogin.setResizable(false); // set resizable
         internalFrameLogin.pack();
         internalFrameLogin.setVisible(true);
+        desktopPane.add(internalFrameLogin);
+//        Dimension desktopSize = desktopPane.getSize();
+//        Dimension loginSize = internalFrameLogin.getSize();
+//        int x = (desktopSize.width - loginSize.width) / 2;
+//        int y = (desktopSize.height - loginSize.height) / 2;
+//        internalFrameLogin.setLocation((getWidth() - internalFrameLogin.getWidth())/2, (getHeight() - internalFrameLogin.getHeight())/2);
+    }
 
-        setExtendedState(getExtendedState()|JFrame.MAXIMIZED_BOTH );
+    class CustomDesktopPane extends JDesktopPane{
+        private String OS = System.getProperty("os.name").toLowerCase();
+        private BufferedImage tile;
+
+        CustomDesktopPane() {
+            super();
+            try {
+                if(OS.contains("win")){
+                    tile = ImageIO.read(getClass().getResource("src\\main\\resources\\background.png"));
+                }else if(OS.contains("linux")){
+                    tile = ImageIO.read(new FileInputStream("src/main/resources/background.png"));
+                }
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        @Override
+        public Dimension getPreferredSize() {
+            return new Dimension(200, 200);
+        }
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2d = (Graphics2D) g.create();
+            int tileWidth = tile.getWidth();
+            int tileHeight = tile.getHeight();
+            for (int y = 0; y < getHeight(); y += tileHeight) {
+                for (int x = 0; x < getWidth(); x += tileWidth) {
+                    g2d.drawImage(tile, x, y, this);
+                }
+            }
+            g2d.dispose();
+        }
     }
 
 
@@ -113,7 +134,7 @@ public class MainView extends JFrame {
 
     private void showManageDepartmentsPanel(){
         menuBar.add(printMenu);
-        DepartmentTablePanel panel = new DepartmentTablePanel(databaseManager.getDepartments(), this);
+        InformationDepartmentTablePanel panel = new InformationDepartmentTablePanel(databaseManager.getDepartments(), this);
         JInternalFrame internalFrame = new JInternalFrame("Departamentos");
         internalFrame.addInternalFrameListener(new InternalFrameAdapter() {
             public void internalFrameClosed(InternalFrameEvent e) {
@@ -161,7 +182,7 @@ public class MainView extends JFrame {
 
     private void drawDepartmentTable(ArrayList<Employees> employees){
 
-        DepartmentEmployeeTablePanel panel = new DepartmentEmployeeTablePanel(employees, this);
+        InformationEmployeeTablePanel panel = new InformationEmployeeTablePanel(employees, this);
         JInternalFrame internalFrame = new JInternalFrame("Empleados");
         internalFrame.add(panel);
         desktopPane.add(internalFrame);
@@ -176,15 +197,23 @@ public class MainView extends JFrame {
 
     private void showEmployeesPanel() {
 
-        employeePanel = new EmployeePanel(this);
+        employeeRegistrerPanel = new EmployeeRegistrerPanel(this);
         Object[] options = {"Guardar", "Cancelar"};
-        int result = JOptionPane.showOptionDialog(null, employeePanel, "Enter a Number",
-                JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
-                null, options, null);
+        int result = JOptionPane.showInternalOptionDialog(desktopPane, employeeRegistrerPanel,"Hola",JOptionPane.YES_NO_OPTION,JOptionPane.PLAIN_MESSAGE,null,options,"");
         if (result == JOptionPane.YES_OPTION) {
-            Employees employee = new Employees(Integer.parseInt(employeePanel.getEmpNo()), Util.stringToDate(employeePanel.getBirthDate()), employeePanel.getFirstName(),employeePanel.getLastName(),employeePanel.getGender(), Util.stringToDate(employeePanel.getHireDate()));
-            createEmployee(employee);
-            recordEmployee(employee.getEmpNo(), employeePanel.getDepartment());
+            if(!employeeRegistrerPanel.getEmpNo().isEmpty() && !employeeRegistrerPanel.getFirstName().isEmpty()){
+                if(Util.isInteger(employeeRegistrerPanel.getEmpNo())){
+                    Employees employee = new Employees(Integer.parseInt(employeeRegistrerPanel.getEmpNo()), Util.stringToDate(employeeRegistrerPanel.getBirthDate()), employeeRegistrerPanel.getFirstName(), employeeRegistrerPanel.getLastName(), employeeRegistrerPanel.getGender(), Util.stringToDate(employeeRegistrerPanel.getHireDate()));
+                    createEmployee(employee);
+                    if(!employeeRegistrerPanel.getDepartment().isEmpty())
+                        recordEmployee(employee.getEmpNo(), employeeRegistrerPanel.getDepartment());
+                }else{
+                    JOptionPane.showInternalMessageDialog(desktopPane,"Código empleado no válido","Atención!",JOptionPane.ERROR_MESSAGE);
+                }
+
+            }else{
+                JOptionPane.showInternalMessageDialog(desktopPane,"Error en los campos empno/nombre","Atención!",JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
