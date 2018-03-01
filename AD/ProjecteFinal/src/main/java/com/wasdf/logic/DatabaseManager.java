@@ -74,30 +74,28 @@ public class DatabaseManager {
             return false;
         }
     }
-
     @Transactional
-    public boolean deleteEmployee(Employees employee) {
-        try {
-            session.getTransaction().begin();
-            session.delete(employee);
-            session.getTransaction().commit();
-            return true;
-        } catch (Exception e) {
-            return false;
+    private boolean delete(Object entity){
+        boolean b;
+        session.getTransaction().begin();
+        try{
+            session.delete(entity);
+            b = true;
+        }catch (Exception e){
+            b = false;
         }
-
+        session.getTransaction().commit();
+        return b;
     }
 
-    @Transactional
+
+    public boolean deleteEmployee(Employees employee) {
+        return delete(employee);
+    }
+
+
     public boolean deleteDepartment(Departments department) {
-        try {
-            session.getTransaction().begin();
-            session.delete(department);
-            session.getTransaction().commit();
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        return delete(department);
 
     }
 
@@ -184,6 +182,18 @@ public class DatabaseManager {
             session.getTransaction().commit();
             return true;
         }catch (Exception e){
+            return false;
+        }
+    }
+
+    @Transactional
+    public boolean createDepartment(Departments department) {
+        try {
+            session.getTransaction().begin();
+            session.persist(department);
+            session.getTransaction().commit();
+            return true;
+        } catch (Exception ex) {
             return false;
         }
     }

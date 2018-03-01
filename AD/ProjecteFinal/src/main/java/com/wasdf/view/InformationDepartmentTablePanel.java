@@ -89,7 +89,7 @@ public class InformationDepartmentTablePanel extends JPanel {
 
         c.gridx = 0;
         c.gridy = 1;
-        c.gridwidth = 4;
+        c.gridwidth = 5;
         c.gridheight = 1;
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
@@ -99,21 +99,23 @@ public class InformationDepartmentTablePanel extends JPanel {
         JButton deleteButton = new JButton("Eliminar");
         JButton refreshButton = new JButton("Refrescar");
         JButton saveButton = new JButton("Guardar cambio");
+        JButton addButton = new JButton("Anadir departamento");
 
         deleteButton.addActionListener(e -> deleteEvent());
         refreshButton.addActionListener(e -> refreshEvent());
         saveButton.addActionListener(e -> saveEvent());
+        addButton.addActionListener(e -> addEvent());
 
         c.gridx = 1;
         c.gridy = 2;
         c.gridwidth = 1;
         c.gridheight = 1;
         c.fill = GridBagConstraints.NONE;
-        c.anchor = GridBagConstraints.EAST;
+        c.anchor = GridBagConstraints.WEST;
         c.weightx = 1;
         c.weighty = 0;
         c.insets = new Insets(0, 0, 5, 5);
-        add(deleteButton, c);
+        add(refreshButton, c);
 
         c.gridx = 2;
         c.gridy = 2;
@@ -122,7 +124,7 @@ public class InformationDepartmentTablePanel extends JPanel {
         c.fill = GridBagConstraints.NONE;
         c.anchor = GridBagConstraints.EAST;
         c.weightx = 0;
-        add(refreshButton, c);
+        add(addButton, c);
 
         c.gridx = 3;
         c.gridy = 2;
@@ -133,18 +135,38 @@ public class InformationDepartmentTablePanel extends JPanel {
         c.weightx = 0;
         add(saveButton, c);
 
-
+        c.gridx = 4;
+        c.gridy = 2;
+        c.gridwidth = 1;
+        c.gridheight = 1;
+        c.fill = GridBagConstraints.NONE;
+        c.anchor = GridBagConstraints.EAST;
+        c.weightx = 0;
+        c.insets = new Insets(0,30,5,0);
+        add(deleteButton, c);
     }
+
+
 
     private void saveEvent() {
         if(!table.getSelectionModel().isSelectionEmpty()){
-            if (JOptionPane.showConfirmDialog(null, "Estás seguro que quieres borrar el departamento?", "WARNING",
+            if (JOptionPane.showConfirmDialog(null, "Estás seguro de que quieres guardar?", "WARNING",
                     JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 int index = table.getSelectedRow();
-                Departments department = new Departments(String.valueOf(table.getModel().getValueAt(index,0)),String.valueOf(table.getModel().getValueAt(index,1)));
-                mainView.updateDepartment(department);
-            } else {
-
+                if(!String.valueOf(table.getModel().getValueAt(index,0)).isEmpty() && !String.valueOf(table.getModel().getValueAt(index,1)).isEmpty()){
+                    Departments department = new Departments(String.valueOf(table.getModel().getValueAt(index,0)),String.valueOf(table.getModel().getValueAt(index,1)));
+                    if(index == listDepartments.size()){
+                        if(!mainView.createDepartment(department)){
+                            JOptionPane.showMessageDialog(new JFrame(), "Error al crear departamento", "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    }else if(index < listDepartments.size()){
+                        if(!mainView.updateDepartment(department)){
+                            JOptionPane.showMessageDialog(new JFrame(), "Error al actualizar departamento", "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }
             }
         }
     }
@@ -154,6 +176,7 @@ public class InformationDepartmentTablePanel extends JPanel {
         Departments[] array = listDepartments.toArray(new Departments[listDepartments.size()]);
         MyTableModel tableModel = new MyTableModel(array);
         table.setModel(tableModel);
+        System.out.println(this.getSize());
     }
 
     private void deleteEvent() {
@@ -170,10 +193,18 @@ public class InformationDepartmentTablePanel extends JPanel {
                     MyTableModel tableModel = new MyTableModel(array);
                     table.setModel(tableModel);
                 } else {
-                    JOptionPane.showMessageDialog(new JFrame(), "Error al borrar departamento", "Dialog",
+                    JOptionPane.showMessageDialog(new JFrame(), "Error al borrar departamento", "Error",
                             JOptionPane.ERROR_MESSAGE);            }
             }
         }
+    }
+
+    private void addEvent(){
+        listDepartments = mainView.getDepartments();
+        Departments[] array = listDepartments.toArray(new Departments[listDepartments.size() + 1]);
+        array[array.length -1] = new Departments("","");
+        MyTableModel tableModel = new MyTableModel(array);
+        table.setModel(tableModel);
     }
 
     class MyTableModel extends AbstractTableModel {
@@ -224,7 +255,10 @@ public class InformationDepartmentTablePanel extends JPanel {
          * editable.
          */
         public boolean isCellEditable(int row, int col) {
-            return true;
+            if(col == 0 && row < listDepartments.size()){
+                return false;
+            }else
+                return true;
         }
 
         /*

@@ -25,6 +25,10 @@ public class Util {
 
     }
 
+    public static Date parseDate(Date date){
+        return stringToDate(dateToString(date));
+    }
+
     public static boolean isInteger(String s) {
         return isInteger(s,10);
     }

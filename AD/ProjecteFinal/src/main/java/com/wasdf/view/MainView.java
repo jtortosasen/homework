@@ -62,24 +62,19 @@ public class MainView extends JFrame {
 
         setJMenuBar(menuBar);
         getContentPane().add(desktopPane);
-//        setExtendedState(getExtendedState()|JFrame.MAXIMIZED_BOTH );
         setFocusable(true);
         loginPanel = new LoginPanel(this);
         internalFrameLogin = new JInternalFrame("Login");
         internalFrameLogin.add(loginPanel);
-        internalFrameLogin.setMaximizable(false); // maximize
-        internalFrameLogin.setIconifiable(false); // set minimize
-        internalFrameLogin.setClosable(false); // set closed
-        internalFrameLogin.setResizable(false); // set resizable
+        internalFrameLogin.setMaximizable(false);
+        internalFrameLogin.setIconifiable(false);
+        internalFrameLogin.setClosable(false);
+        internalFrameLogin.setResizable(false);
         internalFrameLogin.pack();
         internalFrameLogin.setVisible(true);
         desktopPane.add(internalFrameLogin);
-//        Dimension desktopSize = desktopPane.getSize();
-//        Dimension loginSize = internalFrameLogin.getSize();
-//        int x = (desktopSize.width - loginSize.width) / 2;
-//        int y = (desktopSize.height - loginSize.height) / 2;
-//        internalFrameLogin.setLocation((getWidth() - internalFrameLogin.getWidth())/2, (getHeight() - internalFrameLogin.getHeight())/2);
     }
+
 
     class CustomDesktopPane extends JDesktopPane{
         private String OS = System.getProperty("os.name").toLowerCase();
@@ -89,7 +84,7 @@ public class MainView extends JFrame {
             super();
             try {
                 if(OS.contains("win")){
-                    tile = ImageIO.read(getClass().getResource("src\\main\\resources\\background.png"));
+                    tile = ImageIO.read(new FileInputStream("src\\main\\resources\\background.png"));
                 }else if(OS.contains("linux")){
                     tile = ImageIO.read(new FileInputStream("src/main/resources/background.png"));
                 }
@@ -120,7 +115,7 @@ public class MainView extends JFrame {
 
 
     private void showPrintPanel() {
-        PrintPanel printPanel = new PrintPanel();
+        PrintPanel printPanel = new PrintPanel(this);
         JInternalFrame internalFrame = new JInternalFrame("Imprimir");
         internalFrame.add(printPanel);
         desktopPane.add(internalFrame);
@@ -152,6 +147,7 @@ public class MainView extends JFrame {
         });
         internalFrame.add(panel);
         desktopPane.add(internalFrame);
+        internalFrame.setSize(new Dimension(650,310));
         internalFrame.setMaximizable(true);
         internalFrame.setIconifiable(true);
         internalFrame.setClosable(true);
@@ -186,6 +182,7 @@ public class MainView extends JFrame {
         JInternalFrame internalFrame = new JInternalFrame("Empleados");
         internalFrame.add(panel);
         desktopPane.add(internalFrame);
+        internalFrame.setSize(new Dimension(650,310));
         internalFrame.setMaximizable(true); // maximize
         internalFrame.setIconifiable(true); // set minimize
         internalFrame.setClosable(true); // set closed
@@ -268,5 +265,9 @@ public class MainView extends JFrame {
     public boolean updateDepartment(Departments department) {
         System.out.println(department.toString());
         return databaseManager.updateDepartment(department);
+    }
+
+    public boolean createDepartment(Departments department) {
+        return databaseManager.createDepartment(department);
     }
 }

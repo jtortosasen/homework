@@ -1,7 +1,6 @@
 package com.wasdf.view;
 
 import com.itextpdf.io.font.FontConstants;
-import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
@@ -11,31 +10,35 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.border.Border;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.element.Tab;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.VerticalAlignment;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+import com.wasdf.model.Departments;
+import com.wasdf.model.Employees;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class PrintPanel extends JPanel {
-    public PrintPanel(){
+    MainView mainView;
+    ArrayList<Employees> listEmployeesPerDepartment;
+    ArrayList<Employees> listEmployees;
+    ArrayList<Departments> listDepartments;
+    public PrintPanel(MainView mainView){
         super();
+        this.mainView = mainView;
         setLayout(new FlowLayout());
         JButton jButton = new JButton("1");
         JButton jButton2= new JButton("2");
         add(jButton);
         add(jButton2);
 
-        jButton.addActionListener(e -> event1());
+//        jButton.addActionListener(e -> event());
 //        jButton2.addActionListener(e -> event2());
     }
 
@@ -46,7 +49,7 @@ public class PrintPanel extends JPanel {
         jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         jFileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
         if (jFileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-            File f = jFileChooser.getSelectedFile();;
+            File f = jFileChooser.getSelectedFile();
             try {
                 crearPdf(f);
             } catch (IOException e) {
@@ -66,6 +69,7 @@ public class PrintPanel extends JPanel {
 
         Table tableTitle = new Table(new float[]{1});
         tableTitle.setWidthPercent(100);
+//        for()
         tableTitle.addCell(new Cell(1,2).add("Departamento"));
         document.add(tableTitle);
 //        Table tableInfo =
