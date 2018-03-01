@@ -4,7 +4,6 @@ import com.wasdf.Util.Util;
 import com.wasdf.logic.DatabaseManager;
 import com.wasdf.model.Departments;
 import com.wasdf.model.Employees;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
@@ -17,8 +16,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainView extends JFrame {
-
-    public static String OS = System.getProperty("os.name").toLowerCase();
 
     private EmployeeRegistrerPanel employeeRegistrerPanel;
 
@@ -75,8 +72,17 @@ public class MainView extends JFrame {
         desktopPane.add(internalFrameLogin);
     }
 
+    public void closeSelectedInternalFrame() {
+        try {
+            desktopPane.getSelectedFrame().setClosed(true);
+        } catch (PropertyVetoException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     class CustomDesktopPane extends JDesktopPane{
+
         private String OS = System.getProperty("os.name").toLowerCase();
         private BufferedImage tile;
 
@@ -112,7 +118,6 @@ public class MainView extends JFrame {
             g2d.dispose();
         }
     }
-
 
     private void showPrintPanel() {
         PrintPanel printPanel = new PrintPanel(this);
@@ -157,23 +162,8 @@ public class MainView extends JFrame {
     }
 
     private void showDepartmentsPanel() {
-        ArrayList <Departments> listDepartments = databaseManager.getDepartments();
-        String[] choices = new String[listDepartments.size()];
-        for(int i = 0; i < listDepartments.size(); i++){
-            choices[i] = listDepartments.get(i).getDeptNo() + " " + listDepartments.get(i).getDeptName();
-        }
-        String input = (String) JOptionPane.showInputDialog(null, "Departamento:",
-                "Selecciona departamento", JOptionPane.QUESTION_MESSAGE, null,
-                choices,
-                choices[0]);
-        if(input != null){
-            for (int i = 0; i < listDepartments.size(); i++) {
-                if (input.contains(String.valueOf(listDepartments.get(i).getDeptNo()))){
-                    actualDepartment = String.valueOf(listDepartments.get(i).getDeptNo());
-                    drawDepartmentTable(databaseManager.getEmployeesFromDepartment(actualDepartment));
-                }
-            }
-        }
+        JOptionPane.showInternalOptionDialog(getDesktopPane(),new ListSelectionDepartmentPanel(this),"Selecciona departamento",
+                JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE,null,new Object[]{},"");
     }
 
     private void drawDepartmentTable(ArrayList<Employees> employees){
@@ -183,10 +173,10 @@ public class MainView extends JFrame {
         internalFrame.add(panel);
         desktopPane.add(internalFrame);
         internalFrame.setSize(new Dimension(650,310));
-        internalFrame.setMaximizable(true); // maximize
-        internalFrame.setIconifiable(true); // set minimize
-        internalFrame.setClosable(true); // set closed
-        internalFrame.setResizable(true); // set resizable
+        internalFrame.setMaximizable(true);
+        internalFrame.setIconifiable(true);
+        internalFrame.setClosable(true);
+        internalFrame.setResizable(true);
         internalFrame.pack();
         internalFrame.setVisible(true);
     }
@@ -196,11 +186,13 @@ public class MainView extends JFrame {
 
         employeeRegistrerPanel = new EmployeeRegistrerPanel(this);
         Object[] options = {"Guardar", "Cancelar"};
-        int result = JOptionPane.showInternalOptionDialog(desktopPane, employeeRegistrerPanel,"Hola",JOptionPane.YES_NO_OPTION,JOptionPane.PLAIN_MESSAGE,null,options,"");
+        int result = JOptionPane.showInternalOptionDialog(desktopPane, employeeRegistrerPanel,"Insere datos empleado",JOptionPane.YES_NO_OPTION,JOptionPane.PLAIN_MESSAGE,null,options,"");
         if (result == JOptionPane.YES_OPTION) {
             if(!employeeRegistrerPanel.getEmpNo().isEmpty() && !employeeRegistrerPanel.getFirstName().isEmpty()){
                 if(Util.isInteger(employeeRegistrerPanel.getEmpNo())){
-                    Employees employee = new Employees(Integer.parseInt(employeeRegistrerPanel.getEmpNo()), Util.stringToDate(employeeRegistrerPanel.getBirthDate()), employeeRegistrerPanel.getFirstName(), employeeRegistrerPanel.getLastName(), employeeRegistrerPanel.getGender(), Util.stringToDate(employeeRegistrerPanel.getHireDate()));
+                    Employees employee = new Employees(Integer.parseInt(employeeRegistrerPanel.getEmpNo()), Util.stringToDate(employeeRegistrerPanel.getBirthDate()),
+                            employeeRegistrerPanel.getFirstName(), employeeRegistrerPanel.getLastName(), employeeRegistrerPanel.getGender(), Util.stringToDate(employeeRegistrerPanel.getHireDate()));
+
                     createEmployee(employee);
                     if(!employeeRegistrerPanel.getDepartment().isEmpty())
                         recordEmployee(employee.getEmpNo(), employeeRegistrerPanel.getDepartment());
@@ -223,7 +215,7 @@ public class MainView extends JFrame {
     }
 
     public boolean modifyEmployee(Employees employee) {
-        return databaseManager.modifyEmployee(employee);
+        return databaseManager.updateEmployee(employee);
     }
 
     public boolean removeEmployee(Employees employee) {
@@ -269,5 +261,15 @@ public class MainView extends JFrame {
 
     public boolean createDepartment(Departments department) {
         return databaseManager.createDepartment(department);
+    }
+
+    public void setActualDepartment(String department, boolean drawDepartmentTable){
+        actualDepartment = department;
+        if(drawDepartmentTable)
+            drawDepartmentTable(databaseManager.getEmployeesFromDepartment(actualDepartment));
+    }
+
+    public JDesktopPane getDesktopPane(){
+        return desktopPane;
     }
 }

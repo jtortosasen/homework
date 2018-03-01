@@ -12,6 +12,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -64,7 +65,7 @@ public class DatabaseManager {
     }
 
     @Transactional
-    public boolean modifyEmployee(Employees employee) {
+    public boolean updateEmployee(Employees employee) {
         try {
             session.getTransaction().begin();
             session.update(employee);
@@ -150,7 +151,7 @@ public class DatabaseManager {
     public void recordEmployee(int empNo, String deptNo) {
         try {
             DeptEmpId deptEmpId = new DeptEmpId(empNo, deptNo);
-            DeptEmp deptEmp = new DeptEmp(deptEmpId, getDepartment(deptNo), getEmployee(empNo), Util.stringToDate("1212-12-12"), Util.stringToDate("9999-01-01"));
+            DeptEmp deptEmp = new DeptEmp(deptEmpId, getDepartment(deptNo), getEmployee(empNo), Util.parseDate(new Date()), Util.stringToDate("9999-01-01"));
             session.getTransaction().begin();
             session.persist(deptEmp);
             session.getTransaction().commit();
@@ -158,6 +159,7 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+
 
     @Transactional
     public Departments getDepartmentFromEmployee(int empNo){

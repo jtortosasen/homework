@@ -6,6 +6,7 @@ import com.wasdf.model.Employees;
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
+import java.beans.PropertyVetoException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -46,6 +47,9 @@ public class EmployeeRegistrerPanel extends JPanel {
     }
     public String getDepartment(){
         return textDepartment.getText();
+    }
+    public void setDepartment(String department){
+        textDepartment.setText(department);
     }
 
     public EmployeeRegistrerPanel(Employees employee){
@@ -238,21 +242,17 @@ public class EmployeeRegistrerPanel extends JPanel {
     }
 
     private void selectionDeparmentEvent(){
-        ArrayList<Departments> listDepartments = mainView.getDepartments();
-        String[] choices = new String[listDepartments.size()];
-        for(int i = 0; i < listDepartments.size(); i++){
-            choices[i] = listDepartments.get(i).getDeptNo() + " " + listDepartments.get(i).getDeptName();
-        }
-        String input = (String) JOptionPane.showInputDialog(null, "Departamento:",
-                "Selecciona departamento", JOptionPane.QUESTION_MESSAGE, null,
-                choices,
-                choices[0]);
-        if(input != null){
-            for (int i = 0; i < listDepartments.size(); i++) {
-                if (input.contains(String.valueOf(listDepartments.get(i).getDeptNo()))){
-                    textDepartment.setText(listDepartments.get(i).getDeptNo());
-                }
-            }
+        JOptionPane.showInternalOptionDialog(mainView.getDesktopPane(),new ListSelectionDepartmentPanel(mainView,this),"Selecciona departamento",
+                JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE,null,new Object[]{},"");
+    }
+
+
+
+    public void closeSelectedInternalFrame() {
+        try {
+            mainView.getDesktopPane().getSelectedFrame().setClosed(true);
+        } catch (PropertyVetoException e) {
+            e.printStackTrace();
         }
     }
 }
