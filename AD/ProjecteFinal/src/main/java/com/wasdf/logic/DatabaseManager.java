@@ -37,16 +37,26 @@ public class DatabaseManager {
     }
 
     @Transactional
-    public ArrayList<Employees> getEmployeesFromDepartment(String actualDepartment) {
+    public ArrayList<Employees> getEmployeesFromDepartment(String actualDepartment, int size) {
+        List<Employees> list = null;
         try {
             session.getTransaction().begin();
-            TypedQuery<Employees> query = session.createQuery("SELECT emp FROM Employees emp LEFT JOIN emp.deptEmps dept ON dept.employees = emp LEFT JOIN dept.departments depart ON dept.departments = depart where depart.deptNo = :dep");
-            query.setParameter("dep", actualDepartment);
-            List<Employees> list = query.getResultList();
-            session.getTransaction().commit();
+            if(size > 0){
+                TypedQuery<Employees> query = session.createQuery("SELECT emp FROM Employees emp LEFT JOIN emp.deptEmps dept ON dept.employees = emp LEFT JOIN dept.departments depart ON dept.departments = depart where depart.deptNo = :dep and dept.toDate = :date");
+                query.setParameter("dep", actualDepartment);
+                query.setParameter("date", Util.stringToDate("9999-01-01"));
+                query.setMaxResults(size);
+                list = query.getResultList();
+                session.getTransaction().commit();
+            }else if(size == 0){
+                TypedQuery<Employees> query = session.createQuery("SELECT emp FROM Employees emp LEFT JOIN emp.deptEmps dept ON dept.employees = emp LEFT JOIN dept.departments depart ON dept.departments = depart where depart.deptNo = :dep and dept.toDate = :date");
+                query.setParameter("dep", actualDepartment);
+                query.setParameter("date", Util.stringToDate("9999-01-01"));
+                list = query.getResultList();
+                session.getTransaction().commit();
 
+            }
             return new ArrayList<>(list);
-
         } catch (Exception e) {
             return null;
         }
@@ -75,28 +85,43 @@ public class DatabaseManager {
             return false;
         }
     }
+
+
+    public boolean deleteEmployee(Employees employee) {
+        List<DeptEmp> list = null;
+        try{
+            session.getTransaction().begin();
+//            select * from dept_emp where emp_no = 10001 and to_date = "9999-01-01";
+            TypedQuery<DeptEmp> query = session.createQuery("SELECT depemp FROM DeptEmp depemp where depemp.employees.empNo = :dep and depemp.toDate = :date");
+            query.setParameter("dep", employee);
+            query.setParameter("date", Util.stringToDate("9999-01-01"));
+            list = query.getResultList();
+            if(list.isEmpty()){
+                return false;
+            }else{
+                list.get(0).setToDate(Util.parseDate(new Date()));
+                session.persist(list.get(0));
+            }
+            session.getTransaction().commit();
+            return true;
+        }catch (Exception e) {
+            return false;
+        }
+    }
+
+
     @Transactional
-    private boolean delete(Object entity){
+    public boolean deleteDepartment(Departments department) {
         boolean b;
         session.getTransaction().begin();
         try{
-            session.delete(entity);
+            session.delete(department);
             b = true;
         }catch (Exception e){
             b = false;
         }
         session.getTransaction().commit();
         return b;
-    }
-
-
-    public boolean deleteEmployee(Employees employee) {
-        return delete(employee);
-    }
-
-
-    public boolean deleteDepartment(Departments department) {
-        return delete(department);
 
     }
 

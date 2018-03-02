@@ -52,7 +52,7 @@ public class MainView extends JFrame {
         departmentMenu.add(showManageDepartmentsMenuItem);
 
 
-        printMenu.addActionListener(e -> showPrintPanel());
+        printMenuItem.addActionListener(e -> showPrintPanel());
         addEmployeeMenuItem.addActionListener(e -> showEmployeesPanel());
         showDepartmentsMenuItem.addActionListener(e -> showDepartmentsPanel());
         showManageDepartmentsMenuItem.addActionListener(e -> showManageDepartmentsPanel());
@@ -223,7 +223,7 @@ public class MainView extends JFrame {
     }
 
     public ArrayList<Employees> getEmployees() {
-        return databaseManager.getEmployeesFromDepartment(actualDepartment);
+        return getEmployeesFromDepartment(actualDepartment,0);
     }
 
     public void loginSuccess(LoginPanel loginPanel) {
@@ -266,7 +266,11 @@ public class MainView extends JFrame {
     public void setActualDepartment(String department, boolean drawDepartmentTable){
         actualDepartment = department;
         if(drawDepartmentTable)
-            drawDepartmentTable(databaseManager.getEmployeesFromDepartment(actualDepartment));
+            drawDepartmentTable(getEmployeesFromDepartment(actualDepartment,0));
+    }
+
+    public ArrayList<Employees> getEmployeesFromDepartment(String deptNo, int size){
+        return databaseManager.getEmployeesFromDepartment(deptNo, size);
     }
 
     public JDesktopPane getDesktopPane(){
