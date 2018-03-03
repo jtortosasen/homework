@@ -2,6 +2,7 @@ package com.wasdf.view;
 
 import com.wasdf.Util.Util;
 import com.wasdf.model.Employees;
+
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
@@ -23,32 +24,7 @@ public class EmployeeRegistrerPanel extends JPanel {
     private JRadioButton radioButtonFemale;
 
 
-    public String getEmpNo(){
-        return textEmpNo.getText();
-    }
-    public String getFirstName(){
-        return textFirstName.getText();
-    }
-    public String getLastName(){
-        return textLastName.getText();
-    }
-    public String getBirthDate(){
-        return textBirthDate.getText();
-    }
-    public String getGender(){
-        return buttonGroupGender.getSelection().getActionCommand();
-    }
-    public String getHireDate(){
-        return textHireDate.getText();
-    }
-    public String getDepartment(){
-        return textDepartment.getText();
-    }
-    public void setDepartment(String department){
-        textDepartment.setText(department);
-    }
-
-    public EmployeeRegistrerPanel(Employees employee){
+    public EmployeeRegistrerPanel(Employees employee) {
         this();
         textEmpNo.setText(String.valueOf(employee.getEmpNo()));
         textFirstName.setText(employee.getFirstName());
@@ -60,12 +36,12 @@ public class EmployeeRegistrerPanel extends JPanel {
         textDepartment.setText(mainView.getDepartmentFromEmployee(employee.getEmpNo()).getDeptNo());
     }
 
-    public EmployeeRegistrerPanel(MainView mainView){
+    public EmployeeRegistrerPanel(MainView mainView) {
         this();
         this.mainView = mainView;
     }
 
-    public EmployeeRegistrerPanel(){
+    public EmployeeRegistrerPanel() {
 
         super();
         setLayout(new GridBagLayout());
@@ -114,8 +90,8 @@ public class EmployeeRegistrerPanel extends JPanel {
         c.anchor = GridBagConstraints.WEST;
         c.fill = GridBagConstraints.NONE;
         c.weightx = 0;
-        c.insets = new Insets(0,0,0,5);
-        add(empNo,c);
+        c.insets = new Insets(0, 0, 0, 5);
+        add(empNo, c);
 
         c.gridx = 1;
         c.gridy = 0;
@@ -123,7 +99,7 @@ public class EmployeeRegistrerPanel extends JPanel {
         c.gridheight = 1;
         c.weightx = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
-        add(textEmpNo,c);
+        add(textEmpNo, c);
 
         c.gridx = 0;
         c.gridy = 1;
@@ -132,7 +108,7 @@ public class EmployeeRegistrerPanel extends JPanel {
         c.weightx = 0;
         c.anchor = GridBagConstraints.WEST;
         c.fill = GridBagConstraints.NONE;
-        add(firstName,c);
+        add(firstName, c);
 
         c.gridx = 1;
         c.gridy = 1;
@@ -140,7 +116,7 @@ public class EmployeeRegistrerPanel extends JPanel {
         c.gridheight = 1;
         c.weightx = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
-        add(textFirstName,c);
+        add(textFirstName, c);
 
         c.gridx = 0;
         c.gridy = 2;
@@ -149,7 +125,7 @@ public class EmployeeRegistrerPanel extends JPanel {
         c.weightx = 0;
         c.anchor = GridBagConstraints.WEST;
         c.fill = GridBagConstraints.NONE;
-        add(lastName,c);
+        add(lastName, c);
 
         c.gridx = 1;
         c.gridy = 2;
@@ -157,7 +133,7 @@ public class EmployeeRegistrerPanel extends JPanel {
         c.gridheight = 1;
         c.weightx = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
-        add(textLastName,c);
+        add(textLastName, c);
 
         c.gridx = 0;
         c.gridy = 3;
@@ -166,7 +142,7 @@ public class EmployeeRegistrerPanel extends JPanel {
         c.weightx = 0;
         c.anchor = GridBagConstraints.WEST;
         c.fill = GridBagConstraints.NONE;
-        add(birthDate,c);
+        add(birthDate, c);
 
         c.gridx = 1;
         c.gridy = 3;
@@ -174,7 +150,7 @@ public class EmployeeRegistrerPanel extends JPanel {
         c.gridheight = 1;
         c.weightx = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
-        add(textBirthDate,c);
+        add(textBirthDate, c);
 
         c.gridx = 0;
         c.gridy = 4;
@@ -183,7 +159,7 @@ public class EmployeeRegistrerPanel extends JPanel {
         c.weightx = 0;
         c.anchor = GridBagConstraints.WEST;
         c.fill = GridBagConstraints.NONE;
-        add(radioButtonFemale,c);
+        add(radioButtonFemale, c);
 
         c.gridx = 1;
         c.gridy = 4;
@@ -191,7 +167,7 @@ public class EmployeeRegistrerPanel extends JPanel {
         c.gridheight = 1;
         c.weightx = 0;
         c.fill = GridBagConstraints.WEST;
-        add(radioButtonMale,c);
+        add(radioButtonMale, c);
 
         c.gridx = 0;
         c.gridy = 5;
@@ -200,7 +176,7 @@ public class EmployeeRegistrerPanel extends JPanel {
         c.weightx = 0;
         c.anchor = GridBagConstraints.WEST;
         c.fill = GridBagConstraints.NONE;
-        add(hireDate,c);
+        add(hireDate, c);
 
         c.gridx = 1;
         c.gridy = 5;
@@ -208,7 +184,7 @@ public class EmployeeRegistrerPanel extends JPanel {
         c.gridheight = 1;
         c.weightx = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
-        add(textHireDate,c);
+        add(textHireDate, c);
 
         c.gridx = 0;
         c.gridy = 6;
@@ -217,7 +193,7 @@ public class EmployeeRegistrerPanel extends JPanel {
         c.weightx = 0;
         c.anchor = GridBagConstraints.WEST;
         c.fill = GridBagConstraints.NONE;
-        add(department,c);
+        add(department, c);
 
         c.gridx = 1;
         c.gridy = 6;
@@ -225,7 +201,7 @@ public class EmployeeRegistrerPanel extends JPanel {
         c.gridheight = 1;
         c.weightx = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
-        add(textDepartment,c);
+        add(textDepartment, c);
 
         c.gridx = 2;
         c.gridy = 6;
@@ -234,14 +210,45 @@ public class EmployeeRegistrerPanel extends JPanel {
         c.weightx = 1;
         c.anchor = GridBagConstraints.EAST;
         c.fill = GridBagConstraints.NONE;
-        add(jButton,c);
+        add(jButton, c);
     }
 
-    private void selectionDeparmentEvent(){
-        JOptionPane.showInternalOptionDialog(mainView.getDesktopPane(),new ListSelectionDepartmentPanel(mainView,this),"Selecciona departamento",
-                JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE,null,new Object[]{},"");
+    public String getEmpNo() {
+        return textEmpNo.getText();
     }
 
+    public String getFirstName() {
+        return textFirstName.getText();
+    }
+
+    public String getLastName() {
+        return textLastName.getText();
+    }
+
+    public String getBirthDate() {
+        return textBirthDate.getText();
+    }
+
+    public String getGender() {
+        return buttonGroupGender.getSelection().getActionCommand();
+    }
+
+    public String getHireDate() {
+        return textHireDate.getText();
+    }
+
+    public String getDepartment() {
+        return textDepartment.getText();
+    }
+
+    public void setDepartment(String department) {
+        textDepartment.setText(department);
+    }
+
+    private void selectionDeparmentEvent() {
+        JOptionPane.showInternalOptionDialog(mainView.getDesktopPane(), new ListSelectionDepartmentPanel(mainView, this), "Selecciona departamento",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{}, "");
+    }
 
 
     public void closeSelectedInternalFrame() {

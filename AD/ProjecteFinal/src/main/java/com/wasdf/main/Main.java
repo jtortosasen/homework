@@ -6,6 +6,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+
 import javax.swing.*;
 
 
@@ -33,14 +34,14 @@ public class Main {
 
         final DatabaseManager databaseManager = new DatabaseManager(getSession());
 
-            javax.swing.SwingUtilities.invokeLater(() -> {
-                try {
-                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-                    ex.printStackTrace();
-                }
-                createAndShowGUI(databaseManager);
-            });
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                ex.printStackTrace();
+            }
+            createAndShowGUI(databaseManager);
+        });
     }
 
     static void createAndShowGUI(DatabaseManager databaseManager) {

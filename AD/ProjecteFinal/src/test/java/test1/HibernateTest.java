@@ -6,7 +6,6 @@
 package test1;
 
 /**
- *
  * @author professor
  */
 public class HibernateTest {
@@ -21,5 +20,5 @@ public class HibernateTest {
         dtest.close();
         System.out.println("--> main()");
     }
-    
+
 }

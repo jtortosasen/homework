@@ -7,6 +7,7 @@ import com.wasdf.model.DeptEmpId;
 import com.wasdf.model.Employees;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -41,14 +42,14 @@ public class DatabaseManager {
         List<Employees> list = null;
         try {
             session.getTransaction().begin();
-            if(size > 0){
+            if (size > 0) {
                 TypedQuery<Employees> query = session.createQuery("SELECT emp FROM Employees emp LEFT JOIN emp.deptEmps dept ON dept.employees = emp LEFT JOIN dept.departments depart ON dept.departments = depart where depart.deptNo = :dep and dept.toDate = :date");
                 query.setParameter("dep", actualDepartment);
                 query.setParameter("date", Util.stringToDate("9999-01-01"));
                 query.setMaxResults(size);
                 list = query.getResultList();
                 session.getTransaction().commit();
-            }else if(size == 0){
+            } else if (size == 0) {
                 TypedQuery<Employees> query = session.createQuery("SELECT emp FROM Employees emp LEFT JOIN emp.deptEmps dept ON dept.employees = emp LEFT JOIN dept.departments depart ON dept.departments = depart where depart.deptNo = :dep and dept.toDate = :date");
                 query.setParameter("dep", actualDepartment);
                 query.setParameter("date", Util.stringToDate("9999-01-01"));
@@ -90,21 +91,21 @@ public class DatabaseManager {
     @Transactional
     public boolean deleteEmployee(Employees employee) {
         List<DeptEmp> list = null;
-        try{
+        try {
             session.getTransaction().begin();
             TypedQuery<DeptEmp> query = session.createQuery("SELECT depemp FROM DeptEmp depemp where depemp.employees.empNo = :dep and depemp.toDate = :date");
             query.setParameter("dep", employee);
             query.setParameter("date", Util.stringToDate("9999-01-01"));
             list = query.getResultList();
-            if(list.isEmpty()){
+            if (list.isEmpty()) {
                 return false;
-            }else{
+            } else {
                 list.get(0).setToDate(Util.parseDate(new Date()));
                 session.persist(list.get(0));
             }
             session.getTransaction().commit();
             return true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }
@@ -114,10 +115,10 @@ public class DatabaseManager {
     public boolean deleteDepartment(Departments department) {
         boolean b;
         session.getTransaction().begin();
-        try{
+        try {
             session.delete(department);
             b = true;
-        }catch (Exception e){
+        } catch (Exception e) {
             b = false;
         }
         session.getTransaction().commit();
@@ -187,15 +188,15 @@ public class DatabaseManager {
 
 
     @Transactional
-    public Departments getDepartmentFromEmployee(int empNo){
-        Employees employees = session.get(Employees.class,empNo);
+    public Departments getDepartmentFromEmployee(int empNo) {
+        Employees employees = session.get(Employees.class, empNo);
         Set<DeptEmp> deptEmp = employees.getDeptEmps();
-        if(!deptEmp.isEmpty()){
+        if (!deptEmp.isEmpty()) {
             ArrayList<Departments> departments = new ArrayList<>();
-            for(DeptEmp emp : deptEmp){
+            for (DeptEmp emp : deptEmp) {
                 departments.add(emp.getDepartments());
             }
-            return departments.get(departments.size()-1);
+            return departments.get(departments.size() - 1);
         }
         return null;
     }
@@ -203,12 +204,12 @@ public class DatabaseManager {
 
     @Transactional
     public boolean updateDepartment(Departments department) {
-        try{
+        try {
             session.getTransaction().begin();
             session.merge(department);
             session.getTransaction().commit();
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
@@ -229,14 +230,14 @@ public class DatabaseManager {
     @Transactional
     public int getCountEmployees(String deptNo) {
         int count = 0;
-        try{
+        try {
             session.getTransaction().begin();
             Query query = session.createQuery("SELECT count(emp) FROM Employees emp LEFT JOIN emp.deptEmps dept ON dept.employees = emp LEFT JOIN dept.departments depart ON dept.departments = depart where depart.deptNo = :dep");
             query.setParameter("dep", deptNo);
             count = ((Number) query.uniqueResult()).intValue();
             session.getTransaction().commit();
             return count;
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return count;
         }
 

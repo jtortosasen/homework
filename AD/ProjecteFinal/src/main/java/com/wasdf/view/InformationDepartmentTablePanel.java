@@ -11,10 +11,10 @@ import java.util.ArrayList;
 
 public class InformationDepartmentTablePanel extends JPanel {
 
-    private MainView mainView;
     JTable table;
     ArrayList<Departments> listDepartments;
     JTextField searchTextField;
+    private MainView mainView;
 
     public InformationDepartmentTablePanel(ArrayList<Departments> departments, MainView mainView) {
         setLayout(new GridBagLayout());
@@ -148,7 +148,7 @@ public class InformationDepartmentTablePanel extends JPanel {
 
         if (!table.getSelectionModel().isSelectionEmpty()) {
             int index = table.getSelectedRow();
-            if(index <listDepartments.size()){
+            if (index < listDepartments.size()) {
                 Departments department = listDepartments.get(index);
 
                 if (JOptionPane.showConfirmDialog(null, "Estás seguro?", "WARNING",
@@ -163,7 +163,7 @@ public class InformationDepartmentTablePanel extends JPanel {
                                 JOptionPane.ERROR_MESSAGE);
                     }
                 }
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(new JFrame(), "Departamento no existe", "Error",
                         JOptionPane.ERROR_MESSAGE);
             }
@@ -180,7 +180,7 @@ public class InformationDepartmentTablePanel extends JPanel {
     }
 
     class MyTableModel extends AbstractTableModel {
-        private boolean DEBUG = true;
+        private boolean DEBUG = false;
 
         private String[] columnNames = {
                 "Emp_no",

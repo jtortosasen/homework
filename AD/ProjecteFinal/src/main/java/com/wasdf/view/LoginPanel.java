@@ -10,7 +10,7 @@ public class LoginPanel extends JPanel {
     JTextField passwordTextField;
     JButton acceptButton;
 
-    public LoginPanel(MainView mainView){
+    public LoginPanel(MainView mainView) {
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         this.mainView = mainView;
@@ -22,7 +22,7 @@ public class LoginPanel extends JPanel {
         c.anchor = GridBagConstraints.EAST;
         c.fill = GridBagConstraints.NONE;
         c.weightx = 1;
-        add(new JLabel("User: "),c);
+        add(new JLabel("User: "), c);
 
         userTextField = new JTextField();
         c.gridx = 1;
@@ -32,7 +32,7 @@ public class LoginPanel extends JPanel {
         c.anchor = GridBagConstraints.EAST;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 1;
-        add(userTextField,c);
+        add(userTextField, c);
 
         c.gridx = 0;
         c.gridy = 1;
@@ -41,7 +41,7 @@ public class LoginPanel extends JPanel {
         c.anchor = GridBagConstraints.EAST;
         c.fill = GridBagConstraints.NONE;
         c.weightx = 1;
-        add(new JLabel("Password: "),c);
+        add(new JLabel("Password: "), c);
 
         passwordTextField = new JTextField();
         c.gridx = 1;
@@ -51,7 +51,7 @@ public class LoginPanel extends JPanel {
         c.anchor = GridBagConstraints.EAST;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 1;
-        add(passwordTextField,c);
+        add(passwordTextField, c);
 
         acceptButton = new JButton("Aceptar");
         acceptButton.addActionListener(e -> eventListener());
@@ -62,17 +62,17 @@ public class LoginPanel extends JPanel {
         c.anchor = GridBagConstraints.CENTER;
         c.fill = GridBagConstraints.NONE;
         c.weightx = 1;
-        add(acceptButton,c);
+        add(acceptButton, c);
 
     }
 
     private void eventListener() {
-        if(userTextField.getText().equals("") && passwordTextField.getText().equals("")){
+        if (userTextField.getText().equals("") && passwordTextField.getText().equals("")) {
             mainView.loginSuccess(this);
         }
     }
 
-    public MainView getMainView(){
+    public MainView getMainView() {
         return mainView;
     }
 }

@@ -2,6 +2,7 @@ package com.wasdf.view;
 
 import com.wasdf.Util.Util;
 import com.wasdf.model.Employees;
+
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -11,10 +12,10 @@ import java.util.ArrayList;
 
 public class InformationEmployeeTablePanel extends JPanel {
 
-    private MainView mainView;
     JTable table;
     ArrayList<Employees> listEmployees;
     JTextField searchTextField;
+    private MainView mainView;
 
     public InformationEmployeeTablePanel(ArrayList<Employees> employees, MainView mainView) {
         setLayout(new GridBagLayout());
@@ -34,28 +35,28 @@ public class InformationEmployeeTablePanel extends JPanel {
             public void changedUpdate(DocumentEvent e) {
                 changed();
             }
+
             public void removeUpdate(DocumentEvent e) {
                 changed();
             }
+
             public void insertUpdate(DocumentEvent e) {
                 changed();
             }
 
             public void changed() {
-                if (searchTextField.getText().equals("")){
+                if (searchTextField.getText().equals("")) {
                     refreshEvent();
-                }
-                else {
+                } else {
                     ArrayList<Employees> finded = new ArrayList<>();
                     System.out.println(listEmployees.get(0).toString());
 
-                    for(Employees employee : listEmployees){
-                        if (employee.toString().contains(searchTextField.getText()))
-                        {
+                    for (Employees employee : listEmployees) {
+                        if (employee.toString().contains(searchTextField.getText())) {
                             finded.add(employee);
                         }
                     }
-                    if(!finded.isEmpty()){
+                    if (!finded.isEmpty()) {
                         Employees[] array = finded.toArray(new Employees[finded.size()]);
                         MyTableModel tableModel = new MyTableModel(array);
                         table.setModel(tableModel);

@@ -4,6 +4,7 @@ import com.wasdf.Util.Util;
 import com.wasdf.logic.DatabaseManager;
 import com.wasdf.model.Departments;
 import com.wasdf.model.Employees;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
@@ -85,46 +86,6 @@ public class MainView extends JFrame {
         return databaseManager.getCountEmployees(deptNo);
     }
 
-
-    class CustomDesktopPane extends JDesktopPane {
-
-        private String OS = System.getProperty("os.name").toLowerCase();
-        private BufferedImage tile;
-
-        CustomDesktopPane() {
-            super();
-            try {
-                if (OS.contains("win")) {
-                    tile = ImageIO.read(new FileInputStream("src\\main\\resources\\background.png"));
-                } else if (OS.contains("linux")) {
-                    tile = ImageIO.read(new FileInputStream("src/main/resources/background.png"));
-                }
-
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-
-        @Override
-        public Dimension getPreferredSize() {
-            return new Dimension(200, 200);
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            Graphics2D g2d = (Graphics2D) g.create();
-            int tileWidth = tile.getWidth();
-            int tileHeight = tile.getHeight();
-            for (int y = 0; y < getHeight(); y += tileHeight) {
-                for (int x = 0; x < getWidth(); x += tileWidth) {
-                    g2d.drawImage(tile, x, y, this);
-                }
-            }
-            g2d.dispose();
-        }
-    }
-
     private void showPrintPanel() {
         PrintPanel printPanel = new PrintPanel(this);
         JInternalFrame internalFrame = new JInternalFrame("Imprimir");
@@ -188,7 +149,6 @@ public class MainView extends JFrame {
         internalFrame.pack();
         internalFrame.setVisible(true);
     }
-
 
     private void showEmployeesPanel() {
 
@@ -289,5 +249,44 @@ public class MainView extends JFrame {
 
     public JDesktopPane getDesktopPane() {
         return desktopPane;
+    }
+
+    class CustomDesktopPane extends JDesktopPane {
+
+        private String OS = System.getProperty("os.name").toLowerCase();
+        private BufferedImage tile;
+
+        CustomDesktopPane() {
+            super();
+            try {
+                if (OS.contains("win")) {
+                    tile = ImageIO.read(new FileInputStream("src\\main\\resources\\background.png"));
+                } else if (OS.contains("linux")) {
+                    tile = ImageIO.read(new FileInputStream("src/main/resources/background.png"));
+                }
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        @Override
+        public Dimension getPreferredSize() {
+            return new Dimension(200, 200);
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2d = (Graphics2D) g.create();
+            int tileWidth = tile.getWidth();
+            int tileHeight = tile.getHeight();
+            for (int y = 0; y < getHeight(); y += tileHeight) {
+                for (int x = 0; x < getWidth(); x += tileWidth) {
+                    g2d.drawImage(tile, x, y, this);
+                }
+            }
+            g2d.dispose();
+        }
     }
 }
