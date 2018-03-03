@@ -83,6 +83,7 @@ public class InformationDepartmentTablePanel extends JPanel {
         c.gridwidth = 1;
         c.gridheight = 1;
         c.anchor = GridBagConstraints.WEST;
+        c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 1;
         c.weighty = 0;
         add(searchTextField, c);

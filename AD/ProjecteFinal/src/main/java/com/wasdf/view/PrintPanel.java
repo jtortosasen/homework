@@ -1,21 +1,32 @@
 package com.wasdf.view;
 
 import com.itextpdf.io.font.FontConstants;
+import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.border.Border;
 import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.property.TextAlignment;
 import com.wasdf.Util.Util;
 import com.wasdf.model.Departments;
 import com.wasdf.model.Employees;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.PieDataset;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -80,8 +91,26 @@ public class PrintPanel extends JPanel {
 
         ArrayList<Departments> listDepartments = mainView.getDepartments();
         ArrayList<Employees> listEmployees;
+        if(option == 1){
+            PieDataset dataset = createDatasetPie(listDepartments);
+            JFreeChart chart = ChartFactory.createPieChart("Empleados por departamento", dataset,
+                    true, true, false);
+
+            BufferedImage objBufferedImage=chart.createBufferedImage(300,300);
+            ByteArrayOutputStream bas = new ByteArrayOutputStream();
+            try {
+                ImageIO.write(objBufferedImage, "png", bas);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            byte[] byteArray=bas.toByteArray();
+            Image image = new Image(ImageDataFactory.create(byteArray));
+            Table tableImage = new Table(1);
+            tableImage.addCell(new Cell().add(new Paragraph().add(image)).setTextAlignment(TextAlignment.CENTER).setBorder(Border.NO_BORDER));
+            document.add(tableImage);
+        }
         for (Departments departments : listDepartments) {
-            if(option == 1){
+            if(option == 1 && !listDepartments.isEmpty()){
                 Table tableTitle = new Table(new float[]{3});
                 tableTitle.setWidthPercent(100);
                 tableTitle.addCell(new Cell().add(new Paragraph(departments.getDeptNo() + " " + departments.getDeptName())).setFont(bold));
@@ -114,5 +143,21 @@ public class PrintPanel extends JPanel {
         }
         document.close();
     }
+
+    private PieDataset createDatasetPie(ArrayList<Departments> listDepartments) {
+        DefaultPieDataset dataset= new DefaultPieDataset();
+        ArrayList<Integer> count = new ArrayList<>();
+
+        for(Departments departments : listDepartments){
+            count.add(mainView.getCountEmployees(departments.getDeptNo()));
+        }
+        int i = 0;
+        for(Integer value : count){
+            dataset.setValue(listDepartments.get(i).getDeptNo(),value);
+            i++;
+        }
+        return dataset;
+    }
+
 
 }

@@ -6,7 +6,7 @@ import com.wasdf.model.DeptEmp;
 import com.wasdf.model.DeptEmpId;
 import com.wasdf.model.Employees;
 import org.hibernate.Session;
-
+import org.hibernate.query.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -87,11 +87,11 @@ public class DatabaseManager {
     }
 
 
+    @Transactional
     public boolean deleteEmployee(Employees employee) {
         List<DeptEmp> list = null;
         try{
             session.getTransaction().begin();
-//            select * from dept_emp where emp_no = 10001 and to_date = "9999-01-01";
             TypedQuery<DeptEmp> query = session.createQuery("SELECT depemp FROM DeptEmp depemp where depemp.employees.empNo = :dep and depemp.toDate = :date");
             query.setParameter("dep", employee);
             query.setParameter("date", Util.stringToDate("9999-01-01"));
@@ -223,5 +223,22 @@ public class DatabaseManager {
         } catch (Exception ex) {
             return false;
         }
+    }
+
+
+    @Transactional
+    public int getCountEmployees(String deptNo) {
+        int count = 0;
+        try{
+            session.getTransaction().begin();
+            Query query = session.createQuery("SELECT count(emp) FROM Employees emp LEFT JOIN emp.deptEmps dept ON dept.employees = emp LEFT JOIN dept.departments depart ON dept.departments = depart where depart.deptNo = :dep");
+            query.setParameter("dep", deptNo);
+            count = ((Number) query.uniqueResult()).intValue();
+            session.getTransaction().commit();
+            return count;
+        }catch (Exception ex){
+            return count;
+        }
+
     }
 }

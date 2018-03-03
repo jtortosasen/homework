@@ -1,10 +1,7 @@
 package com.wasdf.view;
 
-
-
 import com.wasdf.Util.Util;
 import com.wasdf.model.Employees;
-
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -129,7 +126,7 @@ public class InformationEmployeeTablePanel extends JPanel {
                 "Nombre",
                 "Apellido",
                 "Genero",
-                "F. Despido"
+                "F. Contrato"
         };
         private Object[][] data;
 

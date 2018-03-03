@@ -1,16 +1,12 @@
 package com.wasdf.view;
 
 import com.wasdf.Util.Util;
-import com.wasdf.model.Departments;
 import com.wasdf.model.Employees;
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.beans.PropertyVetoException;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 
 public class EmployeeRegistrerPanel extends JPanel {
 
@@ -80,7 +76,7 @@ public class EmployeeRegistrerPanel extends JPanel {
         JLabel firstName = new JLabel("Nombre");
         JLabel lastName = new JLabel("Apellidos");
         JLabel birthDate = new JLabel("Fecha nac.");
-        JLabel hireDate = new JLabel("Fecha despido");
+        JLabel hireDate = new JLabel("Fecha contrato");
         JLabel department = new JLabel("Departamento");
 
         JButton jButton = new JButton("Buscar");
