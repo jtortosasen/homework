@@ -67,7 +67,7 @@ public class LoginPanel extends JPanel {
     }
 
     private void eventListener() {
-        if (userTextField.getText().equals("") && passwordTextField.getText().equals("")) {
+        if (userTextField.getText().equals("admin") && passwordTextField.getText().equals("admin")) {
             mainView.loginSuccess(this);
         }
     }
