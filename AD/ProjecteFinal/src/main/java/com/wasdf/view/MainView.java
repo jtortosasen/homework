@@ -159,7 +159,7 @@ public class MainView extends JFrame {
             if (!employeeRegistrerPanel.getEmpNo().isEmpty() && !employeeRegistrerPanel.getFirstName().isEmpty()) {
                 if (Util.isInteger(employeeRegistrerPanel.getEmpNo())) {
                     Date hireDate;
-                    if (employeeRegistrerPanel.getHireDate().isEmpty())
+                    if (employeeRegistrerPanel.getHireDate().equals("----------"))
                         hireDate = Util.parseDate(new Date());
                     else
                         hireDate = Util.stringToDate(employeeRegistrerPanel.getHireDate());
