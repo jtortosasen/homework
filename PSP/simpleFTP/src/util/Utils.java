@@ -1,5 +1,6 @@
-package Utils;
+package util;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -10,14 +11,12 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 /**
  * @author Joan Gerard
  */
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-public class Utilitats {
+public class Utils {
 
     private final static BufferedReader entradaConsola = new java.io.BufferedReader(new java.io.InputStreamReader(System.in));
 
@@ -53,7 +52,7 @@ public class Utilitats {
 
     //.........................................................................
     //.........................................................................
-    public static String leerTextoG(String mensaje) {
+    public static String readTextG(String mensaje) {
         String leido = JOptionPane.showInputDialog(mensaje);
         if (leido == null) {
             return "";
@@ -64,19 +63,19 @@ public class Utilitats {
     //.........................................................................
     //.........................................................................
     public static int leerEnteroG(String mensaje) {
-        int v = Integer.parseInt(leerTextoG(mensaje));
+        int v = Integer.parseInt(readTextG(mensaje));
         return v;
     } // ()
 
     //.........................................................................
     //.........................................................................
     public static double leerRealG(String mensaje) {
-        return Double.parseDouble(leerTextoG(mensaje));
+        return Double.parseDouble(readTextG(mensaje));
     } // ()
 
     //.........................................................................
     //.........................................................................
-    public static void muestraMensajeG(String mensaje) {
+    public static void showMessageG(String mensaje) {
         JOptionPane.showMessageDialog(null, mensaje);
     } // ()
 
@@ -90,8 +89,7 @@ public class Utilitats {
 
     //.........................................................................
     //.........................................................................
-    public static byte[] juntarBytes(byte[]
-                                             ... lista) {
+    public static byte[] juntarBytes(byte[]... lista) {
         int totalBytes = 0;
         for (byte[] arr : lista) {
             totalBytes += arr.length;
